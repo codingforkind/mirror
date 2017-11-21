@@ -1,7 +1,7 @@
 package cn.com.cx.ps.visitor;
 
 import cn.com.cx.ps.project.MirrorProject;
-import cn.com.cx.ps.util.AstUtils;
+import cn.com.cx.ps.utils.AstUtils;
 import org.junit.Test;
 
 public class TestVariableVisitor {

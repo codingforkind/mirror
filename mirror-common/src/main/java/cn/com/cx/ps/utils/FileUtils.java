@@ -1,4 +1,4 @@
-package cn.com.cx.utils;
+package cn.com.cx.ps.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

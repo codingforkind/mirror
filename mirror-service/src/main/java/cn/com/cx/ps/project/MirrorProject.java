@@ -14,11 +14,10 @@ import java.util.Set;
 import cn.com.cx.ps.variable.CustomizedClass;
 import cn.com.cx.ps.exceptions.ProjectException;
 import cn.com.cx.ps.utils.AstUtils;
-import cn.com.cx.ps.variable.VariableVisitor;
+import cn.com.cx.ps.visitor.VariableVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.com.cx.ps.util.AstUtils;
 import cn.com.cx.ps.visitor.ClassDeclarationVisitor;
 import cn.com.cx.ps.visitor.PackageVisitor;
 

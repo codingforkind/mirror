@@ -1,7 +1,6 @@
 package cn.com.cx.ps.visitor;
 
-import cn.com.cx.ps.visitor.ClassDeclarationVisitor;
-import cn.com.cx.utils.AstUtils;
+import cn.com.cx.ps.utils.AstUtils;
 import org.junit.Test;
 
 public class TestClassDeclarationVisitor {
