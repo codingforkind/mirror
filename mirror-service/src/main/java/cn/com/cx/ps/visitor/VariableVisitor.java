@@ -43,8 +43,9 @@ public class VariableVisitor extends ASTVisitor {
             variable.setName(varTypeBinding.getName());
             variable.setField(varTypeBinding.isField());
 
-            if("filePath".equals(varTypeBinding.getName())){
+            if ("filePath".equals(varTypeBinding.getName())) {
                 log.info("name: {}, {}", varTypeBinding.getName(), varTypeBinding.getType().getName());
+                log.info("lineNUM:{}", AstUtils.getEndLine(node));
                 variableTypeProcess(varTypeBinding.getType());
             }
 //            Variable type handle AND TYPE ONLY
@@ -74,8 +75,8 @@ public class VariableVisitor extends ASTVisitor {
         if (varTypeBinding.isClass()) {
 //            Class variable
             varType.setType(VariableType.TYPE.CLASS);
-
-            if (mirrorProject.classInProject(varTypeBinding.getQualifiedName())) {
+            String test = varTypeBinding.getQualifiedName();
+            if (mirrorProject.classInProject(test)) {
                 varType.setClassType(varTypeBinding.getQualifiedName());
             } else {
                 varType.setOtherClass(varTypeBinding.getQualifiedName());
