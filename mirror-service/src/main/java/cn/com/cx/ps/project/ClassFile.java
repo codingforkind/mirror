@@ -9,7 +9,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 public class ClassFile {
 
-	// initialized by MirrorProject
 	private String fileName;
 	private List<String> statements;
 	private CompilationUnit compilationUnit;

@@ -25,10 +25,13 @@ public class VariableVisitor extends ASTVisitor {
 
     private Set<Variable> variables = new HashSet<>();
 
+    public VariableVisitor(MirrorProject project) {
+        this.mirrorProject = project;
+    }
 
     public VariableVisitor(String file, MirrorProject project) {
+        this(project);
         this.file = file;
-        this.mirrorProject = project;
     }
 
     @Override
@@ -167,4 +170,11 @@ public class VariableVisitor extends ASTVisitor {
         return variables;
     }
 
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
 }

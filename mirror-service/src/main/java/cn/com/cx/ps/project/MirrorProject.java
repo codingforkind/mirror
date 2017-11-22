@@ -1,102 +1,49 @@
 package cn.com.cx.ps.project;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import cn.com.cx.ps.analyzer.ClassAnalyzer;
+import cn.com.cx.ps.analyzer.FileAnalyzer;
+import cn.com.cx.ps.analyzer.PackageAnalyzer;
 import cn.com.cx.ps.variable.CustomizedClass;
 import cn.com.cx.ps.exceptions.ProjectException;
-import cn.com.cx.ps.utils.AstUtils;
+import cn.com.cx.ps.visitor.PackageVisitor;
 import cn.com.cx.ps.visitor.VariableVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cn.com.cx.ps.visitor.ClassDeclarationVisitor;
-import cn.com.cx.ps.visitor.PackageVisitor;
-
 public class MirrorProject {
-    private static Logger logger = LoggerFactory.getLogger(Project.class);
+    private static Logger logger = LoggerFactory.getLogger(MirrorProject.class);
+
     private File prjPath;
-    private Set<String> prjJavaFiles = new HashSet<>();
-    private Set<String> packages = new HashSet<>();
     private int fileCount;
 
-    private Map<String, ClassFile> javaFiles = new HashMap<>();
+    private Set<String> prjJavaFiles = new HashSet<>();
 
+    private Map<String, ClassFile> prjClassesFile = new HashMap<>();
 
-    // just for test purpose
-    public MirrorProject(String filePath) {
-        PackageVisitor packageVisitor = null;
-        ClassDeclarationVisitor classDeclarationVisitor = null;
-        VariableVisitor variableVisitor = null;
-        // get all statement lines for each file
-        ClassFile classFile = new ClassFile(filePath);
-        classFile.setStatements(this.getAllStatements(filePath));
-
-        // package
-        classFile.setCompilationUnit(AstUtils.getCompUnitResolveBinding(filePath));
-        packageVisitor = new PackageVisitor();
-        classFile.getCompilationUnit().accept(packageVisitor);
-        this.packages.add(packageVisitor.getPackageName());
-
-        // class
-        classDeclarationVisitor = new ClassDeclarationVisitor();
-        classFile.getCompilationUnit().accept(classDeclarationVisitor);
-        classFile.setClassesInFile(classDeclarationVisitor.getCustomizedClasses());
-
-        // variables
-        variableVisitor = new VariableVisitor(filePath, this);
-        classFile.getCompilationUnit().accept(variableVisitor);
-        classFile.setVariablesInFile(variableVisitor.getVariables());
-
-        this.javaFiles.put(filePath, classFile);
-    }
+    private ExecutorService executorService = Executors.newFixedThreadPool(13);
 
     public MirrorProject(File prjDir) throws ProjectException {
-        this.prjPath = prjDir;
         if (!prjDir.isDirectory()) {
             throw new ProjectException(prjDir.getAbsolutePath() + " is not a dir.");
         }
+
+        this.prjPath = prjDir;
         // get all files in this project ant the count of the files(".java")
-        getJavaFiles(prjDir);
-
-        PackageVisitor packageVisitor = null;
-        ClassDeclarationVisitor classDeclarationVisitor = null;
-        VariableVisitor variableVisitor = null;
-        for (String tmpPath : prjJavaFiles) {
-            // get all statement lines for each file
-            ClassFile classFile = new ClassFile(tmpPath);
-            classFile.setStatements(this.getAllStatements(tmpPath));
-
-            // package
-            classFile.setCompilationUnit(AstUtils.getCompUnitResolveBinding(tmpPath));
-            packageVisitor = new PackageVisitor();
-            classFile.getCompilationUnit().accept(packageVisitor);
-            this.packages.add(packageVisitor.getPackageName());
-
-            // class
-            classDeclarationVisitor = new ClassDeclarationVisitor();
-            classFile.getCompilationUnit().accept(classDeclarationVisitor);
-            classFile.setClassesInFile(classDeclarationVisitor.getCustomizedClasses());
-
-            // variables
-            variableVisitor = new VariableVisitor(tmpPath, this);
-            classFile.getCompilationUnit().accept(variableVisitor);
-            classFile.setVariablesInFile(variableVisitor.getVariables());
-
-            this.javaFiles.put(tmpPath, classFile);
-        }
-
+        initjavaFiles(prjDir);
+        logger.info("Java file count: [{}]", this.getFileCount());
     }
 
-    private void getJavaFiles(File dir) {
+    private void initjavaFiles(File dir) {
         File[] fs = dir.listFiles();
         String tmpPath = null;
         for (int i = 0; i < fs.length; i++) {
@@ -106,35 +53,45 @@ public class MirrorProject {
                 prjJavaFiles.add(tmpPath);
             }
             if (fs[i].isDirectory()) {
-                getJavaFiles(fs[i]);
+                initjavaFiles(fs[i]);
             } // end if
         } // end for
     }
 
-    private List<String> getAllStatements(String path) {
-        ArrayList<String> lines = new ArrayList<>();
-        RandomAccessFile accessFile = null;
-        try {
-            accessFile = new RandomAccessFile(new File(path), "r");
-        } catch (FileNotFoundException e) {
-            logger.error("File: " + path + " is not found!");
-            e.printStackTrace();
-        }
-        try {
-            if (accessFile != null) {
-                String line = accessFile.readLine();
-                lines.add(line);
-                while (line != null) {
-                    line = accessFile.readLine();
-                    lines.add(line);
+    public void startFileAnalyzer() {
+//        initialized, start to analyze
+        FileAnalyzer fileAnalyzer = new FileAnalyzer(this.prjJavaFiles);
+        Future<?> fileSubmit = executorService.submit(fileAnalyzer);
+        if (fileSubmit.isDone()) {
+            PackageAnalyzer packageAnalyzer = new PackageAnalyzer(fileAnalyzer.getPrjCompUnits());
+            Future<?> pkgSubmit = executorService.submit(packageAnalyzer);
+
+            ClassAnalyzer classAnalyzer = new ClassAnalyzer(fileAnalyzer.getPrjCompUnits());
+            Future<?> clsSubmit = executorService.submit(classAnalyzer);
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+//            重构，至此，继续Variable解析和存储变量
+            if (pkgSubmit.isDone() && clsSubmit.isDone()) {
+                VariableVisitor variableVisitor = null;
+                for (String tmpPath : prjJavaFiles) {
+                    variableVisitor = new VariableVisitor(tmpPath, this);
+
+                    ClassFile classFile = new ClassFile(tmpPath);
+                    classFile.getCompilationUnit().accept(variableVisitor);
+                    classFile.setVariablesInFile(variableVisitor.getVariables());
+
+                    this.prjClassesFile.put(tmpPath, classFile);
                 }
             }
-        } catch (IOException e) {
-            logger.error("Read file: " + path);
-            e.printStackTrace();
         }
-        return lines;
+
     }
+
 
     public File getPrjPath() {
         return prjPath;
@@ -144,12 +101,12 @@ public class MirrorProject {
         return fileCount;
     }
 
-    public Map<String, ClassFile> getJavaFiles() {
-        return javaFiles;
+    public Map<String, ClassFile> getPrjClassesFile() {
+        return prjClassesFile;
     }
 
     public boolean classInProject(String qualifiedClassName) {
-        for (ClassFile classFile : this.javaFiles.values()) {
+        for (ClassFile classFile : this.prjClassesFile.values()) {
             for (CustomizedClass customizedClass : classFile.getClassesInFile()) {
                 if (customizedClass.getQualifiedName().contains(qualifiedClassName)) return true;
                 continue;
@@ -170,19 +127,7 @@ public class MirrorProject {
         this.prjJavaFiles = prjJavaFiles;
     }
 
-    public Set<String> getPackages() {
-        return packages;
-    }
-
-    public void setPackages(Set<String> packages) {
-        this.packages = packages;
-    }
-
     public void setFileCount(int fileCount) {
         this.fileCount = fileCount;
-    }
-
-    public void setJavaFiles(Map<String, ClassFile> javaFiles) {
-        this.javaFiles = javaFiles;
     }
 }
