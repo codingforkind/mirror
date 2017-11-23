@@ -1,10 +1,7 @@
-package cn.com.cx.ps.analyzer;
+package cn.com.cx.ps.service.analyzer.runner;
 
-import cn.com.cx.ps.utils.AstUtils;
 import cn.com.cx.ps.variable.CustomizedClass;
 import cn.com.cx.ps.visitor.ClassDeclarationVisitor;
-import cn.com.cx.ps.visitor.ClassVisitor;
-import cn.com.cx.ps.visitor.PackageVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.util.*;
@@ -12,11 +9,11 @@ import java.util.*;
 /**
  * Analyzing class infos for the prj
  */
-public class ClassAnalyzer implements Runnable {
+public class ClassAnalyzerRunner implements Runnable {
     private Map<String, CompilationUnit> prjCompUnits;
     private Map<String, Set<CustomizedClass>> prjClasses;
 
-    public ClassAnalyzer(Map<String, CompilationUnit> prjCompUnits) {
+    public ClassAnalyzerRunner(Map<String, CompilationUnit> prjCompUnits) {
         this.prjCompUnits = prjCompUnits;
     }
 

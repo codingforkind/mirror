@@ -1,24 +1,22 @@
 package cn.com.cx.ps.project;
 
+import cn.com.cx.ps.exceptions.ProjectException;
+import cn.com.cx.ps.service.analyzer.runner.ClassAnalyzerRunner;
+import cn.com.cx.ps.service.analyzer.runner.FileAnalyzerRunner;
+import cn.com.cx.ps.service.analyzer.runner.PackageAnalyzerRunner;
+import cn.com.cx.ps.variable.CustomizedClass;
+import cn.com.cx.ps.visitor.VariableVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import cn.com.cx.ps.analyzer.ClassAnalyzer;
-import cn.com.cx.ps.analyzer.FileAnalyzer;
-import cn.com.cx.ps.analyzer.PackageAnalyzer;
-import cn.com.cx.ps.variable.CustomizedClass;
-import cn.com.cx.ps.exceptions.ProjectException;
-import cn.com.cx.ps.visitor.PackageVisitor;
-import cn.com.cx.ps.visitor.VariableVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MirrorProject {
     private static Logger logger = LoggerFactory.getLogger(MirrorProject.class);
@@ -60,13 +58,13 @@ public class MirrorProject {
 
     public void startFileAnalyzer() {
 //        initialized, start to analyze
-        FileAnalyzer fileAnalyzer = new FileAnalyzer(this.prjJavaFiles);
+        FileAnalyzerRunner fileAnalyzer = new FileAnalyzerRunner(this.prjJavaFiles);
         Future<?> fileSubmit = executorService.submit(fileAnalyzer);
         if (fileSubmit.isDone()) {
-            PackageAnalyzer packageAnalyzer = new PackageAnalyzer(fileAnalyzer.getPrjCompUnits());
+            PackageAnalyzerRunner packageAnalyzer = new PackageAnalyzerRunner(fileAnalyzer.getPrjCompUnits());
             Future<?> pkgSubmit = executorService.submit(packageAnalyzer);
 
-            ClassAnalyzer classAnalyzer = new ClassAnalyzer(fileAnalyzer.getPrjCompUnits());
+            ClassAnalyzerRunner classAnalyzer = new ClassAnalyzerRunner(fileAnalyzer.getPrjCompUnits());
             Future<?> clsSubmit = executorService.submit(classAnalyzer);
 
             try {

@@ -1,4 +1,4 @@
-package cn.com.cx.ps.analyzer;
+package cn.com.cx.ps.service.analyzer.runner;
 
 import cn.com.cx.ps.visitor.PackageVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -7,12 +7,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class PackageAnalyzer implements Runnable {
+public class PackageAnalyzerRunner implements Runnable {
 
     private Map<String, CompilationUnit> prjCompUnits;
     private Map<String, String> prjPackages;
 
-    public PackageAnalyzer(Map<String, CompilationUnit> prjCompUnits) {
+    public PackageAnalyzerRunner(Map<String, CompilationUnit> prjCompUnits) {
         this.prjCompUnits = prjCompUnits;
     }
 

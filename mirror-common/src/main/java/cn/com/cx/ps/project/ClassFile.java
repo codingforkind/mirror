@@ -1,11 +1,11 @@
 package cn.com.cx.ps.project;
 
-import java.util.List;
-import java.util.Set;
-
 import cn.com.cx.ps.variable.CustomizedClass;
 import cn.com.cx.ps.variable.Variable;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+
+import java.util.List;
+import java.util.Set;
 
 public class ClassFile {
 

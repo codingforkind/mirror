@@ -5,7 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @PropertySource("project.properties")
-@ConfigurationProperties(prefix = "project")
+@ConfigurationProperties(prefix = "cn/com/cx/ps/project")
 @Component
 public class ProjectProperty {
     private String dir;

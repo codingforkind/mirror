@@ -1,4 +1,4 @@
-package cn.com.cx.ps.exceptions;
+package cn.com.cx.ps.utils.exceptions;
 
 public class ProjectException extends Exception{
 

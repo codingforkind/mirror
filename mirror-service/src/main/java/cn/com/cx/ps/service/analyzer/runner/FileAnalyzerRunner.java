@@ -1,4 +1,4 @@
-package cn.com.cx.ps.analyzer;
+package cn.com.cx.ps.service.analyzer.runner;
 
 import cn.com.cx.ps.utils.AstUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -10,14 +10,14 @@ import java.util.Set;
 /**
  * Analyzing file infos for the prj
  */
-public class FileAnalyzer implements Runnable {
+public class FileAnalyzerRunner implements Runnable {
 
     private Set<String> prjJavaFiles;
     private Map<String, List<String>> prjCodeLines;
     private Map<String, CompilationUnit> prjCompUnits;
 
 
-    public FileAnalyzer(Set<String> prjJavaFiles) {
+    public FileAnalyzerRunner(Set<String> prjJavaFiles) {
         this.prjJavaFiles = prjJavaFiles;
     }
 
