@@ -114,11 +114,9 @@
     </build>
 
     <modules>
-        <module>mirror-web</module>
         <module>mirror-api</module>
         <module>mirror-data</module>
         <module>mirror-service</module>
-        <module>mirror-middleware</module>
         <module>mirror-common</module>
     </modules>
 
