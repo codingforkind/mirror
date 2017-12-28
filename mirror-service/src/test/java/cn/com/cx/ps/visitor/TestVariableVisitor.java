@@ -1,7 +1,7 @@
 package cn.com.cx.ps.visitor;
 
-import cn.com.cx.ps.project.MirrorProject;
-import cn.com.cx.ps.project.ProjectProperty;
+import cn.com.cx.ps.mirror.MirrorProject;
+import cn.com.cx.ps.mirror.project.ProjectProperty;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

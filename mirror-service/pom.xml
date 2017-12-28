@@ -18,11 +18,5 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>cn.com.cx</groupId>
-            <artifactId>mirror-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
-
 </project>
