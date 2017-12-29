@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN">
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
     <properties resource="generator.properties"/>
 
-    <context id="PostgresSQL" targetRuntime="MyBatis3" defaultModeType="flat">
+    <context id="PostgresSQL">
         <property name="javaFileEncoding" value="UTF-8"/>
 
-        <!--<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value=""/>
-        </plugin>-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="cn.com.cx.ps.dao.mapper.CommonMapper"/>
+        </plugin>
 
         <jdbcConnection driverClass="${datasource.driverClassName}"
                         connectionURL="${datasource.url}"
@@ -21,19 +22,17 @@
         <javaModelGenerator targetPackage="${targetEntityPackage}" targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="constructorBased" value="false"/>
-            <!--<property name="rootClass" value="xxx"/>-->
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="${targetMapperPackage}" targetProject="src/main/java">
+        <sqlMapGenerator targetPackage="${targetSQLMapperPackage}" targetProject="src/main/resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="${targetXMLPackage}" targetProject="src/main/resources" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table tableName="customer_tbl">
-        </table>
+        <table tableName="customer_tbl"></table>
 
     </context>
 </generatorConfiguration>

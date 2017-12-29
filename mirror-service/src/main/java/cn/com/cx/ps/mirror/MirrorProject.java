@@ -1,9 +1,9 @@
 package cn.com.cx.ps.mirror;
 
 import cn.com.cx.ps.mirror.project.ClassFile;
-import cn.com.cx.ps.service.runner.ClassAnalyzerRunner;
-import cn.com.cx.ps.service.runner.FileAnalyzerRunner;
-import cn.com.cx.ps.service.runner.PackageAnalyzerRunner;
+import cn.com.cx.ps.mirror.service.runner.ClassAnalyzerRunner;
+import cn.com.cx.ps.mirror.service.runner.FileAnalyzerRunner;
+import cn.com.cx.ps.mirror.service.runner.PackageAnalyzerRunner;
 import cn.com.cx.ps.exceptions.ProjectException;
 import cn.com.cx.ps.mirror.variable.CustomizedClass;
 import cn.com.cx.ps.mirror.visitor.VariableVisitor;

@@ -1,4 +1,4 @@
-package cn.com.cx.ps.service.runner;
+package cn.com.cx.ps.mirror.service.runner;
 
 public class VariableAnalyzerRunner implements Runnable {
 

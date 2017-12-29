@@ -1,4 +1,4 @@
-package cn.com.cx.ps.service.analyzer;
+package cn.com.cx.ps.mirror.service.analyzer;
 
 import cn.com.cx.ps.mirror.variable.CustomizedClass;
 

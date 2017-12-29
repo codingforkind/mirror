@@ -1,4 +1,4 @@
-package cn.com.cx.ps.service.runner;
+package cn.com.cx.ps.mirror.service.runner;
 
 import cn.com.cx.ps.mirror.variable.CustomizedClass;
 import cn.com.cx.ps.mirror.visitor.ClassDeclarationVisitor;
