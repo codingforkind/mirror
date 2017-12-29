@@ -1,4 +1,4 @@
-package cn.com.cx.ps.dao.mapper;
+package cn.com.cx.ps.mirror.dao.mapper;
 
 import tk.mybatis.mapper.common.BaseMapper;
 import tk.mybatis.mapper.common.ConditionMapper;

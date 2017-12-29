@@ -10,7 +10,7 @@
         <property name="javaFileEncoding" value="UTF-8"/>
 
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="cn.com.cx.ps.dao.mapper.CommonMapper"/>
+            <property name="mappers" value="cn.com.cx.ps.mirror.dao.mapper.CommonMapper"/>
         </plugin>
 
         <jdbcConnection driverClass="${datasource.driverClassName}"
