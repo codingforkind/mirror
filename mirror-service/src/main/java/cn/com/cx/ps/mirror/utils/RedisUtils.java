@@ -1,4 +1,4 @@
-package cn.com.cx.ps.utils;
+package cn.com.cx.ps.mirror.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

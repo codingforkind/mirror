@@ -1,4 +1,4 @@
-package cn.com.cx.ps;
+package cn.com.cx.ps.mirror;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

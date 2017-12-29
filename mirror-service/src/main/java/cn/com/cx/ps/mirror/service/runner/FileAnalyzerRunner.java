@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.service.runner;
 
-import cn.com.cx.ps.utils.AstUtils;
+import cn.com.cx.ps.mirror.utils.AstUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.util.List;

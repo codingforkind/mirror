@@ -1,6 +1,6 @@
 package cn.com.cx.ps.visitor;
 
-import cn.com.cx.ps.mirror.MirrorProject;
+import cn.com.cx.ps.mirror.project.MirrorProject;
 import cn.com.cx.ps.mirror.project.ProjectProperty;
 import org.junit.Test;
 import org.junit.runner.RunWith;

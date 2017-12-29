@@ -1,7 +1,7 @@
 package cn.com.cx.ps.mirror.visitor;
 
-import cn.com.cx.ps.mirror.MirrorProject;
-import cn.com.cx.ps.utils.AstUtils;
+import cn.com.cx.ps.mirror.project.MirrorProject;
+import cn.com.cx.ps.mirror.utils.AstUtils;
 import cn.com.cx.ps.mirror.variable.Variable;
 import cn.com.cx.ps.mirror.variable.VariableType;
 import org.eclipse.jdt.core.dom.*;
