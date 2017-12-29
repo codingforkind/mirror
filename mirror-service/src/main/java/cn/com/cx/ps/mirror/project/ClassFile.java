@@ -1,7 +1,7 @@
 package cn.com.cx.ps.mirror.project;
 
-import cn.com.cx.ps.mirror.variable.CustomizedClass;
-import cn.com.cx.ps.mirror.variable.Variable;
+import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.Variable;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.util.List;

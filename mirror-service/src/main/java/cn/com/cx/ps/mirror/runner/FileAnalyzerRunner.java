@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.service.runner;
+package cn.com.cx.ps.mirror.runner;
 
 import cn.com.cx.ps.mirror.utils.AstUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;

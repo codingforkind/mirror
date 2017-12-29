@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.service.analyzer;
 
-import cn.com.cx.ps.mirror.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
 
 import java.util.Map;
 import java.util.Set;

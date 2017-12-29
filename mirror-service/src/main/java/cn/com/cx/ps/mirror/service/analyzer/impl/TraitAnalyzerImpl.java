@@ -2,7 +2,7 @@ package cn.com.cx.ps.mirror.service.analyzer.impl;
 
 
 import cn.com.cx.ps.mirror.service.analyzer.TraitAnalyzer;
-import cn.com.cx.ps.mirror.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
 
 import java.util.Map;
 import java.util.Set;

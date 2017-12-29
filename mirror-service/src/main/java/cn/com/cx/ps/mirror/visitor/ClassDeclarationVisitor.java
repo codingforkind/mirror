@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.visitor;
 
-import cn.com.cx.ps.mirror.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
 import org.eclipse.jdt.core.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
