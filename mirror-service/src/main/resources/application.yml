@@ -3,3 +3,6 @@ spring:
       name: mirror
   profiles:
     active: dev
+logging:
+  config: classpath:logback-config.xml
+  file: ${spring.application.name}
