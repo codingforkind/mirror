@@ -1,5 +1,6 @@
 package cn.com.cx.ps.visitor;
 
+import cn.com.cx.ps.mirror.MirrorServiceApplication;
 import cn.com.cx.ps.mirror.utils.RedisUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes= MirrorServiceApplication.class)
 public class TestMirrorRestUtil {
 
     @Autowired
