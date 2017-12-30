@@ -4,7 +4,9 @@ import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
 import cn.com.cx.ps.mirror.tools.visitor.ClassDeclarationVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Analyzing class infos for the prj
