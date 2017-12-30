@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.visitor;
+package cn.com.cx.ps.mirror.tools.visitor;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.TypeDeclaration;

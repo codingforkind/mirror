@@ -1,6 +1,6 @@
-package cn.com.cx.ps.mirror.runner;
+package cn.com.cx.ps.mirror.tools.runner;
 
-import cn.com.cx.ps.mirror.visitor.PackageVisitor;
+import cn.com.cx.ps.mirror.tools.visitor.PackageVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.util.Iterator;
