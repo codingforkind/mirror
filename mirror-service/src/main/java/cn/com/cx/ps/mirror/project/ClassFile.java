@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.project;
 
-import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.Class;
 import cn.com.cx.ps.mirror.project.variable.Variable;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -12,7 +12,7 @@ public class ClassFile {
 	private String fileName;
 	private List<String> statements;
 	private CompilationUnit compilationUnit;
-	private Set<CustomizedClass> classesInFile;
+	private Set<Class> classesInFile;
 	private Set<Variable> variablesInFile;
 
 	public ClassFile(String fileName) {
@@ -43,11 +43,11 @@ public class ClassFile {
 		this.compilationUnit = compilationUnit;
 	}
 
-	public Set<CustomizedClass> getClassesInFile() {
+	public Set<Class> getClassesInFile() {
 		return classesInFile;
 	}
 
-	public void setClassesInFile(Set<CustomizedClass> classesInFile) {
+	public void setClassesInFile(Set<Class> classesInFile) {
 		this.classesInFile = classesInFile;
 	}
 

@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.service.analyzer;
 
-import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.Class;
 
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +20,7 @@ public interface TraitAnalyzer {
      */
     public String getPackageName(String javaFilePath);
 
-    public Map<String, Set<CustomizedClass>> analyzeClasses(String prjDir);
+    public Map<String, Set<Class>> analyzeClasses(String prjDir);
 
 
 }

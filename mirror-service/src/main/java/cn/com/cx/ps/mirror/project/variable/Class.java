@@ -2,7 +2,7 @@ package cn.com.cx.ps.mirror.project.variable;
 
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-public class CustomizedClass {
+public class Class {
     private String file;
     private String name;
     private String qualifiedName;
@@ -26,7 +26,7 @@ public class CustomizedClass {
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        CustomizedClass tmObj = (CustomizedClass) obj;
+        Class tmObj = (Class) obj;
 //        if the typeDeclaration are equal then the class is the same one.
         if (null != typeDeclaration) {
             if (null == tmObj.getTypeDeclaration()) return false;

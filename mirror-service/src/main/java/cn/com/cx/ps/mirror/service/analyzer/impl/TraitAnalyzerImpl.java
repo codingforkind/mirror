@@ -2,7 +2,7 @@ package cn.com.cx.ps.mirror.service.analyzer.impl;
 
 
 import cn.com.cx.ps.mirror.service.analyzer.TraitAnalyzer;
-import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.Class;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,7 +21,7 @@ public class TraitAnalyzerImpl implements TraitAnalyzer {
     }
 
     @Override
-    public Map<String, Set<CustomizedClass>> analyzeClasses(String prjDir) {
+    public Map<String, Set<Class>> analyzeClasses(String prjDir) {
         return null;
     }
 }

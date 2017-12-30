@@ -1,10 +1,10 @@
 package cn.com.cx.ps.mirror.project;
 
+import cn.com.cx.ps.mirror.project.variable.Class;
 import cn.com.cx.ps.mirror.tools.runner.ClassAnalyzerRunner;
 import cn.com.cx.ps.mirror.tools.runner.FileAnalyzerRunner;
 import cn.com.cx.ps.mirror.tools.runner.PackageAnalyzerRunner;
 import cn.com.cx.ps.mirror.exceptions.ProjectException;
-import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
 import cn.com.cx.ps.mirror.tools.visitor.VariableVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +105,7 @@ public class MirrorProject {
 
     public boolean classInProject(String qualifiedClassName) {
         for (ClassFile classFile : this.prjClassesFile.values()) {
-            for (CustomizedClass customizedClass : classFile.getClassesInFile()) {
+            for (Class customizedClass : classFile.getClassesInFile()) {
                 if (customizedClass.getQualifiedName().contains(qualifiedClassName)) return true;
                 continue;
             }

@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.tools.runner;
 
-import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.Class;
 import cn.com.cx.ps.mirror.tools.visitor.ClassDeclarationVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class ClassAnalyzerRunner implements Runnable {
     private Map<String, CompilationUnit> prjCompUnits;
-    private Map<String, Set<CustomizedClass>> prjClasses;
+    private Map<String, Set<Class>> prjClasses;
 
     public ClassAnalyzerRunner(Map<String, CompilationUnit> prjCompUnits) {
         this.prjCompUnits = prjCompUnits;
@@ -36,7 +36,7 @@ public class ClassAnalyzerRunner implements Runnable {
         }
     }
 
-    public Map<String, Set<CustomizedClass>> getPrjClasses() {
+    public Map<String, Set<Class>> getPrjClasses() {
         return prjClasses;
     }
 }

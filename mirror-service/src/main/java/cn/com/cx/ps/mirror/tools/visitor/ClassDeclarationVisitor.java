@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.tools.visitor;
 
-import cn.com.cx.ps.mirror.project.variable.CustomizedClass;
+import cn.com.cx.ps.mirror.project.variable.Class;
 import org.eclipse.jdt.core.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +12,12 @@ public class ClassDeclarationVisitor extends ASTVisitor {
     private static Logger log = LoggerFactory.getLogger(ClassDeclarationVisitor.class);
     private String file;
     //    the first element in this list is the outer class, others are inner class in the first class.
-    private Set<CustomizedClass> customizedClasses = new HashSet<>();
+    private Set<Class> customizedClasses = new HashSet<>();
 
 //    TODO $ other type of declaration!!!!!
     @Override
     public boolean visit(TypeDeclaration node) {
-        CustomizedClass customizedClass = new CustomizedClass();
+        Class customizedClass = new Class();
         customizedClass.setFile(this.file);
         customizedClass.setInterface(node.isInterface());
         customizedClass.setName(String.valueOf(node.getName()));
@@ -62,7 +62,7 @@ public class ClassDeclarationVisitor extends ASTVisitor {
         return super.visit(node);
     }
 
-    public Set<CustomizedClass> getCustomizedClasses() {
+    public Set<Class> getCustomizedClasses() {
         return customizedClasses;
     }
 }
