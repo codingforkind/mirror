@@ -16,3 +16,10 @@ spring:
 
 logging:
   path: /logs/
+
+
+#project
+mirror:
+  project:
+    name: testPrj
+    path: D:/work/test/mirror/

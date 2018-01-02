@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -21,26 +18,44 @@ import java.util.concurrent.Future;
 public class MirrorProject {
     private static Logger logger = LoggerFactory.getLogger(MirrorProject.class);
 
+    /**
+     * project location
+     */
     private File prjPath;
+    /**
+     * the number of all java files
+     */
     private int fileCount;
+    /**
+     * project name
+     */
+    private String prjName;
 
+    /**
+     * all java files in the project
+     */
     private Set<String> prjJavaFiles = new HashSet<>();
 
     private Map<String, ClassFile> prjClassesFile = new HashMap<>();
 
     private ExecutorService executorService = Executors.newFixedThreadPool(13);
 
-    public MirrorProject(File prjDir) throws ProjectException {
+    public MirrorProject(File prjDir, String prjName) throws ProjectException {
         if (!prjDir.isDirectory()) {
             throw new ProjectException(prjDir.getAbsolutePath() + " is not a dir.");
         }
-
+        this.prjName = prjName;
         this.prjPath = prjDir;
-        // get all files in this project ant the count of the files(".java")
         initjavaFiles(prjDir);
         logger.info("Java file count: [{}]", this.getFileCount());
     }
 
+    /**
+     * <p>extract all the java file in the project and store it in the property of @see prjJavaFiles.</p>
+     * <p>get all files in this project ant the count of the files(".java")</p>
+     *
+     * @param dir
+     */
     private void initjavaFiles(File dir) {
         File[] fs = dir.listFiles();
         String tmpPath = null;
@@ -111,6 +126,14 @@ public class MirrorProject {
             }
         }
         return false;
+    }
+
+    public String getPrjName() {
+        return prjName;
+    }
+
+    public void setPrjName(String prjName) {
+        this.prjName = prjName;
     }
 
     public void setPrjPath(File prjPath) {
