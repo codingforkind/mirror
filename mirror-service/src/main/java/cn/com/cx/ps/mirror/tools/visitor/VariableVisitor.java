@@ -1,12 +1,13 @@
 package cn.com.cx.ps.mirror.tools.visitor;
 
-import cn.com.cx.ps.mirror.project.MirrorProject;
+import cn.com.cx.ps.mirror.configuration.MirrorProject;
 import cn.com.cx.ps.mirror.project.variable.Variable;
-import cn.com.cx.ps.mirror.utils.AstUtils;
 import cn.com.cx.ps.mirror.project.variable.VariableType;
+import cn.com.cx.ps.mirror.utils.AstUtils;
 import org.eclipse.jdt.core.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +21,8 @@ public class VariableVisitor extends ASTVisitor {
 
     private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
     private String file;
+
+    @Autowired
     private MirrorProject mirrorProject;
 
     private Set<Variable> variables = new HashSet<>();

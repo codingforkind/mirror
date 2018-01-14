@@ -1,6 +1,6 @@
 package cn.com.cx.ps.mirror.service.analyzer.impl;
 
-import cn.com.cx.ps.mirror.project.MirrorProject;
+import cn.com.cx.ps.mirror.configuration.MirrorProject;
 import cn.com.cx.ps.mirror.service.analyzer.PackageAnalyzer;
 import cn.com.cx.ps.mirror.tools.visitor.PackageVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
