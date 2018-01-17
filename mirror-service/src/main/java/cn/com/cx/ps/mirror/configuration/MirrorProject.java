@@ -46,7 +46,7 @@ public class MirrorProject {
         this.initjavaFiles(new File(this.properties.getPath()));
     }
 
-    //            重构，至此，继续Variable解析和存储变量
+	// 重构，至此，继续Variable解析和存储变量
     @PostConstruct
     public void startFileAnalyzer() {
 //        initialized, start to analyze
