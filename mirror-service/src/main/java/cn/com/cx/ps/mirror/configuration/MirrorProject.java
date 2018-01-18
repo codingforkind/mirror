@@ -45,21 +45,23 @@ public class MirrorProject {
 		this.initjavaFiles(new File(this.properties.getPath()));
 	}
 
-	// 重构，至此，继续Variable解析和存储变量
+	// TODO 重构，至此，继续Variable解析和存储变量
 	@PostConstruct
 	public void startFileAnalyzer() {
 		// initialized, start to analyze
 		FileAnalyzerRunner fileAnalyzer = new FileAnalyzerRunner(this.prjJavaFiles);
 		Future<?> fileSubmit = executorService.submit(fileAnalyzer);
-		if (fileSubmit.isDone()) {
+		while (fileSubmit.isDone()) {
 			PackageAnalyzerRunner packageAnalyzer = new PackageAnalyzerRunner(fileAnalyzer.getPrjCompUnits());
 			Future<?> pkgSubmit = executorService.submit(packageAnalyzer);
 
 			ClassAnalyzerRunner classAnalyzer = new ClassAnalyzerRunner(fileAnalyzer.getPrjCompUnits());
 			Future<?> clsSubmit = executorService.submit(classAnalyzer);
 
-			// 等待包和类解析完毕
+			// waiting for packages and classes' analysis is done
 			while (pkgSubmit.isDone() && clsSubmit.isDone()) {
+				// TODO 保存包和类的信息
+
 				VariableVisitor variableVisitor = null;
 				for (String tmpPath : prjJavaFiles) {
 					variableVisitor = new VariableVisitor(tmpPath, this);
@@ -106,7 +108,6 @@ public class MirrorProject {
 	 * <p>
 	 * get all files in this project ant the count of the files(".java")
 	 * </p>
-	 *
 	 * @param dir
 	 */
 	private void initjavaFiles(File dir) {
