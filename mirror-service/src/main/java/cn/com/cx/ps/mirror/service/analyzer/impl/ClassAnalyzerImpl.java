@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClassAnalyzerImpl implements ClassAnalyzer {
 
-    @Autowired
+//    @Autowired
     private MirrorProject mirrorProject;
 
     private Logger log = LoggerFactory.getLogger(getClass());

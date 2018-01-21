@@ -16,7 +16,7 @@ import java.util.Set;
 @Service
 public class FileAnalyzerImpl implements FileAnalyzer {
 
-    @Autowired
+//    @Autowired
     private MirrorProject mirrorProject;
 
     private Logger log = LoggerFactory.getLogger(getClass());

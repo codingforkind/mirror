@@ -1,18 +1,5 @@
 package cn.com.cx.ps.mirror.configuration;
 
-import cn.com.cx.ps.mirror.configuration.properties.MirrorProjectProperties;
-import cn.com.cx.ps.mirror.exceptions.ProjectException;
-import cn.com.cx.ps.mirror.project.ClassFile;
-import cn.com.cx.ps.mirror.project.variable.Class;
-import cn.com.cx.ps.mirror.tools.runner.ClassAnalyzerRunner;
-import cn.com.cx.ps.mirror.tools.runner.FileAnalyzerRunner;
-import cn.com.cx.ps.mirror.tools.runner.PackageAnalyzerRunner;
-import cn.com.cx.ps.mirror.tools.visitor.VariableVisitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +9,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-//@ConditionalOnClass(MirrorProjectProperties.class)
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import cn.com.cx.ps.mirror.configuration.properties.MirrorProjectProperties;
+import cn.com.cx.ps.mirror.exceptions.ProjectException;
+import cn.com.cx.ps.mirror.project.ClassFile;
+import cn.com.cx.ps.mirror.project.variable.Class;
+import cn.com.cx.ps.mirror.tools.runner.ClassAnalyzerRunner;
+import cn.com.cx.ps.mirror.tools.runner.FileAnalyzerRunner;
+import cn.com.cx.ps.mirror.tools.runner.PackageAnalyzerRunner;
+import cn.com.cx.ps.mirror.tools.visitor.VariableVisitor;
+
 @EnableConfigurationProperties(MirrorProjectProperties.class)
 public class MirrorProject {
 	private static Logger logger = LoggerFactory.getLogger(MirrorProject.class);

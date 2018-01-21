@@ -17,7 +17,7 @@ import java.util.Set;
 @Service
 public class PackageAnalyzerImpl implements PackageAnalyzer {
 
-    @Autowired
+//    @Autowired
     private MirrorProject mirrorProject;
 
     @Autowired
