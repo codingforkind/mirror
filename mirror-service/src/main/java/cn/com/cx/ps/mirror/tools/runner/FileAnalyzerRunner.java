@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Analyzing file infos for the prj
- */
+@Deprecated
 public class FileAnalyzerRunner implements Runnable {
 
     private Set<String> prjJavaFiles;

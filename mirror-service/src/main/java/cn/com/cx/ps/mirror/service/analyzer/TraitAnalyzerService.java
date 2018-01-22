@@ -5,7 +5,7 @@ import cn.com.cx.ps.mirror.project.variable.Class;
 import java.util.Map;
 import java.util.Set;
 
-public interface TraitAnalyzer {
+public interface TraitAnalyzerService {
 
     /**
      * @param prjDir absolute path for the project

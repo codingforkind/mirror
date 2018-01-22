@@ -1,7 +1,7 @@
 package cn.com.cx.ps.mirror.service.analyzer.impl;
 
 import cn.com.cx.ps.mirror.configuration.MirrorProject;
-import cn.com.cx.ps.mirror.service.analyzer.PackageAnalyzer;
+import cn.com.cx.ps.mirror.service.analyzer.PackageAnalyzerService;
 import cn.com.cx.ps.mirror.tools.visitor.PackageVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Service
-public class PackageAnalyzerImpl implements PackageAnalyzer {
+public class PackageAnalyzerServiceImpl implements PackageAnalyzerService {
 
 //    @Autowired
     private MirrorProject mirrorProject;

@@ -1,11 +1,16 @@
 package cn.com.cx.ps.mirror.service.analyzer;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public interface FileAnalyzer {
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
+
+/**
+ * Analyzing file infos for the prj
+ */
+public interface FileAnalyzerService {
 
     /**
      * Extract all the CompilationUnits in the project.
@@ -22,4 +27,14 @@ public interface FileAnalyzer {
      * @return
      */
     public CompilationUnit parserCompilationUnit(String javaFile);
+    
+
+    /**
+     * 提取特定文件的有效行号
+     * @param filePath
+     * @return
+     */
+    public List<String> extractLineNums(String filePath);
+    
+
 }

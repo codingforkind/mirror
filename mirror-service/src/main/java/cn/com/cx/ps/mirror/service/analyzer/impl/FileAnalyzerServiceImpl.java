@@ -1,23 +1,20 @@
 package cn.com.cx.ps.mirror.service.analyzer.impl;
 
-import cn.com.cx.ps.mirror.configuration.MirrorProject;
-import cn.com.cx.ps.mirror.service.analyzer.FileAnalyzer;
-import cn.com.cx.ps.mirror.utils.AstUtils;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Service
-public class FileAnalyzerImpl implements FileAnalyzer {
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-//    @Autowired
-    private MirrorProject mirrorProject;
+import cn.com.cx.ps.mirror.service.analyzer.FileAnalyzerService;
+import cn.com.cx.ps.mirror.utils.AstUtils;
+
+@Service
+public class FileAnalyzerServiceImpl implements FileAnalyzerService {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -35,6 +32,14 @@ public class FileAnalyzerImpl implements FileAnalyzer {
     public CompilationUnit parserCompilationUnit(String javaFile) {
         return AstUtils.getCompUnitResolveBinding(javaFile);
     }
+
+	@Override
+	public List<String> extractLineNums(String filePath) {
+//		TODO 待完善
+		return AstUtils.listCodeLines(filePath);
+	}
+    
+    
 
 
 }

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+@Deprecated
 public class PackageAnalyzerRunner implements Runnable {
 
     private Map<String, CompilationUnit> prjCompUnits;

@@ -39,7 +39,6 @@ public class AstUtils {
 
 
     public static final List<String> listCodeLines(String path) {
-        ArrayList<String> lines = new ArrayList<>();
         RandomAccessFile accessFile = null;
         try {
             accessFile = new RandomAccessFile(new File(path), "r");
@@ -47,6 +46,7 @@ public class AstUtils {
             logger.error("File: " + path + " is not found!");
             e.printStackTrace();
         }
+        List<String> lines = new ArrayList<>();
         try {
             if (accessFile != null) {
                 String line = accessFile.readLine();

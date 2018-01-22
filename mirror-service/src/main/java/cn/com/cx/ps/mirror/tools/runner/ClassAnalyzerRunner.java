@@ -11,6 +11,7 @@ import java.util.Set;
 /**
  * Analyzing class infos for the prj
  */
+@Deprecated
 public class ClassAnalyzerRunner implements Runnable {
     private Map<String, CompilationUnit> prjCompUnits;
     private Map<String, Set<Class>> prjClasses;

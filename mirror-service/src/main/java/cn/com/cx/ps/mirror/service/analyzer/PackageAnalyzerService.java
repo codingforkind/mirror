@@ -4,7 +4,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.util.Map;
 
-public interface PackageAnalyzer {
+public interface PackageAnalyzerService {
 
     /**
      * Extract the packages in the project.
