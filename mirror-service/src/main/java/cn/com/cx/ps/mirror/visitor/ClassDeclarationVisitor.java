@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.tools.visitor;
+package cn.com.cx.ps.mirror.visitor;
 
 import cn.com.cx.ps.mirror.project.variable.Class;
 import org.eclipse.jdt.core.dom.*;

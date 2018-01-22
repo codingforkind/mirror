@@ -6,15 +6,19 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import cn.com.cx.ps.mirror.configuration.properties.MirrorProjectProperties;
 import cn.com.cx.ps.mirror.exceptions.ProjectException;
 import cn.com.cx.ps.mirror.project.ClassFile;
 import cn.com.cx.ps.mirror.project.variable.Class;
 
+@Configuration
 @EnableConfigurationProperties(MirrorProjectProperties.class)
 public class MirrorProject {
 	private static Logger logger = LoggerFactory.getLogger(MirrorProject.class);
@@ -77,6 +81,11 @@ public class MirrorProject {
 				initjavaFiles(fs[i]);
 			} // end if
 		} // end for
+	}
+	
+	@PostConstruct
+	private void initProject() {
+		
 	}
 	
 }

@@ -1,29 +1,22 @@
 package cn.com.cx.ps.mirror.service.analyzer.impl;
 
-import cn.com.cx.ps.mirror.configuration.MirrorProject;
-import cn.com.cx.ps.mirror.service.analyzer.PackageAnalyzerService;
-import cn.com.cx.ps.mirror.tools.visitor.PackageVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import cn.com.cx.ps.mirror.service.analyzer.PackageAnalyzerService;
+import cn.com.cx.ps.mirror.visitor.PackageVisitor;
+
 @Service
 public class PackageAnalyzerServiceImpl implements PackageAnalyzerService {
 
-//    @Autowired
-    private MirrorProject mirrorProject;
-
     @Autowired
     private PackageVisitor packageVisitor;
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public Map<String, String> extractPackages(Map<String, CompilationUnit> prjCompUnits) {

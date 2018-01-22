@@ -8,17 +8,16 @@ public interface PackageAnalyzerService {
 
     /**
      * Extract the packages in the project.
-     *
-     * @param prjCompUnits
-     * @return
+     * @param prjCompUnits 
+     * <p> String: Java file
+     * <p> CompilationUnit: The java file's compilation unit 
      */
     public Map<String, String> extractPackages(Map<String, CompilationUnit> prjCompUnits);
 
 
     /**
-     * parser the package info for a compilation unit.
+     * Parser the package info for a compilation unit.
      * @param compilationUnit
-     * @return
      */
     public String parserPackage(CompilationUnit compilationUnit);
 }
