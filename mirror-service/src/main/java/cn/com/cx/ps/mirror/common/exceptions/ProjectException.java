@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.exceptions;
+package cn.com.cx.ps.mirror.common.exceptions;
 
 public class ProjectException extends Exception{
 
