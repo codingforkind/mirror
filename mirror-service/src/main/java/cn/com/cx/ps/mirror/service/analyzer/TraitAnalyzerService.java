@@ -1,9 +1,9 @@
 package cn.com.cx.ps.mirror.service.analyzer;
 
-import cn.com.cx.ps.mirror.project.variable.Class;
-
 import java.util.Map;
 import java.util.Set;
+
+import cn.com.cx.ps.mirror.java.variable.Class;
 
 public interface TraitAnalyzerService {
 

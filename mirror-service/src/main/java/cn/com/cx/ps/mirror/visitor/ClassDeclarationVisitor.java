@@ -1,9 +1,10 @@
 package cn.com.cx.ps.mirror.visitor;
 
-import cn.com.cx.ps.mirror.project.variable.Class;
 import org.eclipse.jdt.core.dom.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import cn.com.cx.ps.mirror.java.variable.Class;
 
 import java.util.HashSet;
 import java.util.Set;

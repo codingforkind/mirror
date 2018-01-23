@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.project.variable;
+package cn.com.cx.ps.mirror.java.variable;
 
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 

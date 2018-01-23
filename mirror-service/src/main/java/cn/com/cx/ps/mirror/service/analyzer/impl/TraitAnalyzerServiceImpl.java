@@ -1,8 +1,9 @@
 package cn.com.cx.ps.mirror.service.analyzer.impl;
 
 
+import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.service.analyzer.TraitAnalyzerService;
-import cn.com.cx.ps.mirror.project.variable.Class;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

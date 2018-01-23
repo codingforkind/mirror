@@ -1,8 +1,9 @@
-package cn.com.cx.ps.mirror.project;
+package cn.com.cx.ps.mirror.java;
 
-import cn.com.cx.ps.mirror.project.variable.Class;
-import cn.com.cx.ps.mirror.project.variable.Variable;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+
+import cn.com.cx.ps.mirror.java.variable.Class;
+import cn.com.cx.ps.mirror.java.variable.Variable;
 
 import java.util.List;
 import java.util.Set;

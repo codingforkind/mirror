@@ -1,8 +1,8 @@
 package cn.com.cx.ps.mirror.visitor;
 
-import cn.com.cx.ps.mirror.configuration.MirrorProject;
-import cn.com.cx.ps.mirror.project.variable.Variable;
-import cn.com.cx.ps.mirror.project.variable.VariableType;
+import cn.com.cx.ps.mirror.java.variable.Variable;
+import cn.com.cx.ps.mirror.java.variable.VariableType;
+import cn.com.cx.ps.mirror.project.MirrorProject;
 import cn.com.cx.ps.mirror.utils.AstUtils;
 import org.eclipse.jdt.core.dom.*;
 import org.slf4j.Logger;

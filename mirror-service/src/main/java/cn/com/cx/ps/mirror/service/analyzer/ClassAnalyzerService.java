@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import cn.com.cx.ps.mirror.project.variable.Class;
+import cn.com.cx.ps.mirror.java.variable.Class;
 
 public interface ClassAnalyzerService {
 	/**

@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.configuration;
+package cn.com.cx.ps.mirror.project;
 
 import java.io.File;
 import java.util.HashMap;
@@ -10,18 +10,13 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 import cn.com.cx.ps.mirror.configuration.properties.MirrorProjectProperties;
-import cn.com.cx.ps.mirror.exceptions.ProjectException;
-import cn.com.cx.ps.mirror.project.ClassFile;
-import cn.com.cx.ps.mirror.project.variable.Class;
+import cn.com.cx.ps.mirror.java.ClassFile;
+import cn.com.cx.ps.mirror.java.variable.Class;
 
-@Configuration
-@EnableConfigurationProperties(MirrorProjectProperties.class)
 public class MirrorProject {
-	private static Logger logger = LoggerFactory.getLogger(MirrorProject.class);
+	private Logger log = LoggerFactory.getLogger(getClass());
 	/**
 	 * all java files in the project
 	 */
@@ -34,7 +29,8 @@ public class MirrorProject {
 
 	private Map<String, ClassFile> prjClassesFile = new HashMap<>();
 
-	public MirrorProject(MirrorProjectProperties mirrorProjectProperties) throws ProjectException {
+	public MirrorProject(MirrorProjectProperties mirrorProjectProperties) {
+		log.info("Create a mirror project!");
 		this.properties = mirrorProjectProperties;
 		this.initjavaFiles(new File(this.properties.getPath()));
 	}
