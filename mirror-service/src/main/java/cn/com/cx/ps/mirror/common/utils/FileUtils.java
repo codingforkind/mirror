@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.utils;
+package cn.com.cx.ps.mirror.common.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

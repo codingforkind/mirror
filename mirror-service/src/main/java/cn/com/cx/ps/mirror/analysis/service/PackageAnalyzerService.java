@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.service.analyzer;
+package cn.com.cx.ps.mirror.analysis.service;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 

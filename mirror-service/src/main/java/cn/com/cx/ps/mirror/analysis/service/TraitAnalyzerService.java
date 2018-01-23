@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.service.analyzer;
+package cn.com.cx.ps.mirror.analysis.service;
 
 import java.util.Map;
 import java.util.Set;

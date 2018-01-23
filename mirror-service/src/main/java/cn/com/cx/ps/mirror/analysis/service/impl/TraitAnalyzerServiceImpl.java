@@ -1,8 +1,8 @@
-package cn.com.cx.ps.mirror.service.analyzer.impl;
+package cn.com.cx.ps.mirror.analysis.service.impl;
 
 
+import cn.com.cx.ps.mirror.analysis.service.TraitAnalyzerService;
 import cn.com.cx.ps.mirror.java.variable.Class;
-import cn.com.cx.ps.mirror.service.analyzer.TraitAnalyzerService;
 
 import org.springframework.stereotype.Service;
 

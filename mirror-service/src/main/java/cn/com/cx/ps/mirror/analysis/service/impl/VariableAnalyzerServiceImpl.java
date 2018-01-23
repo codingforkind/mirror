@@ -1,7 +1,8 @@
-package cn.com.cx.ps.mirror.service.analyzer.impl;
+package cn.com.cx.ps.mirror.analysis.service.impl;
 
-import cn.com.cx.ps.mirror.service.analyzer.VariableAnalyzerService;
 import org.springframework.stereotype.Service;
+
+import cn.com.cx.ps.mirror.analysis.service.VariableAnalyzerService;
 
 @Service
 public class VariableAnalyzerServiceImpl implements VariableAnalyzerService {

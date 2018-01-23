@@ -1,13 +1,13 @@
-package cn.com.cx.ps.mirror.service.analyzer.impl;
+package cn.com.cx.ps.mirror.analysis.service.impl;
 
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.springframework.stereotype.Service;
 
+import cn.com.cx.ps.mirror.analysis.service.ClassAnalyzerService;
+import cn.com.cx.ps.mirror.common.visitor.ClassDeclarationVisitor;
 import cn.com.cx.ps.mirror.java.variable.Class;
-import cn.com.cx.ps.mirror.service.analyzer.ClassAnalyzerService;
-import cn.com.cx.ps.mirror.visitor.ClassDeclarationVisitor;
 
 /**
  * Analyzing class infos for the prj

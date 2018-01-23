@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.service.analyzer.impl;
+package cn.com.cx.ps.mirror.analysis.service.impl;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.com.cx.ps.mirror.service.analyzer.PackageAnalyzerService;
-import cn.com.cx.ps.mirror.visitor.PackageVisitor;
+import cn.com.cx.ps.mirror.analysis.service.PackageAnalyzerService;
+import cn.com.cx.ps.mirror.common.visitor.PackageVisitor;
 
 @Service
 public class PackageAnalyzerServiceImpl implements PackageAnalyzerService {

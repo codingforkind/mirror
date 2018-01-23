@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.visitor;
+package cn.com.cx.ps.mirror.common.visitor;
 
 import org.eclipse.jdt.core.dom.*;
 import org.slf4j.Logger;
