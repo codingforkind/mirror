@@ -30,7 +30,7 @@ public interface FileAnalyzerService {
     
 
     /**
-     * 提取特定文件的有效行号
+     * 提取java文件中所有代码行
      * @param filePath
      * @return
      */

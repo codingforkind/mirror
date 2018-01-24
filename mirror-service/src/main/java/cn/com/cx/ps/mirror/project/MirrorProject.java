@@ -6,41 +6,33 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cn.com.cx.ps.mirror.configuration.properties.MirrorProjectProperties;
 import cn.com.cx.ps.mirror.java.ClassFile;
 import cn.com.cx.ps.mirror.java.variable.Class;
+import lombok.Data;
 
+@Data
 public class MirrorProject {
-	private Logger log = LoggerFactory.getLogger(getClass());
-	/**
-	 * all java files in the project
-	 */
-	private Set<String> prjJavaFiles = new HashSet<>();
-	/**
-	 * the number of all java files
-	 */
-	private int fileCount;
+	private Set<String> prjJavaFiles = new HashSet<>(); // all java files in the project
+	private int fileCount; // the number of all java files
 	private MirrorProjectProperties properties;
 
+	
+	private Map<String, CompilationUnit> prjCompilationUnits; // all compilation unit in the project
+	
+	
 	private Map<String, ClassFile> prjClassesFile = new HashMap<>();
 
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
 	public MirrorProject(MirrorProjectProperties mirrorProjectProperties) {
 		log.info("Create a mirror project!");
 		this.properties = mirrorProjectProperties;
 		this.initjavaFiles(new File(this.properties.getPath()));
-	}
-
-	public int getFileCount() {
-		return fileCount;
-	}
-
-	public Map<String, ClassFile> getPrjClassesFile() {
-		return prjClassesFile;
 	}
 
 	public boolean classInProject(String qualifiedClassName) {
@@ -52,10 +44,6 @@ public class MirrorProject {
 			}
 		}
 		return false;
-	}
-
-	public Set<String> getPrjJavaFiles() {
-		return prjJavaFiles;
 	}
 
 	/**
@@ -77,11 +65,6 @@ public class MirrorProject {
 				initjavaFiles(fs[i]);
 			} // end if
 		} // end for
-	}
-	
-	@PostConstruct
-	private void initProject() {
-		
 	}
 	
 }
