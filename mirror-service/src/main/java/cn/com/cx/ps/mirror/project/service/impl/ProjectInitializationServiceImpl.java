@@ -11,7 +11,6 @@ import cn.com.cx.ps.mirror.analysis.service.ClassAnalyzerService;
 import cn.com.cx.ps.mirror.analysis.service.FileAnalyzerService;
 import cn.com.cx.ps.mirror.analysis.service.PackageAnalyzerService;
 import cn.com.cx.ps.mirror.analysis.service.VariableAnalyzerService;
-import cn.com.cx.ps.mirror.common.exceptions.ProjectException;
 import cn.com.cx.ps.mirror.project.MirrorProject;
 import cn.com.cx.ps.mirror.project.service.ProjectInitializationService;
 
