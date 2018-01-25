@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import cn.com.cx.ps.mirror.configuration.properties.MirrorProjectProperties;
 import cn.com.cx.ps.mirror.java.ClassFile;
 import cn.com.cx.ps.mirror.java.variable.Class;
+import cn.com.cx.ps.mirror.java.variable.Variable;
 import lombok.Data;
 
 @Data
@@ -22,7 +23,11 @@ public class MirrorProject {
 	private MirrorProjectProperties properties;
 
 	
+	// all the following four properties's key are java file path
 	private Map<String, CompilationUnit> prjCompilationUnits; // all compilation unit in the project
+	private Map<String, String> prjPackages; // all packages defined in the project
+	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
+	private Map<String, Set<Variable>> prjVariables; // all variables defined in the project
 	
 	
 	private Map<String, ClassFile> prjClassesFile = new HashMap<>();

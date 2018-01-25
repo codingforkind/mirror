@@ -1,5 +1,6 @@
 package cn.com.cx.ps.mirror.analysis.service;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -13,4 +14,11 @@ public interface ClassAnalyzerService {
 	 * @return
 	 */
 	public Set<Class> extractClasses(CompilationUnit compilationUnit);
+	
+	/**
+	 * 把工程中定义的所有类进行映射
+	 * @param prjCompilationUnits 工程中定义的所有类
+	 * @return
+	 */
+	public Map<String, Set<Class>> mapDefinedClasses(Map<String, CompilationUnit> prjCompilationUnits);
 }
