@@ -1,41 +1,37 @@
 package cn.com.cx.ps.mirror.common.visitor;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import cn.com.cx.ps.mirror.common.utils.AstUtils;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
 import cn.com.cx.ps.mirror.project.MirrorProject;
-
-import org.eclipse.jdt.core.dom.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.HashSet;
-import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The type Variable visitor.
  * visit all SimpleNodes and resolve its binding
  * and extract the variables for each line of codes
  */
+@Getter
+@Setter
 public class VariableVisitor extends ASTVisitor {
 
     private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
     private String file;
-
-    @Autowired
     private MirrorProject mirrorProject;
 
     private Set<Variable> variables = new HashSet<>();
-
-    public VariableVisitor(MirrorProject project) {
-        this.mirrorProject = project;
-    }
-
-    public VariableVisitor(String file, MirrorProject project) {
-        this(project);
-        this.file = file;
-    }
 
     @Override
     public boolean visit(SimpleName node) {
@@ -168,16 +164,4 @@ public class VariableVisitor extends ASTVisitor {
         return varType;
     }
 
-
-    public Set<Variable> getVariables() {
-        return variables;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
 }
