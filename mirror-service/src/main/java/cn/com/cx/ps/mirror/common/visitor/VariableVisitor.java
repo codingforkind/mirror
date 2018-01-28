@@ -1,6 +1,7 @@
 package cn.com.cx.ps.mirror.common.visitor;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -10,11 +11,14 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 
 import cn.com.cx.ps.mirror.common.utils.AstUtils;
+import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
-import cn.com.cx.ps.mirror.project.MirrorProject;
+import cn.com.cx.ps.mirror.project.service.ProjectService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,13 +29,17 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ConditionalOnBean(value = {ProjectService.class})
 public class VariableVisitor extends ASTVisitor {
 
     private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
     private String file;
-    private MirrorProject mirrorProject;
-
+    
+	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
     private Set<Variable> variables = new HashSet<>();
+    
+    @Autowired
+    private ProjectService projectService;
 
     @Override
     public boolean visit(SimpleName node) {
@@ -78,7 +86,7 @@ public class VariableVisitor extends ASTVisitor {
 //            Class variable
             varType.setType(VariableType.TYPE.CLASS);
             String test = varTypeBinding.getQualifiedName();
-            if (mirrorProject.classInProject(test)) {
+            if (projectService.classDefinedInProject(prjClasses, test)) {
                 varType.setClassType(varTypeBinding.getQualifiedName());
             } else {
                 varType.setOtherClass(varTypeBinding.getQualifiedName());
@@ -92,7 +100,7 @@ public class VariableVisitor extends ASTVisitor {
             StringBuilder builder = new StringBuilder(varTypeBinding.getQualifiedName());
             String tmType = builder.substring(0, builder.lastIndexOf("["));
             VariableType eleType = new VariableType();
-            if (mirrorProject.classInProject(tmType)) {
+            if (projectService.classDefinedInProject(prjClasses, tmType)) {
                 eleType.setType(VariableType.TYPE.CLASS);
                 eleType.setClassType(tmType);
             }

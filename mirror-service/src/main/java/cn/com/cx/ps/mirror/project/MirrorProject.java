@@ -40,17 +40,6 @@ public class MirrorProject {
 		this.initjavaFiles(new File(this.properties.getPath()));
 	}
 
-	public boolean classInProject(String qualifiedClassName) {
-		for (ClassFile classFile : this.prjClassesFile.values()) {
-			for (Class customizedClass : classFile.getClassesInFile()) {
-				if (customizedClass.getQualifiedName().contains(qualifiedClassName))
-					return true;
-				continue;
-			}
-		}
-		return false;
-	}
-
 	/**
 	 * <p>extract all the java file in the project and store it in the property of @see
 	 * prjJavaFiles.</p>
