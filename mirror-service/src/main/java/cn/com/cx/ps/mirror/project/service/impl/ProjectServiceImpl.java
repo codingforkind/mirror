@@ -23,6 +23,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
 		Assert.notNull(prjClasses, "project classes parameter can not be NULL");
+		
 		Set<Entry<String, Set<Class>>> entrySet = prjClasses.entrySet();
 		Iterator<Entry<String, Set<Class>>> classIterator = entrySet.iterator();
 		while (classIterator.hasNext()) {
@@ -30,7 +31,6 @@ public class ProjectServiceImpl implements ProjectService {
 			Set<Class> clsValSet = nextClass.getValue();
 			for (Class clsVal : clsValSet) {
 				if (clsVal.getQualifiedName().contains(qualifiedClassName)) {
-					// TODO 内部类需要处理
 					return true;
 				}
 			}

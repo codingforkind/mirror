@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.com.cx.ps.mirror.analysis.service.PackageAnalyzerService;
@@ -14,9 +13,6 @@ import cn.com.cx.ps.mirror.common.visitor.PackageVisitor;
 
 @Service
 public class PackageAnalyzerServiceImpl implements PackageAnalyzerService {
-
-    @Autowired
-    private PackageVisitor packageVisitor;
 
     @Override
     public Map<String, String> extractPackages(Map<String, CompilationUnit> prjCompUnits) {
@@ -34,6 +30,7 @@ public class PackageAnalyzerServiceImpl implements PackageAnalyzerService {
 
     @Override
     public String parserPackage(CompilationUnit compilationUnit) {
+    	PackageVisitor packageVisitor = new PackageVisitor();
         compilationUnit.accept(packageVisitor);
         return packageVisitor.getPackageName();
     }

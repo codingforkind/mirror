@@ -23,14 +23,9 @@ public class ClassDeclarationVisitor extends ASTVisitor {
 	// the first class.
 	private Set<Class> customizedClasses = new HashSet<>();
 
-	// TODO $ other type of declaration!!!!!
+	// TODO 内部类需要处理
 	@Override
 	public boolean visit(TypeDeclaration node) {
-		Class customizedClass = new Class();
-		customizedClass.setFile(this.file);
-		customizedClass.setInterface(node.isInterface());
-		customizedClass.setName(String.valueOf(node.getName()));
-		customizedClass.setTypeDeclaration(node);
 
 		ITypeBinding typeBinding = node.resolveBinding();
 		try {
@@ -52,6 +47,13 @@ public class ClassDeclarationVisitor extends ASTVisitor {
 				builder.delete(builder.lastIndexOf(","), builder.lastIndexOf(",") + 1);
 				builder.append(">");
 				log.info("Full class name: {}", builder.toString());
+
+				Class customizedClass = new Class();
+				customizedClass.setFile(this.file);
+				customizedClass.setInterface(node.isInterface());
+				customizedClass.setName(String.valueOf(node.getName()));
+				customizedClass.setTypeDeclaration(node);
+				
 				customizedClass.setQualifiedName(builder.toString());
 				if (null != typeBinding.getPackage()) {
 					if (!typeBinding.getPackage().getName().equals("")) {
@@ -60,6 +62,7 @@ public class ClassDeclarationVisitor extends ASTVisitor {
 						customizedClass.setPackageName(null);
 					}
 				}
+				this.customizedClasses.add(customizedClass);
 			} else {
 				throw new Exception("Resolve binding is null!!!!!!!");
 			}
@@ -67,7 +70,6 @@ public class ClassDeclarationVisitor extends ASTVisitor {
 			// EXCEPTION HANDLER
 		} finally {
 		}
-		this.customizedClasses.add(customizedClass);
 		return super.visit(node);
 	}
 

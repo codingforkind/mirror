@@ -9,7 +9,6 @@ import java.util.Set;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -22,13 +21,11 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
 public class VariableAnalyzerServiceImpl implements VariableAnalyzerService {
 	// TODO 重新设计这块，变量类型判定应该与MirrorProject解耦
 
-	@Autowired
-	private VariableVisitor variableVisitor;
-
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public Set<Variable> extractVariables(CompilationUnit compilationUnit, Map<String, Set<Class>> prjClasses) {
+		VariableVisitor variableVisitor = new VariableVisitor();
 		variableVisitor.setPrjClasses(prjClasses);
 		compilationUnit.accept(variableVisitor);
 		return variableVisitor.getVariables();
