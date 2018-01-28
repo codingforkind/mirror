@@ -1,4 +1,4 @@
-package cn.com.cx.ps.visitor;
+package cn.com.cx.ps;
 
 import cn.com.cx.ps.mirror.MirrorServiceApplication;
 import cn.com.cx.ps.mirror.common.utils.RedisUtils;
