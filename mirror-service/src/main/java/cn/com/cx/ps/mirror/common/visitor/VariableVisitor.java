@@ -168,7 +168,6 @@ public class VariableVisitor extends ASTVisitor {
         return varType;
     }
 
-
 	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
 		Assert.notNull(prjClasses, "project classes parameter can not be NULL");
 		
