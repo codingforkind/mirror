@@ -1,7 +1,9 @@
 package cn.com.cx.ps.mirror.common.visitor;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -11,14 +13,12 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.util.Assert;
 
 import cn.com.cx.ps.mirror.common.utils.AstUtils;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
-import cn.com.cx.ps.mirror.project.service.ProjectService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,7 +29,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@ConditionalOnBean(value = {ProjectService.class})
 public class VariableVisitor extends ASTVisitor {
 
     private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
@@ -37,9 +36,6 @@ public class VariableVisitor extends ASTVisitor {
     
 	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
     private Set<Variable> variables = new HashSet<>();
-    
-    @Autowired
-    private ProjectService projectService;
 
     @Override
     public boolean visit(SimpleName node) {
@@ -86,7 +82,7 @@ public class VariableVisitor extends ASTVisitor {
 //            Class variable
             varType.setType(VariableType.TYPE.CLASS);
             String test = varTypeBinding.getQualifiedName();
-            if (projectService.classDefinedInProject(prjClasses, test)) {
+            if (classDefinedInProject(prjClasses, test)) {
                 varType.setClassType(varTypeBinding.getQualifiedName());
             } else {
                 varType.setOtherClass(varTypeBinding.getQualifiedName());
@@ -100,7 +96,7 @@ public class VariableVisitor extends ASTVisitor {
             StringBuilder builder = new StringBuilder(varTypeBinding.getQualifiedName());
             String tmType = builder.substring(0, builder.lastIndexOf("["));
             VariableType eleType = new VariableType();
-            if (projectService.classDefinedInProject(prjClasses, tmType)) {
+            if (classDefinedInProject(prjClasses, tmType)) {
                 eleType.setType(VariableType.TYPE.CLASS);
                 eleType.setClassType(tmType);
             }
@@ -172,4 +168,21 @@ public class VariableVisitor extends ASTVisitor {
         return varType;
     }
 
+
+	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
+		Assert.notNull(prjClasses, "project classes parameter can not be NULL");
+		
+		Set<Entry<String, Set<Class>>> entrySet = prjClasses.entrySet();
+		Iterator<Entry<String, Set<Class>>> classIterator = entrySet.iterator();
+		while (classIterator.hasNext()) {
+			Entry<String, Set<Class>> nextClass = classIterator.next();
+			Set<Class> clsValSet = nextClass.getValue();
+			for (Class clsVal : clsValSet) {
+				if (clsVal.getQualifiedName().contains(qualifiedClassName)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

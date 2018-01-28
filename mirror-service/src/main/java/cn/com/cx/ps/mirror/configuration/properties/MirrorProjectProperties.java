@@ -1,9 +1,8 @@
 package cn.com.cx.ps.mirror.configuration.properties;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import javax.validation.constraints.NotNull;
-import java.io.File;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "mirror.project")
 public class MirrorProjectProperties {

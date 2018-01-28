@@ -20,7 +20,7 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
 @Service
 public class VariableAnalyzerServiceImpl implements VariableAnalyzerService {
 	// TODO 重新设计这块，变量类型判定应该与MirrorProject解耦
-
+	
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Override
