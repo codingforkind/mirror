@@ -2,26 +2,27 @@ package cn.com.cx.ps.mirror.java.variable;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import lombok.Data;
+
 /**
  * The type Variable.
  * A variable which defined and used in the project is unique.
  */
+@Data
 public class Variable {
     private String name;
     private VariableType variableType;
+    
     private boolean isField;
     private String file;    // if this variable is not a field then it must in the file which got it in the first place.
 
     private int lineNum;
     private ASTNode astNode;
 
-
     @Override
     public int hashCode() {
-//        TODO override hashCode method
         int prime = 37;
         int result = 1;
-//        result = prime * result + ((password == null) ? 0 : password.hashCode());
         result += isField ? 0 : 1;
 
         result += result * prime + ((name == null) ? 0 : name.hashCode());
@@ -63,51 +64,4 @@ public class Variable {
         return true;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public VariableType getVariableType() {
-        return variableType;
-    }
-
-    public void setVariableType(VariableType variableType) {
-        this.variableType = variableType;
-    }
-
-    public boolean isField() {
-        return isField;
-    }
-
-    public void setField(boolean field) {
-        isField = field;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public int getLineNum() {
-        return lineNum;
-    }
-
-    public void setLineNum(int lineNum) {
-        this.lineNum = lineNum;
-    }
-
-    public ASTNode getAstNode() {
-        return astNode;
-    }
-
-    public void setAstNode(ASTNode astNode) {
-        this.astNode = astNode;
-    }
 }

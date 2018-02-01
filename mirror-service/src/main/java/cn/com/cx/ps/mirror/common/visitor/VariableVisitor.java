@@ -19,158 +19,102 @@ import cn.com.cx.ps.mirror.common.utils.AstUtils;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
+import cn.com.cx.ps.mirror.java.variable.VariableType.PRIME;
+import cn.com.cx.ps.mirror.java.variable.VariableType.TYPE;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * The type Variable visitor.
- * visit all SimpleNodes and resolve its binding
- * and extract the variables for each line of codes
+ * The type Variable visitor. visit all SimpleNodes and resolve its binding and
+ * extract the variables for each line of codes
  */
 @Getter
 @Setter
 public class VariableVisitor extends ASTVisitor {
 
-    private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
-    private String file;
-    
+	private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
+	private String file;
+
 	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
-    private Set<Variable> variables = new HashSet<>();
+	private Set<Variable> variables = new HashSet<>();
 
-    @Override
-    public boolean visit(SimpleName node) {
-        IBinding binding = node.resolveBinding();
-        if (binding instanceof IVariableBinding) {
-            IVariableBinding varTypeBinding = (IVariableBinding) binding;
-            Variable variable = new Variable();
-            variable.setAstNode(node);
-            variable.setFile(file);
-            variable.setLineNum(AstUtils.getEndLine(node));
-            variable.setName(varTypeBinding.getName());
-            variable.setField(varTypeBinding.isField());
+	public VariableVisitor(String file, Map<String, Set<Class>> prjClasses) {
+		this.file = file;
+		this.prjClasses = prjClasses;
+	}
 
-            if ("filePath".equals(varTypeBinding.getName())) {
-                log.info("name: {}, {}", varTypeBinding.getName(), varTypeBinding.getType().getName());
-                log.info("lineNUM:{}", AstUtils.getEndLine(node));
-                variableTypeProcess(varTypeBinding.getType());
-            }
-//            Variable type handle AND TYPE ONLY
-//            variable.setVariableType(variableTypeProcess(varTypeBinding.getType()));
-            variables.add(variable);
-        }
-        return super.visit(node);
-    }
+	@Override
+	public boolean visit(SimpleName node) {
+		IBinding binding = node.resolveBinding();
+		if (binding instanceof IVariableBinding) {
+			IVariableBinding varTypeBinding = (IVariableBinding) binding;
+			Variable variable = new Variable();
+			variable.setAstNode(node);
+			variable.setFile(file);
+			variable.setLineNum(AstUtils.getEndLine(node));
+			variable.setName(varTypeBinding.getName());
+			variable.setField(varTypeBinding.isField());
 
-    /**
-     * check the qualified class name is included in this project, if not then skip it
-     * if so just initializing this class variable type into the project object.
-     */
-    private VariableType variableTypeProcess(ITypeBinding varTypeBinding) {
-        VariableType varType = new VariableType();
-        if (varTypeBinding.isPrimitive()) {
-            varType.setType(VariableType.TYPE.PRIMITIVE);
-            return primitiveType(varTypeBinding.getName());
-        }
+			// Variable type handle AND TYPE ONLY
+			variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
+			variables.add(variable);
+		}
+		return super.visit(node);
+	}
+	
+	/**
+	 * check the qualified class name is included in this project, if not then skip
+	 * it if so just initializing this class variable type into the project object.
+	 */
+	private VariableType analysisVariableType(ITypeBinding typeBinding) {
+		VariableType varType = null;
+		switch (VariableType.TYPE.judgeType(typeBinding)) {
+		case PRIME:
+			varType = new VariableType(TYPE.PRIME, PRIME.prime(typeBinding.getName()));
+			break;
 
-        if (varTypeBinding.isEnum()) {
-            varType.setType(VariableType.TYPE.ENUM);
-            varType.setEnumType(varTypeBinding.getQualifiedName());
-            return varType;
-        }
+		case CLASS:
+			String clsTypeQualifiedName = typeBinding.getQualifiedName();
+			if (classDefinedInProject(prjClasses, clsTypeQualifiedName)) {
+				varType = new VariableType(TYPE.CLASS, clsTypeQualifiedName);
+			} else {
+				varType = new VariableType(TYPE.OTHER, clsTypeQualifiedName);
+			}
+			break;
 
-        if (varTypeBinding.isClass()) {
-//            Class variable
-            varType.setType(VariableType.TYPE.CLASS);
-            String test = varTypeBinding.getQualifiedName();
-            if (classDefinedInProject(prjClasses, test)) {
-                varType.setClassType(varTypeBinding.getQualifiedName());
-            } else {
-                varType.setOtherClass(varTypeBinding.getQualifiedName());
-            }
-//            TODO analyzing the methods declared in this class type.
-            return varType;
-        }
+		case INTERFACE:
+			varType = new VariableType(TYPE.INTERFACE, typeBinding.getQualifiedName());
+			break;
+		case ENUM:
+			varType = new VariableType(TYPE.ENUM, typeBinding.getQualifiedName());
+			break;
 
-        if (varTypeBinding.isArray()) {
-            varType.setType(VariableType.TYPE.ARRAY);
-            StringBuilder builder = new StringBuilder(varTypeBinding.getQualifiedName());
-            String tmType = builder.substring(0, builder.lastIndexOf("["));
-            VariableType eleType = new VariableType();
-            if (classDefinedInProject(prjClasses, tmType)) {
-                eleType.setType(VariableType.TYPE.CLASS);
-                eleType.setClassType(tmType);
-            }
-
-            eleType = primitiveType(tmType);
-            if (null != eleType) {
-                varType.setArrayElementType(eleType);
-            } else {
-                eleType.setType(VariableType.TYPE.OTHER);
-                eleType.setOtherType(tmType);
-            }
-            varType.setArrayElementType(eleType);
-            return varType;
-        }
-
-
-        if (varTypeBinding.isGenericType()) {
-            log.info("\t GenericType: {}, {}, {}",
-                    varTypeBinding.getBinaryName(), varTypeBinding.getName(), varTypeBinding.getQualifiedName());
-
-            return varType;
-        }
-
-        if (varTypeBinding.isInterface()) {
-            varType.setType(VariableType.TYPE.INTERFACE);
-            varType.setInterfaceType(varTypeBinding.getQualifiedName());
-            return varType;
-        }
-
-        if (varTypeBinding.isIntersectionType()) {
-//java.util.List, List<?>, java.util.List<?>
-            log.info("intersectionType: {}", varTypeBinding);
-            return varType;
-        }
-
-        log.warn("VARIABLE NOT ANALYSIS: [{}]", varTypeBinding);
-        return null;
-    }
-
-    private VariableType primitiveType(String type) {
-        VariableType varType = new VariableType();
-        switch (type) {
-            case "int":
-                varType.setPrimeType(VariableType.PRIME.INT);
-                break;
-
-            case "float":
-                varType.setPrimeType(VariableType.PRIME.FLOAT);
-                break;
-            case "double":
-                varType.setPrimeType(VariableType.PRIME.DOUBLE);
-                break;
-            case "short":
-                varType.setPrimeType(VariableType.PRIME.SHORT);
-                break;
-            case "long":
-                varType.setPrimeType(VariableType.PRIME.LONG);
-                break;
-            case "boolean":
-                varType.setPrimeType(VariableType.PRIME.BOOLEAN);
-                break;
-            case "byte":
-                varType.setPrimeType(VariableType.PRIME.BYTE);
-                break;
-            case "char":
-                varType.setPrimeType(VariableType.PRIME.CHAR);
-                break;
-        }
-        return varType;
-    }
+		case ARRAY:
+			StringBuilder builder = new StringBuilder(typeBinding.getQualifiedName());
+			String tmType = builder.substring(0, builder.lastIndexOf("["));
+			
+			VariableType eleType = null;
+			if (classDefinedInProject(prjClasses, tmType)) {
+				eleType = new VariableType(TYPE.CLASS, tmType);
+			}else if (PRIME.isPRIME(tmType)) {
+				eleType = new VariableType(TYPE.PRIME, PRIME.prime(tmType));
+			}
+			varType = new VariableType(TYPE.ARRAY, eleType);
+			break;
+			
+		case OTHER:
+			log.warn("VARIABLE OTHER TYPE: [{}]", typeBinding);
+			break;
+		default:
+			break;
+		}
+		
+		return varType;
+	}
 
 	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
 		Assert.notNull(prjClasses, "project classes parameter can not be NULL");
-		
+
 		Set<Entry<String, Set<Class>>> entrySet = prjClasses.entrySet();
 		Iterator<Entry<String, Set<Class>>> classIterator = entrySet.iterator();
 		while (classIterator.hasNext()) {

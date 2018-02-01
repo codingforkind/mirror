@@ -19,14 +19,11 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
 
 @Service
 public class VariableAnalyzerServiceImpl implements VariableAnalyzerService {
-	// TODO 重新设计这块，变量类型判定应该与MirrorProject解耦
-	
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Override
-	public Set<Variable> extractVariables(CompilationUnit compilationUnit, Map<String, Set<Class>> prjClasses) {
-		VariableVisitor variableVisitor = new VariableVisitor();
-		variableVisitor.setPrjClasses(prjClasses);
+	public Set<Variable> extractVariables(String javaFilePath, CompilationUnit compilationUnit, Map<String, Set<Class>> prjClasses) {
+		VariableVisitor variableVisitor = new VariableVisitor(javaFilePath, prjClasses);
 		compilationUnit.accept(variableVisitor);
 		return variableVisitor.getVariables();
 	}
@@ -44,7 +41,7 @@ public class VariableAnalyzerServiceImpl implements VariableAnalyzerService {
 			String javaFilePath = next.getKey();
 			CompilationUnit compilationUnit = next.getValue();
 
-			Set<Variable> variablesInJavaFile = extractVariables(compilationUnit, prjClasses);
+			Set<Variable> variablesInJavaFile = extractVariables(javaFilePath, compilationUnit, prjClasses);
 			if (null == variablesInJavaFile) {
 				log.info("No variables defined in java file, {}", javaFilePath);
 			}

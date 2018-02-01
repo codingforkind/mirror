@@ -12,15 +12,13 @@ public interface VariableAnalyzerService {
 
 	/**
 	 * Extract variables defined in one java compilation unit
-	 * @param compilationUnit
-	 * @return
 	 */
-	public Set<Variable> extractVariables(CompilationUnit compilationUnit, Map<String, Set<Class>> prjClasses);
+	public Set<Variable> extractVariables(String javaFilePath, CompilationUnit compilationUnit,
+			Map<String, Set<Class>> prjClasses);
 
 	/**
 	 * Mapping all of the variable defined in the project
-	 * @param prjCompilationUnits
-	 * @return
 	 */
-	public Map<String, Set<Variable>> mapProjectVariables(Map<String, CompilationUnit> prjCompUnits, Map<String, Set<Class>> prjClasses);
+	public Map<String, Set<Variable>> mapProjectVariables(Map<String, CompilationUnit> prjCompUnits,
+			Map<String, Set<Class>> prjClasses);
 }
