@@ -1,5 +1,8 @@
 package cn.com.cx.ps.mirror.java.variable;
 
+import lombok.Data;
+
+@Data
 public class VariableType {
     public static enum TYPE {
         CLASS,INTERFACE,PRIMITIVE,ARRAY,NULL,ENUM,OTHER;
@@ -104,68 +107,5 @@ public class VariableType {
         return true;
     }
 
-    public String getClassType() {
-        return classType;
-    }
-
-    public void setClassType(String classType) {
-        this.classType = classType;
-    }
-
-    public String getInterfaceType() {
-        return interfaceType;
-    }
-
-    public void setInterfaceType(String interfaceType) {
-        this.interfaceType = interfaceType;
-    }
-
-    public PRIME getPrimeType() {
-        return primeType;
-    }
-
-    public void setPrimeType(PRIME primeType) {
-        this.primeType = primeType;
-    }
-
-    public VariableType getArrayElementType() {
-        return arrayElementType;
-    }
-
-    public void setArrayElementType(VariableType arrayElementType) {
-        this.arrayElementType = arrayElementType;
-    }
-
-    public String getEnumType() {
-        return enumType;
-    }
-
-    public void setEnumType(String enumType) {
-        this.enumType = enumType;
-    }
-
-    public void setOther(String otherType) {
-        this.otherType = otherType;
-    }
-
-    public String getOtherClass() {
-        return otherClass;
-    }
-
-    public void setOtherClass(String otherClass) {
-        this.otherClass = otherClass;
-    }
-
-    public String getOtherType() {
-        return otherType;
-    }
-
-    public TYPE getType() {
-        return type;
-    }
-
-    public void setType(TYPE type) {
-        this.type = type;
-    }
 
 }

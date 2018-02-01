@@ -106,7 +106,7 @@ public class VariableVisitor extends ASTVisitor {
                 varType.setArrayElementType(eleType);
             } else {
                 eleType.setType(VariableType.TYPE.OTHER);
-                eleType.setOther(tmType);
+                eleType.setOtherType(tmType);
             }
             varType.setArrayElementType(eleType);
             return varType;
