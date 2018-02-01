@@ -42,7 +42,7 @@ public class MirrorProject {
 		if (!file.exists()) {
 			throw new ProjectException("Mirror project path is not exists!");
 		}
-
+		
 		this.initjavaFiles(file);
 	}
 

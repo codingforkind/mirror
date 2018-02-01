@@ -13,7 +13,7 @@ public interface ClassAnalyzerService {
 	 * @param compilationUnit 编译单元
 	 * @return
 	 */
-	public Set<Class> extractClasses(CompilationUnit compilationUnit);
+	public Set<Class> extractClasses(String filePath, CompilationUnit compilationUnit);
 	
 	/**
 	 * 把工程中定义的所有类进行映射

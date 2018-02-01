@@ -2,6 +2,9 @@ package cn.com.cx.ps.mirror.java.variable;
 
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import lombok.Data;
+
+@Data
 public class Class {
     private String file;
     private String name;
@@ -36,91 +39,4 @@ public class Class {
         return true;
     }
 
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
-
-    public TypeDeclaration getTypeDeclaration() {
-        return typeDeclaration;
-    }
-
-    public void setTypeDeclaration(TypeDeclaration typeDeclaration) {
-        this.typeDeclaration = typeDeclaration;
-    }
-
-    public boolean isInterface() {
-        return isInterface;
-    }
-
-    public void setInterface(boolean anInterface) {
-        isInterface = anInterface;
-    }
-
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
-    }
-
-    public boolean isProtected() {
-        return isProtected;
-    }
-
-    public void setProtected(boolean aProtected) {
-        isProtected = aProtected;
-    }
-
-    public boolean isPrivate() {
-        return isPrivate;
-    }
-
-    public void setPrivate(boolean aPrivate) {
-        isPrivate = aPrivate;
-    }
-
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean aDefault) {
-        isDefault = aDefault;
-    }
-
-    public boolean isFinal() {
-        return isFinal;
-    }
-
-    public void setFinal(boolean aFinal) {
-        isFinal = aFinal;
-    }
 }

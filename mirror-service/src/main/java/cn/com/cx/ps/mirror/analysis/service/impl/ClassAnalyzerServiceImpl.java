@@ -21,11 +21,11 @@ import cn.com.cx.ps.mirror.java.variable.Class;
 public class ClassAnalyzerServiceImpl implements ClassAnalyzerService {
 
 	@Override
-	public Set<Class> extractClasses(CompilationUnit compilationUnit) {
+	public Set<Class> extractClasses(String filePath, CompilationUnit compilationUnit) {
 		// TODO 待完善
-		ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor();
+		ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor(filePath);
 		compilationUnit.accept(classDeclarationVisitor);
-		return classDeclarationVisitor.getCustomizedClasses();
+		return classDeclarationVisitor.getPrjClasses();
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ClassAnalyzerServiceImpl implements ClassAnalyzerService {
 			Entry<String, CompilationUnit> next = iterator.next();
 			String filePath = next.getKey();
 			CompilationUnit unit = next.getValue();
-			map.put(filePath, extractClasses(unit));
+			map.put(filePath, extractClasses(filePath, unit));
 		}
 		return map;
 	}
