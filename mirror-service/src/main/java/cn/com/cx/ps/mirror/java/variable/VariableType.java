@@ -1,5 +1,7 @@
 package cn.com.cx.ps.mirror.java.variable;
 
+import java.util.Objects;
+
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.springframework.util.Assert;
 
@@ -64,55 +66,21 @@ public class VariableType {
 
 	@Override
 	public int hashCode() {
-		int prime = 37;
-		int result = 1;
-		result += result * prime + ((type == null) ? 0 : type.hashCode());
-		result += result * prime + ((qualifiedName == null) ? 0 : qualifiedName.hashCode());
-		result += result * prime + ((arrayEleType == null) ? 0 : arrayEleType.hashCode());
-		result += result * prime + ((this.getPrime() == null) ? 0 : this.getPrime().hashCode());
-		return result;
+		return Objects.hash(type, qualifiedName, arrayEleType, prime);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 
-		VariableType tmV = (VariableType) obj;
-		if (!tmV.getType().equals(this.getType()))
-			return false;
-
-		if (null == this.getPrime()) {
-			if (tmV.getPrime() != null)
-				return false;
-		} else {
-			if (!this.getPrime().equals(tmV.getPrime()))
-				return false;
-		}
-
-		if (null == this.getArrayEleType()) {
-			if (tmV.getArrayEleType() != null)
-				return false;
-		} else {
-			if (!this.getArrayEleType().equals(tmV.getArrayEleType()))
-				return false;
-		}
-
-		if (null == this.getQualifiedName()) {
-			if (tmV.getQualifiedName() != null)
-				return false;
-		} else {
-			if (!this.getQualifiedName().equals(tmV.getQualifiedName()))
-				return false;
-		}
-
-		return true;
+		VariableType that = (VariableType) obj;
+		return type == that.getType() && prime == that.getPrime() && arrayEleType == that.getArrayEleType()
+				&& qualifiedName == that.getQualifiedName();
 	}
-	
+
 	public static enum PRIME {
 		INT("int"), CHAR("char"), DOUBLE("double"), BOOLEAN("boolean"), FLOAT("float"), BYTE("byte"), SHORT("short"), LONG("long");
 
