@@ -31,11 +31,8 @@ public class FileAnalyzerServiceImpl implements FileAnalyzerService {
 
 	@Override
 	public List<String> extractLineNums(String filePath) {
-//		TODO 待完善
 		return AstUtils.listCodeLines(filePath);
 	}
     
-    
-
 
 }

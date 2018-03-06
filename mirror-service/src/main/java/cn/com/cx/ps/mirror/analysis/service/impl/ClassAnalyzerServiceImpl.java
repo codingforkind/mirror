@@ -22,7 +22,6 @@ public class ClassAnalyzerServiceImpl implements ClassAnalyzerService {
 
 	@Override
 	public Set<Class> extractClasses(String filePath, CompilationUnit compilationUnit) {
-		// TODO 待完善
 		ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor(filePath);
 		compilationUnit.accept(classDeclarationVisitor);
 		return classDeclarationVisitor.getPrjClasses();
@@ -30,7 +29,6 @@ public class ClassAnalyzerServiceImpl implements ClassAnalyzerService {
 
 	@Override
 	public Map<String, Set<Class>> mapDefinedClasses(Map<String, CompilationUnit> prjCompilationUnits) {
-		// TODO 待完善
 		Assert.notNull(prjCompilationUnits, "Project compilation units are NULL!");
 		Map<String, Set<Class>> map = null;
 

@@ -11,20 +11,6 @@ import lombok.Data;
 @Data
 public class VariableType {
 	
-/*
-// TODO 增加类型
-	if (typeBinding.isGenericType()) {
-		log.info("\t GenericType: {}, {}, {}", typeBinding.getBinaryName(), typeBinding.getName(),
-				typeBinding.getQualifiedName());
-
-		return varType;
-	}
-
-	if (typeBinding.isIntersectionType()) {
-		log.info("intersectionType: {}", typeBinding);
-		return varType;
-	}*/
-	
 	public static enum TYPE {
 		 PRIME, CLASS, INTERFACE, ARRAY, ENUM, OTHER;
 		public static TYPE judgeType(ITypeBinding typeBinding) {
