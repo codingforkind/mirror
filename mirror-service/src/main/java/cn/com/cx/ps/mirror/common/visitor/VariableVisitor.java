@@ -93,7 +93,7 @@ public class VariableVisitor extends ASTVisitor {
 			StringBuilder builder = new StringBuilder(typeBinding.getQualifiedName());
 			String tmType = builder.substring(0, builder.lastIndexOf("["));
 			
-			VariableType eleType = null;
+			VariableType eleType  = new VariableType(TYPE.OTHER);
 			if (classDefinedInProject(prjClasses, tmType)) {
 				eleType = new VariableType(TYPE.CLASS, tmType);
 			}else if (PRIME.isPRIME(tmType)) {

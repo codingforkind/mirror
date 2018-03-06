@@ -1,5 +1,6 @@
 package cn.com.cx.ps.mirror.java.variable;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -7,7 +8,8 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import lombok.Data;
 
 @Data
-public class Class {
+public class Class implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private String file;
 	private String name;
 	private String qualifiedName;
@@ -22,7 +24,7 @@ public class Class {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(typeDeclaration);
+		return Objects.hash(typeDeclaration, file);
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class Class {
 			return false;
 		Class that = (Class) obj;
 		// if the typeDeclaration are equal then the class is the same one.
-		return typeDeclaration == that.getTypeDeclaration();
+		return typeDeclaration == that.getTypeDeclaration() && file == that.getFile();
 	}
 
 }
