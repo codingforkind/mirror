@@ -10,15 +10,20 @@ import lombok.Data;
 
 @Data
 public class VariableType {
-	
+
 	public static enum TYPE {
-		 PRIME, CLASS, INTERFACE, ARRAY, ENUM, OTHER;
+		PRIME, CLASS, INTERFACE, ARRAY, ENUM, OTHER;
 		public static TYPE judgeType(ITypeBinding typeBinding) {
-			if (typeBinding.isPrimitive()) return TYPE.PRIME;
-			if (typeBinding.isEnum()) return TYPE.ENUM;
-			if (typeBinding.isClass()) return TYPE.CLASS;
-			if (typeBinding.isArray()) return TYPE.ARRAY;
-			if (typeBinding.isInterface()) return TYPE.INTERFACE;
+			if (typeBinding.isPrimitive())
+				return TYPE.PRIME;
+			if (typeBinding.isEnum())
+				return TYPE.ENUM;
+			if (typeBinding.isClass())
+				return TYPE.CLASS;
+			if (typeBinding.isArray())
+				return TYPE.ARRAY;
+			if (typeBinding.isInterface())
+				return TYPE.INTERFACE;
 			return TYPE.OTHER;
 		}
 	}
@@ -26,25 +31,24 @@ public class VariableType {
 	private TYPE type;
 	private PRIME prime;
 	private String qualifiedName;
-
 	private VariableType arrayEleType;
-	
-	public VariableType(TYPE type){
+
+	public VariableType(TYPE type) {
 		this.type = type;
 	}
-	
+
 	public VariableType(TYPE type, VariableType arrayEleType) {
 		this(type);
 		this.arrayEleType = arrayEleType;
 		this.qualifiedName = arrayEleType.getQualifiedName();
 	}
-	
+
 	public VariableType(TYPE type, String qualifiedName) {
 		this(type);
 		this.qualifiedName = qualifiedName;
 	}
 
-	public VariableType(TYPE type, PRIME prime){
+	public VariableType(TYPE type, PRIME prime) {
 		this(type);
 		this.prime = prime;
 		this.qualifiedName = prime.getCode();
@@ -52,7 +56,10 @@ public class VariableType {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(type, qualifiedName, arrayEleType, prime);
+		if (null == qualifiedName) {
+			return Objects.hash(type, prime, arrayEleType, null);
+		}
+		return Objects.hash(type, prime, arrayEleType, qualifiedName.hashCode());
 	}
 
 	@Override
@@ -63,17 +70,23 @@ public class VariableType {
 			return false;
 
 		VariableType that = (VariableType) obj;
+		if (null == qualifiedName) {
+			return type == that.getType() && prime == that.getPrime() && arrayEleType == that.getArrayEleType();
+		}
 		return type == that.getType() && prime == that.getPrime() && arrayEleType == that.getArrayEleType()
-				&& qualifiedName == that.getQualifiedName();
+				&& qualifiedName.equals(that.getQualifiedName());
 	}
 
 	public static enum PRIME {
-		INT("int"), CHAR("char"), DOUBLE("double"), BOOLEAN("boolean"), FLOAT("float"), BYTE("byte"), SHORT("short"), LONG("long");
+		INT("int"), CHAR("char"), DOUBLE("double"), BOOLEAN("boolean"), FLOAT("float"), BYTE("byte"), SHORT(
+				"short"), LONG("long");
 
 		private String code;
+
 		private PRIME(String code) {
 			this.code = code;
 		}
+
 		public final static PRIME prime(String code) {
 			Assert.notNull(code, "prime argument is NULL in " + PRIME.class);
 			for (PRIME p : PRIME.values()) {
@@ -83,6 +96,7 @@ public class VariableType {
 			}
 			throw new AnalysisException("No PRIME type found!");
 		}
+
 		public final static boolean isPRIME(String code) {
 			Assert.notNull(code, "isPRIME argument  is NULL in " + PRIME.class);
 			for (PRIME p : PRIME.values()) {
@@ -92,10 +106,10 @@ public class VariableType {
 			}
 			return false;
 		}
+
 		public String getCode() {
 			return this.code;
 		}
 	}
-
 
 }
