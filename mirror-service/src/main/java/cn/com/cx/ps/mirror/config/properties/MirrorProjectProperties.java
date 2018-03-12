@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.configuration.properties;
+package cn.com.cx.ps.mirror.config.properties;
 
 import javax.validation.constraints.NotNull;
 

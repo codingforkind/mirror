@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import cn.com.cx.ps.mirror.analysis.service.FileAnalyzerService;
 import cn.com.cx.ps.mirror.common.utils.AstUtils;
+import cn.com.cx.ps.mirror.common.utils.FileUtils;
 
 @Service
 public class FileAnalyzerServiceImpl implements FileAnalyzerService {
@@ -31,7 +32,7 @@ public class FileAnalyzerServiceImpl implements FileAnalyzerService {
 
 	@Override
 	public List<String> extractLineNums(String filePath) {
-		return AstUtils.listCodeLines(filePath);
+		return FileUtils.listCodeLines(filePath);
 	}
     
 

@@ -1,5 +1,6 @@
 package cn.com.cx.ps.mirror.project.factory.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,13 +10,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import cn.com.cx.ps.mirror.analysis.service.ClassAnalyzerService;
 import cn.com.cx.ps.mirror.analysis.service.FileAnalyzerService;
 import cn.com.cx.ps.mirror.analysis.service.PackageAnalyzerService;
 import cn.com.cx.ps.mirror.analysis.service.VariableAnalyzerService;
-import cn.com.cx.ps.mirror.configuration.properties.MirrorProjectProperties;
+import cn.com.cx.ps.mirror.common.utils.FileUtils;
+import cn.com.cx.ps.mirror.config.properties.MirrorProjectProperties;
+import cn.com.cx.ps.mirror.java.ClassFile;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.project.MirrorProject;
@@ -50,31 +52,31 @@ public class DefaultMirrorProjectFactory implements MirrorProjectFactory {
 
 	@Override
 	public MirrorProject initMirrorProject(MirrorProject mirrorProject) {
-		Assert.notNull(mirrorProject, "MirrorProject is null, please generate one!");
-
-		// compilation units
-		Map<String, CompilationUnit> mapDefinedCompilationUnits = fileAnalyzerService
-				.extractCompilationUnits(mirrorProject.getPrjJavaFiles());
-		Assert.notNull(mapDefinedCompilationUnits, "No compilation units found in the project, existing!");
-		mirrorProject.setPrjCompilationUnits(mapDefinedCompilationUnits);
-
-		// packages
-		Map<String, String> mapDefinedPackages = packageAnalyzerService
-				.extractPackages(mirrorProject.getPrjCompilationUnits());
-		Assert.notNull(mapDefinedPackages, "No packages were defined in the project!");
-		mirrorProject.setPrjPackages(mapDefinedPackages);
-
-		// classes
-		Map<String, Set<Class>> mapDefinedClasses = classAnalyzerService
-				.mapDefinedClasses(mirrorProject.getPrjCompilationUnits());
-		Assert.notNull(mapDefinedClasses, "No classes were defined in the project!");
-		mirrorProject.setPrjClasses(mapDefinedClasses);
-
-		Map<String, Set<Variable>> mapDefinedVariables = variableAnalyzerService
-				.mapProjectVariables(mirrorProject.getPrjCompilationUnits(), mirrorProject.getPrjClasses());
-		Assert.notNull(mapDefinedVariables, "No variables were defined in the project!");
-		mirrorProject.setPrjVariables(mapDefinedVariables);
+		if(null == mirrorProject) {
+			mirrorProject = new MirrorProject(this.properties);
+		}
 		
+		Map<String, Set<Class>> prjClasses = new HashMap<>();
+		for(String file : mirrorProject.getPrjJavaFiles()) {
+			CompilationUnit compilationUnit = fileAnalyzerService.parserCompilationUnit(file);
+			String pkg = packageAnalyzerService.parserPackage(compilationUnit);
+			Set<Class> classSet = classAnalyzerService.extractClasses(file, compilationUnit);
+			prjClasses.put(file, classSet);
+			
+			ClassFile classFile = new ClassFile(file);
+			classFile.setCompilationUnit(compilationUnit);
+			classFile.setFile(file);
+			classFile.setPkg(pkg);
+			classFile.setClassesInFile(classSet);
+			classFile.setStatements(FileUtils.listCodeLines(file));
+			mirrorProject.addClassFile(classFile);
+		}
+
+		for (ClassFile classFile : mirrorProject.getClassList()) {
+			Set<Variable> variableSet = variableAnalyzerService.extractVariables(classFile.getFile(),
+					classFile.getCompilationUnit(), prjClasses);
+			classFile.setVariablesInFile(variableSet);
+		}
 		return mirrorProject;
 	}
 
