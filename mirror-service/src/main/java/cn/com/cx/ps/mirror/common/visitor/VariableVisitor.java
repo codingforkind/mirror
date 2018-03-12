@@ -74,7 +74,6 @@ public class VariableVisitor extends ASTVisitor {
 			break;
 
 		case CLASS:
-			// TODO qualifiedName
 			String clsTypeQualifiedName = typeBinding.getQualifiedName();
 //			log.info("binaryName: [{}, {}]", typeBinding.getBinaryName());
 			

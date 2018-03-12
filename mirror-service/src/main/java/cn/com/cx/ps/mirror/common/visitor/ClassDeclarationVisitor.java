@@ -26,7 +26,6 @@ public class ClassDeclarationVisitor extends ASTVisitor {
 		this.file = file;
 	}
 
-	// TODO TYPE: test.GeneraticClass<String,TestClass>
 	@Override
 	public boolean visit(TypeDeclaration node) {
 		ITypeBinding typeBinding = node.resolveBinding();

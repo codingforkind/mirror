@@ -77,6 +77,7 @@ public class DefaultMirrorProjectFactory implements MirrorProjectFactory {
 					classFile.getCompilationUnit(), prjClasses);
 			classFile.setVariablesInFile(variableSet);
 		}
+		// TODO 已经找到该文件中所有变量，此时需要把所有变量放到特定的行中，并且不同行的变量是统一的
 		return mirrorProject;
 	}
 
