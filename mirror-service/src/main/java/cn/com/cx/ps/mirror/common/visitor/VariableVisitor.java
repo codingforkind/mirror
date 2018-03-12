@@ -74,14 +74,9 @@ public class VariableVisitor extends ASTVisitor {
 			break;
 
 		case CLASS:
-			String clsTypeQualifiedName = typeBinding.getQualifiedName();
-			
 			// TODO qualifiedName
-			// 如果是使用的第三方类，则不会得到第三方类的全部路径名，需要证实如何获取，或者不能获取，
-			// 或者使用import进行比对，如比对不成功则丢弃，表示无法得到第三方类的全路径名
-			log.info("binaryName: [{}]", typeBinding.getBinaryName(), 
-					typeBinding.getSuperclass());
-			
+			String clsTypeQualifiedName = typeBinding.getQualifiedName();
+//			log.info("binaryName: [{}, {}]", typeBinding.getBinaryName());
 			
 			if (classDefinedInProject(prjClasses, clsTypeQualifiedName)) {
 				varType = new VariableType(TYPE.CLASS, clsTypeQualifiedName);

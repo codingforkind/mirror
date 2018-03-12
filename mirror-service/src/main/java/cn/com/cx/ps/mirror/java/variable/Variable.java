@@ -19,7 +19,7 @@ public class Variable {
 	private String file; // if this variable is not a field then it must in the file which got it in the
 							// first place.
 
-	private int lineNum;
+	private int lineNum; // the location of a variable first appears, like the definition point of the variable  
 	private ASTNode astNode;
 
 	@Override
