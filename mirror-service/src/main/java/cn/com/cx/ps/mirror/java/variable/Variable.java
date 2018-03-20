@@ -35,12 +35,16 @@ public class Variable {
 			return false;
 
 		Variable that = (Variable) obj;
+		return isField == that.isField() && 
+				Objects.equals(name, that.getName()) && 
+				Objects.equals(variableType, that.getVariableType()) && 
+				Objects.equals(file, that.getFile());
 
-		if (null == variableType) {
-			return name == that.getName() && isField == that.isField() && file == that.getFile();
-		}
-		return name == that.getName() && variableType.equals(that.getVariableType()) && isField == that.isField()
-				&& file == that.getFile();
+//		if (null == variableType) {
+//			return name == that.getName() && isField == that.isField() && file == that.getFile();
+//		}
+//		return name == that.getName() && variableType.equals(that.getVariableType()) && isField == that.isField()
+//				&& file == that.getFile();
 	}
 
 }
