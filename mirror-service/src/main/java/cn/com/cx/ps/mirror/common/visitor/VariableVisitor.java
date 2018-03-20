@@ -1,6 +1,5 @@
 package cn.com.cx.ps.mirror.common.visitor;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -17,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+import cn.com.cx.ps.mirror.common.graph.BaseNode;
 import cn.com.cx.ps.mirror.common.utils.AstUtils;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
@@ -41,8 +41,8 @@ public class VariableVisitor extends ASTVisitor {
 
 	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
 	private Set<Variable> variables = new HashSet<>(); // all variable defined in this java file
-	
 	private Map<Integer, Set<Variable>> varInFile;
+	private Map<Integer, BaseNode> nodeInFile;
 
 	public VariableVisitor(String file, Map<String, Set<Class>> prjClasses) {
 		this.file = file;
@@ -64,9 +64,35 @@ public class VariableVisitor extends ASTVisitor {
 			// Variable type handle AND TYPE ONLY
 			variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
 			addVariable(AstUtils.getEndLine(node), variable);
+			BaseNode baseNode = generateBaseNode(AstUtils.getEndLine(node));
+			baseNode.addVariable(AstUtils.getEndLine(node), variable);
+			
 			variables.add(variable);
 		}
 		return super.visit(node);
+	}
+
+	private BaseNode generateBaseNode(Integer lineNum) {
+		return new BaseNode(lineNum);
+	}
+	
+	private void addBaseNode(Integer linenum, Variable variable) {
+//		TODO 写提取java文件中的节点，然后存储
+	}
+	
+	private void addVariable(Integer lineNum, Variable variable) {
+		if (null == this.varInFile) {
+//			this.varInFile = new HashMap<>();
+			this.varInFile = new TreeMap<>();
+		}
+		
+		if (!varInFile.containsKey(lineNum)) {
+			Set<Variable> set = new HashSet<>();
+			set.add(variable);
+			varInFile.put(lineNum, set);
+		} else {
+			varInFile.get(lineNum).add(variable);
+		}
 	}
 	
 	/**
@@ -118,21 +144,6 @@ public class VariableVisitor extends ASTVisitor {
 		}
 		
 		return varType;
-	}
-	
-	private void addVariable(Integer lineNum, Variable variable) {
-		if (null == this.varInFile) {
-//			this.varInFile = new HashMap<>();
-			this.varInFile = new TreeMap<>();
-		}
-		
-		if (!varInFile.containsKey(lineNum)) {
-			Set<Variable> set = new HashSet<>();
-			set.add(variable);
-			varInFile.put(lineNum, set);
-		} else {
-			varInFile.get(lineNum).add(variable);
-		}
 	}
 
 	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
