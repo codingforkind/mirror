@@ -74,11 +74,6 @@ public class VariableType {
 				Objects.equals(prime, that.getPrime()) &&
 				Objects.equals(arrayEleType, that.getArrayEleType()) &&
 				Objects.equals(qualifiedName, that.getQualifiedName());
-//		if (null == qualifiedName) {
-//			return type == that.getType() && prime == that.getPrime() && arrayEleType == that.getArrayEleType();
-//		}
-//		return type == that.getType() && prime == that.getPrime() && arrayEleType == that.getArrayEleType()
-//				&& qualifiedName.equals(that.getQualifiedName());
 	}
 
 	public static enum PRIME {

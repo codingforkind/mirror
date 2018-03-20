@@ -36,8 +36,6 @@ public class Class implements Serializable{
 		Class that = (Class) obj;
 		return Objects.equals(typeDeclaration, that.getTypeDeclaration()) &&
 				Objects.equals(file, that.getFile());
-		// if the typeDeclaration are equal then the class is the same one.
-//		return typeDeclaration == that.getTypeDeclaration() && file == that.getFile();
 	}
 
 }
