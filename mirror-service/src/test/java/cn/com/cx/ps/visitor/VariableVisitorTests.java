@@ -3,8 +3,12 @@
  */
 package cn.com.cx.ps.visitor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -22,6 +26,7 @@ import cn.com.cx.ps.mirror.common.utils.MirrorTestProperties;
 import cn.com.cx.ps.mirror.common.visitor.ClassDeclarationVisitor;
 import cn.com.cx.ps.mirror.common.visitor.VariableVisitor;
 import cn.com.cx.ps.mirror.java.variable.Class;
+import cn.com.cx.ps.mirror.java.variable.Variable;
 
 /**
  * @author Piggy
@@ -52,7 +57,18 @@ public class VariableVisitorTests {
 		
 		variableVisitor.getVariables();
 		
-		log.info("Variables: {}", variableVisitor.getVariables());
+//		log.info("Variables: {}", variableVisitor.getVariables());
+		Map<Integer, Set<Variable>> varInFile = variableVisitor.getVarInFile();
+		Set<Entry<Integer, Set<Variable>>> entrySet = varInFile.entrySet();
+		Iterator<Entry<Integer, Set<Variable>>> iterator = entrySet.iterator();
+		while(iterator.hasNext()) {
+			Entry<Integer, Set<Variable>> next = iterator.next();
+			List<String> valNames = new ArrayList<>();
+			for(Variable variable : next.getValue()) {
+				valNames.add(variable.getName());
+			}
+			log.info("Line: {}, VARS: {}", next.getKey(), valNames);
+		}
 	}
 
 }

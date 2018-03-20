@@ -1,10 +1,12 @@
 package cn.com.cx.ps.mirror.common.visitor;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IBinding;
@@ -27,6 +29,8 @@ import lombok.Setter;
 /**
  * The type Variable visitor. visit all SimpleNodes and resolve its binding and
  * extract the variables for each line of codes
+ * <p> Extract all the variables in the java file. 
+ * <p> Extract all the variables in one line. 
  */
 @Getter
 @Setter
@@ -36,7 +40,9 @@ public class VariableVisitor extends ASTVisitor {
 	private String file;
 
 	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
-	private Set<Variable> variables = new HashSet<>();
+	private Set<Variable> variables = new HashSet<>(); // all variable defined in this java file
+	
+	private Map<Integer, Set<Variable>> varInFile;
 
 	public VariableVisitor(String file, Map<String, Set<Class>> prjClasses) {
 		this.file = file;
@@ -57,6 +63,7 @@ public class VariableVisitor extends ASTVisitor {
 
 			// Variable type handle AND TYPE ONLY
 			variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
+			addVariable(AstUtils.getEndLine(node), variable);
 			variables.add(variable);
 		}
 		return super.visit(node);
@@ -75,7 +82,6 @@ public class VariableVisitor extends ASTVisitor {
 
 		case CLASS:
 			String clsTypeQualifiedName = typeBinding.getQualifiedName();
-//			log.info("binaryName: [{}, {}]", typeBinding.getBinaryName());
 			
 			if (classDefinedInProject(prjClasses, clsTypeQualifiedName)) {
 				varType = new VariableType(TYPE.CLASS, clsTypeQualifiedName);
@@ -112,6 +118,21 @@ public class VariableVisitor extends ASTVisitor {
 		}
 		
 		return varType;
+	}
+	
+	private void addVariable(Integer lineNum, Variable variable) {
+		if (null == this.varInFile) {
+//			this.varInFile = new HashMap<>();
+			this.varInFile = new TreeMap<>();
+		}
+		
+		if (!varInFile.containsKey(lineNum)) {
+			Set<Variable> set = new HashSet<>();
+			set.add(variable);
+			varInFile.put(lineNum, set);
+		} else {
+			varInFile.get(lineNum).add(variable);
+		}
 	}
 
 	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
