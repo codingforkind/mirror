@@ -90,7 +90,6 @@
 
 	<modules>
 		<module>mirror-service</module>
-		<module>mirror-web</module>
 	</modules>
 
 </project>
