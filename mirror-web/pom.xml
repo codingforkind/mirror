@@ -37,7 +37,6 @@
 			<artifactId>spring-data-neo4j</artifactId>
 		</dependency>
 
-
 		<!-- db -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -69,7 +68,6 @@
 			<version>${tk.version}</version>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
