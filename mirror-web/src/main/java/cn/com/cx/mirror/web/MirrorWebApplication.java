@@ -4,7 +4,7 @@ package cn.com.cx.mirror.web;
  * Hello world!
  *
  */
-public class App 
+public class MirrorWebApplication 
 {
     public static void main( String[] args )
     {
