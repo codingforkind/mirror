@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.common.visitor;
+package cn.com.cx.ps.mirror.visitor;
 
 import java.util.HashSet;
 import java.util.Set;

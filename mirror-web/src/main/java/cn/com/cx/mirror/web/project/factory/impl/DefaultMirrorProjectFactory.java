@@ -18,7 +18,7 @@ import cn.com.cx.mirror.web.service.ps.ClassAnalyzerService;
 import cn.com.cx.mirror.web.service.ps.FileAnalyzerService;
 import cn.com.cx.mirror.web.service.ps.PackageAnalyzerService;
 import cn.com.cx.mirror.web.service.ps.VariableAnalyzerService;
-import cn.com.cx.ps.mirror.common.utils.FileUtils;
+import cn.com.cx.ps.mirror.utils.FileUtils;
 import cn.com.cx.ps.mirror.java.ClassFile;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;

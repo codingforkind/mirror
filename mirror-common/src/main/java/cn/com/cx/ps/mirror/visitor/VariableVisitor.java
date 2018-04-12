@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.common.visitor;
+package cn.com.cx.ps.mirror.visitor;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-//import cn.com.cx.ps.mirror.common.graph.BaseNode;
-import cn.com.cx.ps.mirror.common.utils.AstUtils;
+//import cn.com.cx.ps.mirror.graph.BaseNode;
+import cn.com.cx.ps.mirror.utils.AstUtils;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;

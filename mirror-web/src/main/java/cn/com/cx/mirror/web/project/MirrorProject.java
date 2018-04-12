@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import cn.com.cx.mirror.web.config.property.MirrorProjectProperties;
-import cn.com.cx.ps.mirror.common.exceptions.ProjectException;
+import cn.com.cx.ps.mirror.exceptions.ProjectException;
 import cn.com.cx.ps.mirror.java.ClassFile;
 import lombok.Data;
 

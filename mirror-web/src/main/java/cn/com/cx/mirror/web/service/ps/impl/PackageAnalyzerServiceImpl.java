@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.springframework.stereotype.Service;
 
 import cn.com.cx.mirror.web.service.ps.PackageAnalyzerService;
-import cn.com.cx.ps.mirror.common.visitor.PackageVisitor;
+import cn.com.cx.ps.mirror.visitor.PackageVisitor;
 
 @Service
 public class PackageAnalyzerServiceImpl implements PackageAnalyzerService {

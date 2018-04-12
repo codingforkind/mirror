@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import cn.com.cx.mirror.web.service.ps.ClassAnalyzerService;
-import cn.com.cx.ps.mirror.common.visitor.ClassDeclarationVisitor;
+import cn.com.cx.ps.mirror.visitor.ClassDeclarationVisitor;
 import cn.com.cx.ps.mirror.java.variable.Class;
 
 /**

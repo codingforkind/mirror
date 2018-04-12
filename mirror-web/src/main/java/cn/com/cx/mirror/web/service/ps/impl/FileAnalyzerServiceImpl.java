@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.springframework.stereotype.Service;
 
 import cn.com.cx.mirror.web.service.ps.FileAnalyzerService;
-import cn.com.cx.ps.mirror.common.utils.AstUtils;
-import cn.com.cx.ps.mirror.common.utils.FileUtils;
+import cn.com.cx.ps.mirror.utils.AstUtils;
+import cn.com.cx.ps.mirror.utils.FileUtils;
 
 @Service
 public class FileAnalyzerServiceImpl implements FileAnalyzerService {

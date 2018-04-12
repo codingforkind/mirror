@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.springframework.util.Assert;
 
-import cn.com.cx.ps.mirror.common.exceptions.AnalysisException;
+import cn.com.cx.ps.mirror.exceptions.AnalysisException;
 import lombok.Data;
 
 @Data

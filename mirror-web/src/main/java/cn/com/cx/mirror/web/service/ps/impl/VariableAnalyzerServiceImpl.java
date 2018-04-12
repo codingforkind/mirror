@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import cn.com.cx.mirror.web.service.ps.VariableAnalyzerService;
-import cn.com.cx.ps.mirror.common.visitor.VariableVisitor;
+import cn.com.cx.ps.mirror.visitor.VariableVisitor;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 

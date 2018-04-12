@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.common.exceptions;
+package cn.com.cx.ps.mirror.exceptions;
 
 public class AnalysisException extends RuntimeException{
 	private static final long serialVersionUID = 1L;
