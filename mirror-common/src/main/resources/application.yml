@@ -1,6 +1,6 @@
 spring:
   application:
-      name: mirror-service
+      name: mirror-common
   profiles:
     active: dev
 logging:

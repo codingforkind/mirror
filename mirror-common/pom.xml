@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.com.cx</groupId>
-    <artifactId>mirror-service</artifactId>
+    <artifactId>mirror-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>mirror-service</name>
-    <description>mirror-service</description>
+    <name>mirror-common</name>
+    <description>mirror-common</description>
 
     <parent>
         <groupId>cn.com.cx</groupId>

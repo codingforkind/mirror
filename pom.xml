@@ -89,7 +89,7 @@
 	</build>
 
 	<modules>
-		<module>mirror-service</module>
+		<module>mirror-common</module>
 	</modules>
 
 </project>
