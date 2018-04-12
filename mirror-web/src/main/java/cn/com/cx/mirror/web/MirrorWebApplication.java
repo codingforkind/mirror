@@ -3,8 +3,6 @@ package cn.com.cx.mirror.web;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import cn.com.cx.ps.mirror.Application;
-
 /**
  * @author Piggy
  *
@@ -14,6 +12,6 @@ import cn.com.cx.ps.mirror.Application;
 @SpringBootApplication
 public class MirrorWebApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(MirrorWebApplication.class, args);
     }
 }
