@@ -1,12 +1,10 @@
 package cn.com.cx.ps.mirror;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
+/**
+ * @author Piggy
+ *
+ * @description 
+ * @since 2018年4月12日
+ */
 public class Application {
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
 }
