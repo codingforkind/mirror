@@ -1,4 +1,4 @@
-package cn.com.cx.ps;
+package cn.com.cx.mirror.ps;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

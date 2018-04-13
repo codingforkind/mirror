@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.cx.ps.visitor;
+package cn.com.cx.mirror.ps.visitor;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
