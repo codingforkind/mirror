@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.cx.ps.mirror.graph;
+package cn.com.cx.ps.mirror.graph.node;
 
 import java.io.Serializable;
 

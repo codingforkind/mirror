@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.cx.ps.mirror.graph;
+package cn.com.cx.ps.mirror.graph.node;
 
 import java.util.HashSet;
 import java.util.Set;
