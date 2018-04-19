@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,20 +30,35 @@ import lombok.Setter;
 /**
  * The type Variable visitor. visit all SimpleNodes and resolve its binding and
  * extract the variables for each line of codes
- * <p> Extract all the variables in the java file. 
- * <p> Extract all the variables in one line. 
+ * <p>
+ * Extract all the variables in the java file.
+ * <p>
+ * Extract all the variables in one line.
  */
 @Getter
 @Setter
 public class VariableVisitor extends ASTVisitor {
 
 	private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
+	/**
+	 * java file name
+	 */
 	private String file;
 
 	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
 	private Set<Variable> variables = new HashSet<>(); // all variable defined in this java file
 	private Map<Integer, Set<Variable>> varInFile;
-//	private Map<Integer, BaseNode> nodeInFile;
+
+	/**
+	 * package name of the file
+	 */
+	private String packageName;
+
+	@Override
+	public boolean visit(PackageDeclaration node) {
+		packageName = node.getName().getFullyQualifiedName();
+		return super.visit(node);
+	}
 
 	public VariableVisitor(String file, Map<String, Set<Class>> prjClasses) {
 		this.file = file;
@@ -64,28 +80,22 @@ public class VariableVisitor extends ASTVisitor {
 			// Variable type handle AND TYPE ONLY
 			variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
 			addVariable(AstUtils.getEndLine(node), variable);
-//			BaseNode baseNode = generateBaseNode(AstUtils.getEndLine(node));
-//			baseNode.addVariable(AstUtils.getEndLine(node), variable);
-			
+
 			variables.add(variable);
 		}
 		return super.visit(node);
 	}
 
-//	private BaseNode generateBaseNode(Integer lineNum) {
-//		return new BaseNode(lineNum);
-//	}
-	
 	private void addBaseNode(Integer linenum, Variable variable) {
-//		TODO 写提取java文件中的节点，然后存储
+		// TODO 写提取java文件中的节点，然后存储
 	}
-	
+
 	private void addVariable(Integer lineNum, Variable variable) {
 		if (null == this.varInFile) {
-//			this.varInFile = new HashMap<>();
+			// this.varInFile = new HashMap<>();
 			this.varInFile = new TreeMap<>();
 		}
-		
+
 		if (!varInFile.containsKey(lineNum)) {
 			Set<Variable> set = new HashSet<>();
 			set.add(variable);
@@ -94,7 +104,7 @@ public class VariableVisitor extends ASTVisitor {
 			varInFile.get(lineNum).add(variable);
 		}
 	}
-	
+
 	/**
 	 * check the qualified class name is included in this project, if not then skip
 	 * it if so just initializing this class variable type into the project object.
@@ -108,7 +118,7 @@ public class VariableVisitor extends ASTVisitor {
 
 		case CLASS:
 			String clsTypeQualifiedName = typeBinding.getQualifiedName();
-			
+
 			if (classDefinedInProject(prjClasses, clsTypeQualifiedName)) {
 				varType = new VariableType(TYPE.CLASS, clsTypeQualifiedName);
 			} else {
@@ -126,23 +136,23 @@ public class VariableVisitor extends ASTVisitor {
 		case ARRAY:
 			StringBuilder builder = new StringBuilder(typeBinding.getQualifiedName());
 			String tmType = builder.substring(0, builder.lastIndexOf("["));
-			
-			VariableType eleType  = new VariableType(TYPE.OTHER);
+
+			VariableType eleType = new VariableType(TYPE.OTHER);
 			if (classDefinedInProject(prjClasses, tmType)) {
 				eleType = new VariableType(TYPE.CLASS, tmType);
-			}else if (PRIME.isPRIME(tmType)) {
+			} else if (PRIME.isPRIME(tmType)) {
 				eleType = new VariableType(TYPE.PRIME, PRIME.prime(tmType));
 			}
 			varType = new VariableType(TYPE.ARRAY, eleType);
 			break;
-			
+
 		case OTHER:
 			log.warn("VARIABLE OTHER TYPE: [{}]", typeBinding);
 			break;
 		default:
 			break;
 		}
-		
+
 		return varType;
 	}
 
