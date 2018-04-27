@@ -11,8 +11,8 @@ import lombok.Data;
 /**
  * @author Piggy
  *
- * @description
- * @since 2018年4月19日
+ * @description 
+ * @date 2018年4月27日
  */
 @Data
 public class Node implements Serializable {
