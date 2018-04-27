@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= MirrorWebApplication.class)
 @Slf4j
-public class VariableVisitorTests {
+public class VariableVisitorWebTests {
 	
 	@Autowired
 	private MirrorTestProperties mirrorTestProperties;
