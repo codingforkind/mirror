@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.cx.mirror.web.util;
+package cn.com.cx.mirror.web.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;

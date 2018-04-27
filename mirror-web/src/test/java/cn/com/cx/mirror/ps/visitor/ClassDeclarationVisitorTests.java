@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import cn.com.cx.mirror.web.MirrorWebApplication;
-import cn.com.cx.mirror.web.util.MirrorTestProperties;
+import cn.com.cx.mirror.web.property.MirrorTestProperties;
 import cn.com.cx.ps.mirror.utils.AstUtils;
 import cn.com.cx.ps.mirror.visitor.ClassDeclarationVisitor;
 

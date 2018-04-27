@@ -7,6 +7,7 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -17,13 +18,13 @@ import java.util.Set;
  */
 @Data
 public class ClassFile {
-
 	private String file;
 	private String pkg;
 	private List<String> statements;
 	private CompilationUnit compilationUnit;
 	private Set<Class> classesInFile;
 	private Set<Variable> variablesInFile;
+	private Map<Integer, Set<Variable>> varInFile;
 
 	public ClassFile(String file) {
 		this.file = file;

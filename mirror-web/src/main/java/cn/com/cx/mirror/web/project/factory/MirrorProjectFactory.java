@@ -11,13 +11,6 @@ import cn.com.cx.mirror.web.project.MirrorProject;
 public interface MirrorProjectFactory {
 
 	/**
-	 * Mirror project initialization
-	 * @param mirrorProject
-	 * @return
-	 */
-	public MirrorProject initMirrorProject(MirrorProject mirrorProject);
-
-	/**
 	 * Generate a mirror project, initialize the mirror project and extract all of the java files 
 	 * and initialize it.
 	 * @return
