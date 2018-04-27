@@ -21,7 +21,7 @@ import lombok.Setter;
 public class StatementNode extends MethodNode {
 	private static final long serialVersionUID = 1L;
 
-	private Set<Variable> variables;
+	private Set<Variable> variables = new HashSet<>();
 
 	public void addVariable(Integer linenum, Variable variable) {
 		if (!this.getLinenum().equals(linenum)) {
