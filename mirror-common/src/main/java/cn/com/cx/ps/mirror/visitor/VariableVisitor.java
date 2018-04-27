@@ -19,7 +19,6 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
 import cn.com.cx.ps.mirror.java.variable.VariableType.PRIME;
 import cn.com.cx.ps.mirror.java.variable.VariableType.TYPE;
-//import cn.com.cx.ps.mirror.graph.BaseNode;
 import cn.com.cx.ps.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.Setter;
