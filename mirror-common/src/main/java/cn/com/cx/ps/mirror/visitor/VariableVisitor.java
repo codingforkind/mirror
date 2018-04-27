@@ -29,8 +29,6 @@ import lombok.extern.slf4j.Slf4j;
  * extract the variables for each line of codes
  * <p>
  * Extract all the variables in the java file.
- * <p>
- * Extract all the variables in one line.
  */
 @Getter
 @Setter
