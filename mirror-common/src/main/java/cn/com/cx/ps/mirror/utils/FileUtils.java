@@ -4,13 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import cn.com.cx.ps.mirror.exceptions.ProjectException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Piggy
@@ -73,5 +77,29 @@ public class FileUtils {
         }
         return lines;
     }
+    
+	public static final Set<String> prjJavaFileSet(String prjPath) {
+		File file = new File(prjPath);
+		if (!file.isDirectory()) {
+			throw new ProjectException(prjPath + " is not a directory!");
+		}
+
+		return initjavaFiles(file, new HashSet<>());
+	}
+
+	private static Set<String> initjavaFiles(File dir, Set<String> prjJavaFiles) {
+		File[] fs = dir.listFiles();
+		String tmpPath = null;
+		for (int i = 0; i < fs.length; i++) {
+			if (fs[i].getAbsolutePath().endsWith(".java")) {
+				tmpPath = fs[i].getAbsolutePath();
+				prjJavaFiles.add(tmpPath);
+			}
+			if (fs[i].isDirectory()) {
+				prjJavaFiles = initjavaFiles(fs[i], prjJavaFiles);
+			} // end if
+		} // end for
+		return prjJavaFiles;
+	}
 
 }

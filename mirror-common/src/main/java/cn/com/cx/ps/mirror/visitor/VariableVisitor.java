@@ -44,10 +44,13 @@ public class VariableVisitor extends ASTVisitor {
 	 * package name of the file
 	 */
 	private String packageName;
+	/**
+	 * all classes defined in the project
+	 */
+	private Map<String, Set<Class>> prjClasses;
 
-	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
 	private Set<Variable> varSet = new HashSet<>(); // all variable defined in this java file
-	private Map<Integer, Set<Variable>> varInFile;
+	private Map<Integer, Set<Variable>> varInFile = new TreeMap<>();
 
 	public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
 		this.file = file;
@@ -77,11 +80,6 @@ public class VariableVisitor extends ASTVisitor {
 	}
 
 	private void addVariable(Integer lineNum, Variable variable) {
-		if (null == this.varInFile) {
-			// this.varInFile = new HashMap<>();
-			this.varInFile = new TreeMap<>();
-		}
-
 		if (!varInFile.containsKey(lineNum)) {
 			Set<Variable> set = new HashSet<>();
 			set.add(variable);
