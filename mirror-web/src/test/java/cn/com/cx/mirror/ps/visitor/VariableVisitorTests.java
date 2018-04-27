@@ -60,8 +60,6 @@ public class VariableVisitorTests {
 				packageVisitor.getPackageName(), classMap);
 		compilationUnit.accept(variableVisitor);
 		
-		variableVisitor.getVarSet();
-		
 //		log.info("Variables: {}", variableVisitor.getVariables());
 		Map<Integer, Set<Variable>> varInFile = variableVisitor.getVarInFile();
 		Set<Entry<Integer, Set<Variable>>> entrySet = varInFile.entrySet();
