@@ -77,11 +77,14 @@ public class FileUtils {
         }
         return lines;
     }
-    
+
+	/**
+	 * Extract all the java file in the project
+	 */
 	public static final Set<String> prjJavaFileSet(String prjPath) {
 		File file = new File(prjPath);
-		if (!file.isDirectory()) {
-			throw new ProjectException(prjPath + " is not a directory!");
+		if (!file.exists() || !file.isDirectory()) {
+			throw new ProjectException(prjPath + " is not a directory or even not exists!");
 		}
 
 		return initjavaFiles(file, new HashSet<>());
