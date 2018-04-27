@@ -10,11 +10,13 @@ import lombok.Setter;
  * @author Piggy
  *
  * @description
- * @since 2018年4月19日
+ * @date 2018年4月27日
  */
 @Getter
 @Setter
-public class FieldNode extends ClassNode {
+public class PackageNode extends Node {
 	private static final long serialVersionUID = 1L;
+
+	private String packageName;
 
 }
