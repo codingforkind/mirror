@@ -38,7 +38,7 @@ public class VariableVisitorTests {
 		for (String javaFile : prjJavaFileSet) {
 			count++;
 			log.info(javaFile);
-			// testjavaFile(javaFile);
+			testjavaFile(javaFile);
 		}
 		log.info("Java file count: [{}]", count);
 	}
@@ -47,7 +47,6 @@ public class VariableVisitorTests {
 		CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(filePath);
 		PackageVisitor packageVisitor = new PackageVisitor();
 		compilationUnit.accept(packageVisitor);
-		log.info(filePath);
 
 		ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor(filePath);
 		compilationUnit.accept(classDeclarationVisitor);
@@ -72,6 +71,7 @@ public class VariableVisitorTests {
 
 	@Test
 	public void testVariable() {
+		log.info(FILE_PATH);
 		testjavaFile(FILE_PATH);
 	}
 
