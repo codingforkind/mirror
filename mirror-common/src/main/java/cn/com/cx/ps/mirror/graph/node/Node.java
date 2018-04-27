@@ -22,4 +22,5 @@ public class Node implements Serializable {
 	private NodeTypeEnum nodeTypeEnum;
 	private Integer linenum;
 	private String javaFile;
+	private String content;
 }
