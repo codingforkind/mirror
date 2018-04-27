@@ -3,6 +3,7 @@
  */
 package cn.com.cx.ps.mirror.constant;
 
+import cn.com.cx.ps.mirror.exceptions.ConstantException;
 import lombok.Getter;
 
 /**
@@ -30,7 +31,7 @@ public enum NodeTypeEnum {
 				return nodeTypeEnum;
 			}
 		}
-		throw new RuntimeException("No node type match!");
+		throw new ConstantException("No node type match!");
 	}
 
 }
