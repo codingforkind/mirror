@@ -136,7 +136,6 @@ public class VariableVisitor extends ASTVisitor {
 		default:
 			break;
 		}
-
 		return varType;
 	}
 
