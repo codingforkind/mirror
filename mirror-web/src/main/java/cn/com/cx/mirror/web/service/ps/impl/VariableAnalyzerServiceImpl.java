@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import cn.com.cx.mirror.web.service.ps.VariableAnalyzerService;
-import cn.com.cx.ps.mirror.visitor.VariableVisitor;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 
@@ -23,9 +22,10 @@ public class VariableAnalyzerServiceImpl implements VariableAnalyzerService {
 
 	@Override
 	public Set<Variable> extractVariables(String javaFilePath, CompilationUnit compilationUnit, Map<String, Set<Class>> prjClasses) {
-		VariableVisitor variableVisitor = new VariableVisitor(javaFilePath, prjClasses);
-		compilationUnit.accept(variableVisitor);
-		return variableVisitor.getVariables();
+//		VariableVisitor variableVisitor = new VariableVisitor(javaFilePath, prjClasses);
+//		compilationUnit.accept(variableVisitor);
+//		return variableVisitor.getVariables();
+		return null;
 	}
 
 	@Override

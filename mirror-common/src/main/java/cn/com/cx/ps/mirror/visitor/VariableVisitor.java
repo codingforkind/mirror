@@ -11,21 +11,19 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-//import cn.com.cx.ps.mirror.graph.BaseNode;
-import cn.com.cx.ps.mirror.utils.AstUtils;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
 import cn.com.cx.ps.mirror.java.variable.VariableType.PRIME;
 import cn.com.cx.ps.mirror.java.variable.VariableType.TYPE;
+//import cn.com.cx.ps.mirror.graph.BaseNode;
+import cn.com.cx.ps.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The type Variable visitor. visit all SimpleNodes and resolve its binding and
@@ -37,31 +35,24 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Slf4j
 public class VariableVisitor extends ASTVisitor {
-
-	private static Logger log = LoggerFactory.getLogger(VariableVisitor.class);
 	/**
 	 * java file name
 	 */
 	private String file;
-
-	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
-	private Set<Variable> variables = new HashSet<>(); // all variable defined in this java file
-	private Map<Integer, Set<Variable>> varInFile;
-
 	/**
 	 * package name of the file
 	 */
 	private String packageName;
 
-	@Override
-	public boolean visit(PackageDeclaration node) {
-		packageName = node.getName().getFullyQualifiedName();
-		return super.visit(node);
-	}
+	private Map<String, Set<Class>> prjClasses; // all classes defined in the project
+	private Set<Variable> varSet = new HashSet<>(); // all variable defined in this java file
+	private Map<Integer, Set<Variable>> varInFile;
 
-	public VariableVisitor(String file, Map<String, Set<Class>> prjClasses) {
+	public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
 		this.file = file;
+		this.packageName = packageName;
 		this.prjClasses = prjClasses;
 	}
 
@@ -81,13 +72,9 @@ public class VariableVisitor extends ASTVisitor {
 			variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
 			addVariable(AstUtils.getEndLine(node), variable);
 
-			variables.add(variable);
+			varSet.add(variable);
 		}
 		return super.visit(node);
-	}
-
-	private void addBaseNode(Integer linenum, Variable variable) {
-		// TODO 写提取java文件中的节点，然后存储
 	}
 
 	private void addVariable(Integer lineNum, Variable variable) {

@@ -21,9 +21,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import cn.com.cx.mirror.web.MirrorWebApplication;
+import cn.com.cx.mirror.web.util.MirrorTestProperties;
 import cn.com.cx.ps.mirror.utils.AstUtils;
-import cn.com.cx.ps.mirror.utils.MirrorTestProperties;
 import cn.com.cx.ps.mirror.visitor.ClassDeclarationVisitor;
+import cn.com.cx.ps.mirror.visitor.PackageVisitor;
 import cn.com.cx.ps.mirror.visitor.VariableVisitor;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
@@ -47,15 +48,19 @@ public class VariableVisitorTests {
 	public void testVariable() {
 		String path = mirrorTestProperties.getFile();
 		CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(path);
+		PackageVisitor packageVisitor = new PackageVisitor();
+		compilationUnit.accept(packageVisitor);
 		log.info(path);
+		
 		ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor(path);
 		compilationUnit.accept(classDeclarationVisitor);
 		Map<String, Set<Class>> classMap = new HashMap<>();
 		classMap.put(path, classDeclarationVisitor.getPrjClasses());
-		VariableVisitor variableVisitor = new VariableVisitor(mirrorTestProperties.getFile(), classMap);
+		VariableVisitor variableVisitor = new VariableVisitor(mirrorTestProperties.getFile(),
+				packageVisitor.getPackageName(), classMap);
 		compilationUnit.accept(variableVisitor);
 		
-		variableVisitor.getVariables();
+		variableVisitor.getVarSet();
 		
 //		log.info("Variables: {}", variableVisitor.getVariables());
 		Map<Integer, Set<Variable>> varInFile = variableVisitor.getVarInFile();
