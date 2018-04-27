@@ -14,20 +14,19 @@ import java.util.Set;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import cn.com.cx.mirror.web.MirrorWebApplication;
 import cn.com.cx.mirror.web.config.property.MirrorTestProperties;
+import cn.com.cx.ps.mirror.java.variable.Class;
+import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.utils.AstUtils;
 import cn.com.cx.ps.mirror.visitor.ClassDeclarationVisitor;
 import cn.com.cx.ps.mirror.visitor.PackageVisitor;
 import cn.com.cx.ps.mirror.visitor.VariableVisitor;
-import cn.com.cx.ps.mirror.java.variable.Class;
-import cn.com.cx.ps.mirror.java.variable.Variable;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Piggy
@@ -37,12 +36,11 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes= MirrorWebApplication.class)
+@Slf4j
 public class VariableVisitorTests {
 	
 	@Autowired
 	private MirrorTestProperties mirrorTestProperties;
-	
-	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Test
 	public void testVariable() {
