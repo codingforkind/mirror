@@ -20,6 +20,9 @@ public class Node implements Serializable {
 
 	private String nodeId;
 	private NodeTypeEnum nodeTypeEnum;
+	/**
+	 * also is the startLine of @see ClassNode and @see MethodNode
+	 */
 	private Integer linenum;
 	private String javaFilePath;
 

@@ -24,16 +24,14 @@ public class MethodNode extends ClassNode {
 	private static final long serialVersionUID = 1L;
 
 	private String methodName;
-	private Integer methodStartLinenum;
 	private Integer methodEndLinenum;
 	private ASTNode methodContent;
 
 	MethodNode() {
 	}
 
-	MethodNode(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent) {
+	MethodNode(String methodName, Integer methodEndLinenum, ASTNode methodContent) {
 		this.methodName = methodName;
-		this.methodStartLinenum = methodStartLinenum;
 		this.methodEndLinenum = methodEndLinenum;
 		this.methodContent = methodContent;
 	}
@@ -48,7 +46,7 @@ public class MethodNode extends ClassNode {
 			Integer methodEndLinenum, ASTNode methodContent) {
 		AssertUtils.notNull(classNode, "Node must not null!");
 
-		MethodNode methodNode = new MethodNode(methodName, methodStartLinenum, methodEndLinenum, methodContent);
+		MethodNode methodNode = new MethodNode(methodName, methodEndLinenum, methodContent);
 		BeanUtils.copyProperties(methodNode, classNode);
 		return methodNode;
 	}

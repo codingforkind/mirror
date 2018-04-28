@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.UUID;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IBinding;
@@ -16,8 +15,10 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import cn.com.cx.ps.mirror.constant.NodeTypeEnum;
 import cn.com.cx.ps.mirror.graph.node.ClassNode;
 import cn.com.cx.ps.mirror.graph.node.MethodNode;
+import cn.com.cx.ps.mirror.graph.node.Node;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
@@ -25,6 +26,7 @@ import cn.com.cx.ps.mirror.java.variable.VariableType.PRIME;
 import cn.com.cx.ps.mirror.java.variable.VariableType.TYPE;
 import cn.com.cx.ps.mirror.utils.AssertUtils;
 import cn.com.cx.ps.mirror.utils.AstUtils;
+import cn.com.cx.ps.mirror.utils.UUIDUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -87,17 +89,28 @@ public class VariableVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
-		// TODO Auto-generated method stub
-		UUID.randomUUID();
+		String id = UUIDUtils.randomUUID();
+		Integer startLine = AstUtils.getEndLine(node.getName());
+		Integer endLine = AstUtils.getEndLine(node);
+		String className = node.getName().getIdentifier();
 
+		ClassNode classNode = ClassNode.instance(new Node(id, NodeTypeEnum.CLASS, startLine, this.file),
+				this.packageName, className, endLine, node);
+		this.classNodeSet.add(classNode);
 		return super.visit(node);
 	}
 
 	@Override
 	public boolean visit(MethodDeclaration node) {
-		// TODO Auto-generated method stub
+		String methodName = node.getName().getIdentifier();
+		Integer startLine = AstUtils.getEndLine(node.getName());
+//		TODO 方法和类不再单独的强调其语法属性，把各种属性放到节点中；即把类cn.com.cx.ps.mirror.java.variable.Class放入Node中作为属性
+//		，并且在ClassDeclarationVisitor中把ClassNode提取
+		
+		
 		return super.visit(node);
 	}
+	
 
 	private void addVariable(Integer lineNum, Variable variable) {
 		if (!varInFile.containsKey(lineNum)) {

@@ -25,18 +25,15 @@ public class ClassNode extends Node {
 
 	private String packageName;
 	private String className;
-	private Integer classStartLinenum;
 	private Integer classEndLinenum;
 	private ASTNode classContent;
 
 	ClassNode() {
 	}
 
-	ClassNode(String packageName, String className, Integer classStartLinenum, Integer classEndLinenum,
-			ASTNode classContent) {
+	ClassNode(String packageName, String className, Integer classEndLinenum, ASTNode classContent) {
 		this.packageName = packageName;
 		this.className = className;
-		this.classStartLinenum = classStartLinenum;
 		this.classEndLinenum = classEndLinenum;
 		this.classContent = classContent;
 	}
@@ -47,11 +44,11 @@ public class ClassNode extends Node {
 		return classNode;
 	}
 
-	public static ClassNode instance(Node node, String packageName, String className, Integer classStartLinenum,
-			Integer classEndLinenum, ASTNode classContent) {
+	public static ClassNode instance(Node node, String packageName, String className, Integer classEndLinenum,
+			ASTNode classContent) {
 		AssertUtils.notNull(node, "Node must not null!");
 
-		ClassNode classNode = new ClassNode(packageName, className, classStartLinenum, classEndLinenum, classContent);
+		ClassNode classNode = new ClassNode(packageName, className, classEndLinenum, classContent);
 		BeanUtils.copyProperties(classNode, node);
 		return classNode;
 	}
