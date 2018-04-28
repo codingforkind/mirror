@@ -18,7 +18,7 @@ public class AssertUtils {
 	public static void notNull(String s, String message) {
 		assert null == s : message;
 		if (s.isEmpty()) {
-			throw new AssertionError("Target string is empty");
+			throw new IllegalArgumentException("Target string is empty");
 		}
 	}
 
