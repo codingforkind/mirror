@@ -74,5 +74,17 @@ public class VariableVisitorTests {
 		log.info(FILE_PATH);
 		testjavaFile(FILE_PATH);
 	}
+	
+	
+	/**
+	 * assert expression1 : expression2; 
+	 * expression1为false则抛出异常并执行expression2。
+	 * expression1为true则不抛出异常，expression2不执行。
+	 */
+	@Test
+	public void test1() {
+		assert 1 == 1:"RIGHT"; 
+		assert 1 != 1:"WRONG";
+	}
 
 }

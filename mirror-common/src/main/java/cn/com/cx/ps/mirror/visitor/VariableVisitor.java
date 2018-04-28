@@ -6,14 +6,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.springframework.util.Assert;
 
+import cn.com.cx.ps.mirror.graph.node.ClassNode;
+import cn.com.cx.ps.mirror.graph.node.MethodNode;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
@@ -49,6 +54,10 @@ public class VariableVisitor extends ASTVisitor {
 
 	private Set<Variable> varSet = new HashSet<>(); // all variable defined in this java file
 	private Map<Integer, Set<Variable>> varInFile = new TreeMap<>();
+	
+	private Set<ClassNode> classNodeSet = new HashSet<>();
+	private Set<MethodNode> methodNodeSet = new HashSet<>();
+	
 
 	public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
 		this.file = file;
@@ -76,7 +85,23 @@ public class VariableVisitor extends ASTVisitor {
 		}
 		return super.visit(node);
 	}
+	
+	@Override
+	public boolean visit(TypeDeclaration node) {
+		// TODO Auto-generated method stub
+		UUID.randomUUID();
+		
+		return super.visit(node);
+	}
+	
+	@Override
+	public boolean visit(MethodDeclaration node) {
+		// TODO Auto-generated method stub
+		return super.visit(node);
+	}
 
+	
+	
 	private void addVariable(Integer lineNum, Variable variable) {
 		if (!varInFile.containsKey(lineNum)) {
 			Set<Variable> set = new HashSet<>();

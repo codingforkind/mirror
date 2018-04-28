@@ -11,7 +11,7 @@ import lombok.Data;
 /**
  * @author Piggy
  *
- * @description 
+ * @description
  * @date 2018年4月27日
  */
 @Data
@@ -21,6 +21,16 @@ public class Node implements Serializable {
 	private String nodeId;
 	private NodeTypeEnum nodeTypeEnum;
 	private Integer linenum;
-	private String javaFile;
-	private String content;
+	private String javaFilePath;
+
+	public Node() {
+	}
+
+	public Node(String nodeId, NodeTypeEnum nodeTypeEnum, int linenum, String javaFilePath) {
+		this.nodeId = nodeId;
+		this.nodeTypeEnum = nodeTypeEnum;
+		this.linenum = linenum;
+		this.javaFilePath = javaFilePath;
+	}
+
 }
