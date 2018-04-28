@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
 import cn.com.cx.ps.mirror.exceptions.AnalysisException;
+import cn.com.cx.ps.mirror.utils.AssertUtils;
 import lombok.Data;
 
 @Data
@@ -76,8 +77,14 @@ public class VariableType {
 	}
 
 	public static enum PRIME {
-		INT("int"), CHAR("char"), DOUBLE("double"), BOOLEAN("boolean"), FLOAT("float"), BYTE("byte"), SHORT(
-				"short"), LONG("long");
+		INT("int"), 
+		CHAR("char"), 
+		DOUBLE("double"), 
+		BOOLEAN("boolean"), 
+		FLOAT("float"), 
+		BYTE("byte"), 
+		SHORT("short"), 
+		LONG("long");
 
 		private String code;
 
@@ -86,7 +93,7 @@ public class VariableType {
 		}
 
 		public final static PRIME prime(String code) {
-			assert null == code : "prime argument is NULL in ";
+			AssertUtils.notNull(code, "Prime argument is null in " + PRIME.class);
 			for (PRIME p : PRIME.values()) {
 				if (code.equals(p.getCode())) {
 					return p;
@@ -96,7 +103,7 @@ public class VariableType {
 		}
 
 		public final static boolean isPRIME(String code) {
-			assert null == code : "isPRIME argument  is NULL in ";
+			AssertUtils.notNull(code, "Prime argument is null in " + PRIME.class);
 			for (PRIME p : PRIME.values()) {
 				if (code.equals(p.getCode())) {
 					return true;

@@ -23,6 +23,7 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
 import cn.com.cx.ps.mirror.java.variable.VariableType.PRIME;
 import cn.com.cx.ps.mirror.java.variable.VariableType.TYPE;
+import cn.com.cx.ps.mirror.utils.AssertUtils;
 import cn.com.cx.ps.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,10 +54,9 @@ public class VariableVisitor extends ASTVisitor {
 
 	private Set<Variable> varSet = new HashSet<>(); // all variable defined in this java file
 	private Map<Integer, Set<Variable>> varInFile = new TreeMap<>();
-	
+
 	private Set<ClassNode> classNodeSet = new HashSet<>();
 	private Set<MethodNode> methodNodeSet = new HashSet<>();
-	
 
 	public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
 		this.file = file;
@@ -84,23 +84,21 @@ public class VariableVisitor extends ASTVisitor {
 		}
 		return super.visit(node);
 	}
-	
+
 	@Override
 	public boolean visit(TypeDeclaration node) {
 		// TODO Auto-generated method stub
 		UUID.randomUUID();
-		
+
 		return super.visit(node);
 	}
-	
+
 	@Override
 	public boolean visit(MethodDeclaration node) {
 		// TODO Auto-generated method stub
 		return super.visit(node);
 	}
 
-	
-	
 	private void addVariable(Integer lineNum, Variable variable) {
 		if (!varInFile.containsKey(lineNum)) {
 			Set<Variable> set = new HashSet<>();
@@ -162,7 +160,7 @@ public class VariableVisitor extends ASTVisitor {
 	}
 
 	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
-		assert null == prjClasses : "project classes parameter can not be NULL";
+		AssertUtils.notNull(prjClasses, "project classes parameter can not be NULL");
 
 		Set<Entry<String, Set<Class>>> entrySet = prjClasses.entrySet();
 		Iterator<Entry<String, Set<Class>>> classIterator = entrySet.iterator();
