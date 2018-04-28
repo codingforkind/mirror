@@ -5,6 +5,10 @@ package cn.com.cx.ps.mirror.graph.node;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import com.alibaba.fastjson.JSON;
+
+import cn.com.cx.ps.mirror.utils.AssertUtils;
+import cn.com.cx.ps.mirror.utils.BeanUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,15 +27,29 @@ public class MethodNode extends ClassNode {
 	private Integer methodStartLinenum;
 	private Integer methodEndLinenum;
 	private ASTNode methodContent;
-	
-	public MethodNode() {
+
+	MethodNode() {
 	}
 
-	public MethodNode(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent) {
+	MethodNode(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent) {
 		this.methodName = methodName;
 		this.methodStartLinenum = methodStartLinenum;
 		this.methodEndLinenum = methodEndLinenum;
 		this.methodContent = methodContent;
 	}
-	
+
+	public static MethodNode instance(ClassNode classNode) {
+		AssertUtils.notNull(classNode, "Node must not null!");
+		MethodNode methodNode = (MethodNode) JSON.parse(JSON.toJSONString(classNode));
+		return methodNode;
+	}
+
+	public static MethodNode instance(ClassNode classNode, String methodName, Integer methodStartLinenum,
+			Integer methodEndLinenum, ASTNode methodContent) {
+		AssertUtils.notNull(classNode, "Node must not null!");
+
+		MethodNode methodNode = new MethodNode(methodName, methodStartLinenum, methodEndLinenum, methodContent);
+		BeanUtils.copyProperties(methodNode, classNode);
+		return methodNode;
+	}
 }

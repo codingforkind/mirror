@@ -8,7 +8,11 @@ import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.com.cx.ps.mirror.java.variable.Variable;
+import cn.com.cx.ps.mirror.utils.AssertUtils;
+import cn.com.cx.ps.mirror.utils.BeanUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,14 +30,30 @@ public class StatementNode extends MethodNode {
 	private ASTNode statementContent;
 
 	private Set<Variable> variables = new HashSet<>();
-	
-	public StatementNode() {
+
+	StatementNode() {
 	}
 
-	public StatementNode(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent,
+	StatementNode(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent,
 			ASTNode statementContent, Set<Variable> variables) {
 		this.statementContent = statementContent;
 		this.variables = variables;
+	}
+
+	public static StatementNode instance(MethodNode methodNode) {
+		AssertUtils.notNull(methodNode, "Node must not null!");
+		StatementNode statementNode = (StatementNode) JSON.parse(JSON.toJSONString(methodNode));
+		return statementNode;
+	}
+
+	public static StatementNode instance(MethodNode methodNode, String methodName, Integer methodStartLinenum,
+			Integer methodEndLinenum, ASTNode methodContent, ASTNode statementContent, Set<Variable> variables) {
+		AssertUtils.notNull(methodNode, "Node must not null!");
+
+		StatementNode statementNode = new StatementNode(methodName, methodStartLinenum, methodEndLinenum, methodContent,
+				statementContent, variables);
+		BeanUtils.copyProperties(statementNode, methodNode);
+		return statementNode;
 	}
 
 	public void addVariable(Integer linenum, Variable variable) {

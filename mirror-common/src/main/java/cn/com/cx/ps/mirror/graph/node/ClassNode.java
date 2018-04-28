@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import com.alibaba.fastjson.JSON;
 
 import cn.com.cx.ps.mirror.utils.AssertUtils;
+import cn.com.cx.ps.mirror.utils.BeanUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,10 +29,10 @@ public class ClassNode extends Node {
 	private Integer classEndLinenum;
 	private ASTNode classContent;
 
-	public ClassNode() {
+	ClassNode() {
 	}
 
-	private ClassNode(String packageName, String className, Integer classStartLinenum, Integer classEndLinenum,
+	ClassNode(String packageName, String className, Integer classStartLinenum, Integer classEndLinenum,
 			ASTNode classContent) {
 		this.packageName = packageName;
 		this.className = className;
@@ -51,9 +52,7 @@ public class ClassNode extends Node {
 		AssertUtils.notNull(node, "Node must not null!");
 
 		ClassNode classNode = new ClassNode(packageName, className, classStartLinenum, classEndLinenum, classContent);
-		// (ClassNode) JSON.parse(JSON.toJSONString(node));
-		
-		
+		BeanUtils.copyProperties(classNode, node);
 		return classNode;
 	}
 }
