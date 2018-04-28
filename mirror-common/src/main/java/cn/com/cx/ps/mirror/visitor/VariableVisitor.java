@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.springframework.util.Assert;
 
 import cn.com.cx.ps.mirror.graph.node.ClassNode;
 import cn.com.cx.ps.mirror.graph.node.MethodNode;
@@ -163,7 +162,7 @@ public class VariableVisitor extends ASTVisitor {
 	}
 
 	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
-		Assert.notNull(prjClasses, "project classes parameter can not be NULL");
+		assert null == prjClasses : "project classes parameter can not be NULL";
 
 		Set<Entry<String, Set<Class>>> entrySet = prjClasses.entrySet();
 		Iterator<Entry<String, Set<Class>>> classIterator = entrySet.iterator();

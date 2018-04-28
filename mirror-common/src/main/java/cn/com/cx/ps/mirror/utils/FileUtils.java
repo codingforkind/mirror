@@ -1,11 +1,5 @@
 package cn.com.cx.ps.mirror.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import cn.com.cx.ps.mirror.exceptions.ProjectException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,13 +10,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import cn.com.cx.ps.mirror.exceptions.ProjectException;
+
 /**
  * @author Piggy
  *
  * @description 
  * @since 2018年3月12日
  */
-@Component
 public class FileUtils {
     private static Logger log = LoggerFactory.getLogger(FileUtils.class);
 

@@ -3,7 +3,6 @@ package cn.com.cx.ps.mirror.java.variable;
 import java.util.Objects;
 
 import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.springframework.util.Assert;
 
 import cn.com.cx.ps.mirror.exceptions.AnalysisException;
 import lombok.Data;
@@ -87,7 +86,7 @@ public class VariableType {
 		}
 
 		public final static PRIME prime(String code) {
-			Assert.notNull(code, "prime argument is NULL in " + PRIME.class);
+			assert null == code : "prime argument is NULL in ";
 			for (PRIME p : PRIME.values()) {
 				if (code.equals(p.getCode())) {
 					return p;
@@ -97,7 +96,7 @@ public class VariableType {
 		}
 
 		public final static boolean isPRIME(String code) {
-			Assert.notNull(code, "isPRIME argument  is NULL in " + PRIME.class);
+			assert null == code : "isPRIME argument  is NULL in ";
 			for (PRIME p : PRIME.values()) {
 				if (code.equals(p.getCode())) {
 					return true;
