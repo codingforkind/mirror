@@ -16,7 +16,7 @@ import java.util.Set;
 public class Archive implements Serializable {
 
     private String path; // archive's location
-    private Set<String> targets;
+    private Set<String> targets; // target files in the archive, such as java file in a java project.
 
     private Map<String, Set<Class>> classes; // all classes in this java archive
 
