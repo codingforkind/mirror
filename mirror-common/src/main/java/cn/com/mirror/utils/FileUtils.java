@@ -76,9 +76,9 @@ public class FileUtils {
     }
 
 	/**
-	 * Extract all the java file in the project
+	 * Extract all the target in the archive
 	 */
-	public static final Set<String> prjJavaFileSet(String prjPath) {
+	public static final Set<String> extractTargetPath(String prjPath) {
 		File file = new File(prjPath);
 		if (!file.exists() || !file.isDirectory()) {
 			throw new ProjectException(prjPath + " is not a directory or even not exists!");

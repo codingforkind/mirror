@@ -22,7 +22,7 @@ public class ClassDeclarationVisitor extends ASTVisitor {
 
     private String packageName;
     // the first element in this list is the outer class, others are inner class in the first class.
-    private Set<Class> prjClasses = new HashSet<>();
+    private Set<Class> clsSet = new HashSet<>();
 
     public ClassDeclarationVisitor(String file) {
         this.file = file;
@@ -54,7 +54,7 @@ public class ClassDeclarationVisitor extends ASTVisitor {
                 }
             }
 
-            this.prjClasses.add(mirrorClass);
+            this.clsSet.add(mirrorClass);
         } else {
             log.error("NULL resolve binding for node: ~{}~", typeBinding);
         }
