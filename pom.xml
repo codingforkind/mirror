@@ -13,7 +13,6 @@
 
 	<modules>
 		<module>mirror-common</module>
-		<module>mirror-web</module>
 	</modules>
 
 </project>
