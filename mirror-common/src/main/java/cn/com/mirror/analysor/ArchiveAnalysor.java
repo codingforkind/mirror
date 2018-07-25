@@ -17,6 +17,7 @@ public class ArchiveAnalysor {
     public Archive targetAnalyze(String path) {
         // nas -> archive -> unzip -> tmppath -> analyze
         Archive archive = new Archive();
+        // extract all target files in path
         archive.setTargets(FileUtils.extractTargetPath(path));
 
         for (String targetPath : archive.getTargets()) {
@@ -28,11 +29,11 @@ public class ArchiveAnalysor {
             archive.addPackages(targetPath, classDeclarationVisitor.getPackageName());
             archive.addClasses(targetPath, classDeclarationVisitor.getClsSet());
 
-
             // variable analysis
             VariableVisitor variableVisitor = new VariableVisitor(targetPath,
                     archive.getPackages().get(targetPath), archive.getClasses());
             compilationUnit.accept(variableVisitor);
+            archive.addVariables(targetPath, variableVisitor.getVariableSet());
         }
 
         return archive;

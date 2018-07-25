@@ -31,8 +31,8 @@ public class VariableVisitor extends ASTVisitor {
      */
     private final Map<String, Set<Class>> prjClasses;
 
-    private Set<Variable> varSet = new HashSet<>(); // all variable defined in this java file
-    private Map<Integer, Set<Variable>> varInFile = new TreeMap<>();
+    private Set<Variable> variableSet = new HashSet<>(); // all variable defined in this java file
+    private Map<Integer, Set<Variable>> variableInFile = new TreeMap<>();
 
     public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
         this.file = file;
@@ -57,7 +57,7 @@ public class VariableVisitor extends ASTVisitor {
 
             addVariable(AstUtils.getEndLine(node), variable);
 
-            varSet.add(variable);
+            variableSet.add(variable);
         }
         return super.visit(node);
     }
@@ -65,12 +65,12 @@ public class VariableVisitor extends ASTVisitor {
 
 // private methods
     private void addVariable(Integer lineNum, Variable variable) {
-        if (!varInFile.containsKey(lineNum)) {
+        if (!variableInFile.containsKey(lineNum)) {
             Set<Variable> set = new HashSet<>();
             set.add(variable);
-            varInFile.put(lineNum, set);
+            variableInFile.put(lineNum, set);
         } else {
-            varInFile.get(lineNum).add(variable);
+            variableInFile.get(lineNum).add(variable);
         }
     }
 
