@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.cx.ps.mirror.java.node;
+package cn.com.cx.ps.mirror.node;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 

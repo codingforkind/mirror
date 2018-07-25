@@ -9,10 +9,8 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import cn.com.cx.ps.mirror.java.variable.Class;
+import cn.com.cx.ps.mirror.variable.Class;
 import lombok.Getter;
 import lombok.Setter;
 

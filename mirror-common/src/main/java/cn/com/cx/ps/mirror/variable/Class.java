@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.java.variable;
+package cn.com.cx.ps.mirror.variable;
 
 import java.io.Serializable;
 import java.util.Objects;

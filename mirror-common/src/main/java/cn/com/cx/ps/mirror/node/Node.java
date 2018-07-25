@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.cx.ps.mirror.java.node;
+package cn.com.cx.ps.mirror.node;
 
 import java.io.Serializable;
 

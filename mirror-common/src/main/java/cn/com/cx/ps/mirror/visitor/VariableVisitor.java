@@ -1,16 +1,11 @@
 package cn.com.cx.ps.mirror.visitor;
 
-import cn.com.cx.ps.mirror.constant.NodeTypeEnum;
-import cn.com.cx.ps.mirror.java.node.ClassNode;
-import cn.com.cx.ps.mirror.java.node.MethodNode;
-import cn.com.cx.ps.mirror.java.node.Node;
-import cn.com.cx.ps.mirror.java.variable.Class;
-import cn.com.cx.ps.mirror.java.variable.Variable;
-import cn.com.cx.ps.mirror.java.variable.VariableType;
-import cn.com.cx.ps.mirror.java.variable.VariableType.PRIME;
-import cn.com.cx.ps.mirror.java.variable.VariableType.TYPE;
+import cn.com.cx.ps.mirror.variable.Class;
+import cn.com.cx.ps.mirror.variable.Variable;
+import cn.com.cx.ps.mirror.variable.VariableType;
+import cn.com.cx.ps.mirror.variable.VariableType.PRIME;
+import cn.com.cx.ps.mirror.variable.VariableType.TYPE;
 import cn.com.cx.ps.mirror.utils.AstUtils;
-import cn.com.cx.ps.mirror.utils.UUIDUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

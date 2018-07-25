@@ -1,9 +1,9 @@
 /**
  * 
  */
-package cn.com.cx.ps.mirror.java.node;
+package cn.com.cx.ps.mirror.node;
 
-import cn.com.cx.ps.mirror.java.variable.Variable;
+import cn.com.cx.ps.mirror.variable.Variable;
 import cn.com.cx.ps.mirror.utils.BeanUtils;
 import com.alibaba.fastjson.JSON;
 import lombok.Getter;
