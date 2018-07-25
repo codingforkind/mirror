@@ -1,12 +1,10 @@
 package cn.com.cx.ps.mirror.java.variable;
 
-import java.util.Objects;
-
+import cn.com.cx.ps.mirror.exceptions.AnalysisException;
+import lombok.Data;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
-import cn.com.cx.ps.mirror.exceptions.AnalysisException;
-import cn.com.cx.ps.mirror.utils.AssertUtils;
-import lombok.Data;
+import java.util.Objects;
 
 @Data
 public class VariableType {
@@ -93,7 +91,6 @@ public class VariableType {
 		}
 
 		public final static PRIME prime(String code) {
-			AssertUtils.notNull(code, "Prime argument is null in " + PRIME.class);
 			for (PRIME p : PRIME.values()) {
 				if (code.equals(p.getCode())) {
 					return p;
@@ -103,7 +100,6 @@ public class VariableType {
 		}
 
 		public final static boolean isPRIME(String code) {
-			AssertUtils.notNull(code, "Prime argument is null in " + PRIME.class);
 			for (PRIME p : PRIME.values()) {
 				if (code.equals(p.getCode())) {
 					return true;

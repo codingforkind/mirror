@@ -1,20 +1,5 @@
 package cn.com.cx.ps.mirror.visitor;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-
 import cn.com.cx.ps.mirror.constant.NodeTypeEnum;
 import cn.com.cx.ps.mirror.graph.node.ClassNode;
 import cn.com.cx.ps.mirror.graph.node.MethodNode;
@@ -24,12 +9,15 @@ import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
 import cn.com.cx.ps.mirror.java.variable.VariableType.PRIME;
 import cn.com.cx.ps.mirror.java.variable.VariableType.TYPE;
-import cn.com.cx.ps.mirror.utils.AssertUtils;
 import cn.com.cx.ps.mirror.utils.AstUtils;
 import cn.com.cx.ps.mirror.utils.UUIDUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * The type Variable visitor. visit all SimpleNodes and resolve its binding and
@@ -173,7 +161,6 @@ public class VariableVisitor extends ASTVisitor {
 	}
 
 	private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
-		AssertUtils.notNull(prjClasses, "project classes parameter can not be NULL");
 
 		Set<Entry<String, Set<Class>>> entrySet = prjClasses.entrySet();
 		Iterator<Entry<String, Set<Class>>> classIterator = entrySet.iterator();

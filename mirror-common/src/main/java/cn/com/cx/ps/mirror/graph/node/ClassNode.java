@@ -3,14 +3,11 @@
  */
 package cn.com.cx.ps.mirror.graph.node;
 
-import org.eclipse.jdt.core.dom.ASTNode;
-
-import com.alibaba.fastjson.JSON;
-
-import cn.com.cx.ps.mirror.utils.AssertUtils;
 import cn.com.cx.ps.mirror.utils.BeanUtils;
+import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.jdt.core.dom.ASTNode;
 
 /**
  * @author Piggy
@@ -39,15 +36,12 @@ public class ClassNode extends Node {
 	}
 
 	public static ClassNode instance(Node node) {
-		AssertUtils.notNull(node, "Node must not null!");
 		ClassNode classNode = (ClassNode) JSON.parse(JSON.toJSONString(node));
 		return classNode;
 	}
 
 	public static ClassNode instance(Node node, String packageName, String className, Integer classEndLinenum,
 			ASTNode classContent) {
-		AssertUtils.notNull(node, "Node must not null!");
-
 		ClassNode classNode = new ClassNode(packageName, className, classEndLinenum, classContent);
 		BeanUtils.copyProperties(classNode, node);
 		return classNode;
