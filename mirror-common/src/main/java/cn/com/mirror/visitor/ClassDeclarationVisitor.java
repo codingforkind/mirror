@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.visitor;
+package cn.com.mirror.visitor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import cn.com.cx.ps.mirror.variable.Class;
+import cn.com.mirror.variable.Class;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,11 +18,11 @@ import lombok.Setter;
 @Setter
 @Slf4j
 public class ClassDeclarationVisitor extends ASTVisitor {
+    private final String file;
+
     private String packageName;
     // the first element in this list is the outer class, others are inner class in the first class.
     private Set<Class> prjClasses = new HashSet<>();
-
-    private String file;
 
     public ClassDeclarationVisitor(String file) {
         this.file = file;

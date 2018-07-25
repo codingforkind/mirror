@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.variable;
+package cn.com.mirror.variable;
 
 import java.util.Objects;
 

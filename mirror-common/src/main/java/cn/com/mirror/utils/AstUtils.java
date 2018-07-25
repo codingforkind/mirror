@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.utils;
+package cn.com.mirror.utils;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;

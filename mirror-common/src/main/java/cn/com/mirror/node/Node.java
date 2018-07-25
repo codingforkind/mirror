@@ -1,11 +1,11 @@
 /**
  * 
  */
-package cn.com.cx.ps.mirror.node;
+package cn.com.mirror.node;
 
 import java.io.Serializable;
 
-import cn.com.cx.ps.mirror.constant.NodeTypeEnum;
+import cn.com.mirror.constant.NodeTypeEnum;
 import lombok.Data;
 
 /**

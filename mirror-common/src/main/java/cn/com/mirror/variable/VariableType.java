@@ -1,6 +1,6 @@
-package cn.com.cx.ps.mirror.variable;
+package cn.com.mirror.variable;
 
-import cn.com.cx.ps.mirror.exceptions.AnalysisException;
+import cn.com.mirror.exceptions.AnalysisException;
 import lombok.Data;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 

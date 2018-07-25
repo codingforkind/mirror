@@ -1,10 +1,10 @@
 /**
  * 
  */
-package cn.com.cx.ps.mirror.node;
+package cn.com.mirror.node;
 
-import cn.com.cx.ps.mirror.variable.Variable;
-import cn.com.cx.ps.mirror.utils.BeanUtils;
+import cn.com.mirror.utils.BeanUtils;
+import cn.com.mirror.variable.Variable;
 import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;

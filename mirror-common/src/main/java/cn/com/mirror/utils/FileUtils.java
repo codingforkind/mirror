@@ -1,4 +1,4 @@
-package cn.com.cx.ps.mirror.utils;
+package cn.com.mirror.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,10 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cn.com.mirror.exceptions.ProjectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import cn.com.cx.ps.mirror.exceptions.ProjectException;
 
 /**
  * @author Piggy
