@@ -13,12 +13,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  */
 public class ArchiveAnalysor {
 
-    public Archive targetAnalyze(String path){
+    public Archive targetAnalyze(String path) {
         // nas -> archive -> unzip -> tmppath -> analyze
         Archive archive = new Archive();
         archive.setTargets(FileUtils.extractTargetPath(path));
 
-        for(String targetPath : archive.getTargets()){
+        for (String targetPath : archive.getTargets()) {
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
             ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor(targetPath);
             compilationUnit.accept(classDeclarationVisitor);
