@@ -1,9 +1,9 @@
 package cn.com.cx.ps.mirror.visitor;
 
 import cn.com.cx.ps.mirror.constant.NodeTypeEnum;
-import cn.com.cx.ps.mirror.graph.node.ClassNode;
-import cn.com.cx.ps.mirror.graph.node.MethodNode;
-import cn.com.cx.ps.mirror.graph.node.Node;
+import cn.com.cx.ps.mirror.node.ClassNode;
+import cn.com.cx.ps.mirror.node.MethodNode;
+import cn.com.cx.ps.mirror.node.Node;
 import cn.com.cx.ps.mirror.java.variable.Class;
 import cn.com.cx.ps.mirror.java.variable.Variable;
 import cn.com.cx.ps.mirror.java.variable.VariableType;
