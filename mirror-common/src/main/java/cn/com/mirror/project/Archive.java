@@ -44,7 +44,7 @@ public class Archive implements Serializable {
         variables.put(targetPath, variableSet);
     }
 
-    public void addVarsInline(String targetPath, Map<Integer, Set<Variable>> variableInFile) {
+    public void addMappedVars(String targetPath, Map<Integer, Set<Variable>> variableInFile) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");
         mappedVars.put(targetPath, variableInFile);
     }
