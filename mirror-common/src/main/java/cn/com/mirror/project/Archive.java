@@ -22,39 +22,30 @@ public class Archive implements Serializable {
     private Set<String> targets; // target files in the archive, such as java file in a java project.
 
     private Map<String, String> packages; // all packages in this java archive
-    private Map<String, Set<Class>> classes; // all classes in this java archive
-    private Map<String, Set<Variable>> variables; // all variables in this java archive
+    private Map<String, Set<Class>> classes = new HashMap<>(); // all classes in this java archive
+    private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in this java archive
+    private Map<String, Map<Integer, Set<Variable>>> mappedVars = new HashMap<>(); // all variables in a single code line
 
 
     public void addClasses(String targetPath, Set<Class> clsSet) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");
 //        Validate.notEmpty(clsSet, "Target has none classes."); // enum
-        if (null != classes) {
-            classes.put(targetPath, clsSet);
-        } else {
-            classes = new HashMap<>();
-            classes.put(targetPath, clsSet);
-        }
+        classes.put(targetPath, clsSet);
     }
 
     public void addPackages(String targetPath, String packageName) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");
         Validate.notEmpty(packageName, "Package name can not be empty.");
-        if (null != packages) {
-            packages.put(targetPath, packageName);
-        } else {
-            packages = new HashMap<>();
-            packages.put(targetPath, packageName);
-        }
+        packages.put(targetPath, packageName);
     }
 
     public void addVariables(String targetPath, Set<Variable> variableSet) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");
-        if (null != variables) {
-            variables.put(targetPath, variableSet);
-        } else {
-            variables = new HashMap<>();
-            variables.put(targetPath, variableSet);
-        }
+        variables.put(targetPath, variableSet);
+    }
+
+    public void addVarsInline(String targetPath, Map<Integer, Set<Variable>> variableInFile) {
+        Validate.notEmpty(targetPath, "Target's path can not be empty.");
+        mappedVars.put(targetPath, variableInFile);
     }
 }
