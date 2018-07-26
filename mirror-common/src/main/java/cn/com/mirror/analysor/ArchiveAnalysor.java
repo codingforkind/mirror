@@ -25,7 +25,6 @@ public class ArchiveAnalysor {
         archive.setTargets(FileUtils.extractTargetPath(path));
 
         for (String targetPath : archive.getTargets()) {
-            log.debug("Target path: {}", targetPath);
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
 
             // packages/classes analysis
