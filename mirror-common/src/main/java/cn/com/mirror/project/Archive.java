@@ -28,7 +28,7 @@ public class Archive implements Serializable {
 
     public void addClasses(String targetPath, Set<Class> clsSet) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");
-        Validate.notEmpty(clsSet, "Target has none classes.");
+//        Validate.notEmpty(clsSet, "Target has none classes."); // enum
         if (null != classes) {
             classes.put(targetPath, clsSet);
         } else {
@@ -50,7 +50,6 @@ public class Archive implements Serializable {
 
     public void addVariables(String targetPath, Set<Variable> variableSet) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");
-        Validate.notEmpty(variableSet, "Target has none variables.");
         if (null != variables) {
             variables.put(targetPath, variableSet);
         } else {

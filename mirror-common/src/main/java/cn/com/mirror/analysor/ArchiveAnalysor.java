@@ -5,13 +5,17 @@ import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
 import cn.com.mirror.visitor.ClassDeclarationVisitor;
 import cn.com.mirror.visitor.VariableVisitor;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author piggy
  * @description
  * @date 18-7-25
  */
+@Slf4j
 public class ArchiveAnalysor {
 
     public Archive targetAnalyze(String path) {
@@ -19,8 +23,10 @@ public class ArchiveAnalysor {
         Archive archive = new Archive();
         // extract all target files in path
         archive.setTargets(FileUtils.extractTargetPath(path));
+        log.info("Archive targets: {}", archive.getTargets());
 
         for (String targetPath : archive.getTargets()) {
+            log.debug("Target path: {}", targetPath);
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
 
             // packages/classes analysis
