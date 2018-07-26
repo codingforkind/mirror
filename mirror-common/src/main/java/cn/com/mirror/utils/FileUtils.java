@@ -1,18 +1,14 @@
 package cn.com.mirror.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import cn.com.mirror.exceptions.ProjectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import cn.com.mirror.exceptions.ProjectException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Piggy
@@ -38,7 +34,6 @@ public class FileUtils {
             log.error("File reading want wrong: {}", javaFile);
             e.printStackTrace();
         }
-        log.info("File reading completed!");
         return new String(input);
     }
 
@@ -46,7 +41,6 @@ public class FileUtils {
     public static final String getFileName(String javaFile){
         File file = new File(javaFile);
         String fileName = file.getName();
-        log.info("Get file name for: {}", fileName);
         return fileName.substring(0, fileName.lastIndexOf("."));
     }
 
