@@ -21,7 +21,7 @@ public class Archive implements Serializable {
     private String path; // archive's location
     private Set<String> targets; // target files in the archive, such as java file in a java project.
 
-    private Map<String, String> packages; // all packages in this java archive
+    private Map<String, String> packages = new HashMap<>(); // all packages in this java archive
     private Map<String, Set<Class>> classes = new HashMap<>(); // all classes in this java archive
     private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in this java archive
     private Map<String, Map<Integer, Set<Variable>>> mappedVars = new HashMap<>(); // all variables in a single code line
