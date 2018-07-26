@@ -23,7 +23,6 @@ public class ArchiveAnalysor {
         Archive archive = new Archive();
         // extract all target files in path
         archive.setTargets(FileUtils.extractTargetPath(path));
-        log.info("Archive targets: {}", archive.getTargets());
 
         for (String targetPath : archive.getTargets()) {
             log.debug("Target path: {}", targetPath);
