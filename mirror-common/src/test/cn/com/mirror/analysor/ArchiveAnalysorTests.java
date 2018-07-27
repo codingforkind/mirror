@@ -24,9 +24,24 @@ public class ArchiveAnalysorTests {
 //        log.info("{}", archive.getClasses());
 //        log.info("{}", archive.getTargets());
 
-        for (Map.Entry<String, Set<Variable>> entry : archive.getVariables().entrySet()) {
+//        for (Map.Entry<String, Set<Variable>> entry : archive.getVariables().entrySet()) {
+//            log.info("Target path: {}", entry.getKey());
+//            log.info("Variables: {}", entry.getValue());
+//        }
+
+        for (Map.Entry<String, Map<Integer, Set<Variable>>> entry : archive.getMappedVars().entrySet()) {
             log.info("Target path: {}", entry.getKey());
-            log.info("Variables: {}", entry.getValue());
+
+            for (Map.Entry<Integer, Set<Variable>> tm : entry.getValue().entrySet()) {
+                log.info("Line: {}", tm.getKey());
+                tm.getValue().stream().forEach(var -> {
+                    System.out.println(var.getLineNum() + " "
+                            + var.getName() + " "
+                            + var.getVariableType() + " "
+                            + var.isField());
+                });
+            }
+            break;
         }
 
     }
