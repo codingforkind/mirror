@@ -38,6 +38,7 @@ public class ArchiveAnalysor {
                     archive.getPackages().get(targetPath), archive.getClasses());
             compilationUnit.accept(variableVisitor);
             archive.addVariables(targetPath, variableVisitor.getVariableSet());
+            archive.addMappedVars(targetPath, variableVisitor.getVariableInFile());
         }
 
         return archive;
