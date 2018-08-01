@@ -1,4 +1,4 @@
-package cn.com.mirror.visitor;
+package cn.com.mirror.java.visitor;
 
 import cn.com.mirror.java.variable.Class;
 import cn.com.mirror.java.variable.Variable;

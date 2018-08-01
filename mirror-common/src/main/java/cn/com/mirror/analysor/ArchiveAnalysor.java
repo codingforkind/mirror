@@ -3,12 +3,10 @@ package cn.com.mirror.analysor;
 import cn.com.mirror.project.Archive;
 import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
-import cn.com.mirror.visitor.ClassDeclarationVisitor;
-import cn.com.mirror.visitor.VariableVisitor;
+import cn.com.mirror.java.visitor.ClassDeclarationVisitor;
+import cn.com.mirror.java.visitor.VariableVisitor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author piggy
