@@ -1,4 +1,4 @@
-package cn.com.mirror.variable;
+package cn.com.mirror.java.variable;
 
 import cn.com.mirror.exceptions.AnalysisException;
 import lombok.Data;

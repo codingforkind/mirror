@@ -1,10 +1,10 @@
 /**
  * 
  */
-package cn.com.mirror.node;
+package cn.com.mirror.java.node;
 
 import cn.com.mirror.utils.BeanUtils;
-import cn.com.mirror.variable.Variable;
+import cn.com.mirror.java.variable.Variable;
 import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;

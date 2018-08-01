@@ -1,10 +1,10 @@
 package cn.com.mirror.visitor;
 
-import cn.com.mirror.variable.Class;
-import cn.com.mirror.variable.Variable;
-import cn.com.mirror.variable.VariableType;
-import cn.com.mirror.variable.VariableType.PRIME;
-import cn.com.mirror.variable.VariableType.TYPE;
+import cn.com.mirror.java.variable.Class;
+import cn.com.mirror.java.variable.Variable;
+import cn.com.mirror.java.variable.VariableType;
+import cn.com.mirror.java.variable.VariableType.PRIME;
+import cn.com.mirror.java.variable.VariableType.TYPE;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.Setter;

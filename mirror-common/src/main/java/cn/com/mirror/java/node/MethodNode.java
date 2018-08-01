@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.mirror.node;
+package cn.com.mirror.java.node;
 
 import cn.com.mirror.utils.BeanUtils;
 import org.eclipse.jdt.core.dom.ASTNode;

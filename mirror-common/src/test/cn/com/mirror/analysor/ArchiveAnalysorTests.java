@@ -1,7 +1,7 @@
 package cn.com.mirror.analysor;
 
 import cn.com.mirror.project.Archive;
-import cn.com.mirror.variable.Variable;
+import cn.com.mirror.java.variable.Variable;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 

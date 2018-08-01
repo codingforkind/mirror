@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import cn.com.mirror.variable.Class;
+import cn.com.mirror.java.variable.Class;
 import lombok.Getter;
 import lombok.Setter;
 

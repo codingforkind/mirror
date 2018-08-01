@@ -1,7 +1,7 @@
 package cn.com.mirror.project;
 
-import cn.com.mirror.variable.Class;
-import cn.com.mirror.variable.Variable;
+import cn.com.mirror.java.variable.Class;
+import cn.com.mirror.java.variable.Variable;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
 
