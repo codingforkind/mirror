@@ -1,8 +1,10 @@
 package cn.com.mirror.analysor;
 
-import cn.com.mirror.project.Archive;
 import cn.com.mirror.java.variable.Variable;
+import cn.com.mirror.java.visitor.ControlDependenceVisitor;
+import cn.com.mirror.project.Archive;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 
 import java.util.Map;
@@ -15,11 +17,31 @@ import java.util.Set;
  */
 @Slf4j
 public class ArchiveAnalysorTests {
+    private static final String TEST_PATH = "/home/piggy/work/test/mirror";
+    private Archive archive;
+    private ArchiveAnalysor archiveAnalysor;
+
+    public void init() {
+        this.archiveAnalysor = new ArchiveAnalysor();
+        this.archive = archiveAnalysor.targetAnalyze(TEST_PATH);
+    }
+
     @Test
-    public void test1() {
-        ArchiveAnalysor archiveAnalysor = new ArchiveAnalysor();
-        log.info("Start test");
-        Archive archive = archiveAnalysor.targetAnalyze("/home/piggy/work/test/mirror");
+    public void testControlDependenceVisitor() {
+        init();
+
+        archive.getTargets().stream().forEach(targetPah -> {
+            ControlDependenceVisitor controlDependenceVisitor = new ControlDependenceVisitor();
+            CompilationUnit compilationUnit = archive.getCompilationUnits().get(targetPah);
+            compilationUnit.accept(controlDependenceVisitor);
+            log.info("Target path: {}", targetPah);
+            log.info("Control edges: {}", controlDependenceVisitor.getControlEdges());
+        });
+    }
+
+    @Test
+    public void testVariables() {
+        init();
 //        log.info("{}", archive.getPackages());
 //        log.info("{}", archive.getClasses());
 //        log.info("{}", archive.getTargets());

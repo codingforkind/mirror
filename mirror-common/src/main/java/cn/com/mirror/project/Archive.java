@@ -4,6 +4,7 @@ import cn.com.mirror.java.variable.Class;
 import cn.com.mirror.java.variable.Variable;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,11 +22,17 @@ public class Archive implements Serializable {
     private String path; // archive's location
     private Set<String> targets; // target files in the archive, such as java file in a java project.
 
+    private Map<String, CompilationUnit> compilationUnits = new HashMap<>(); // all compilation units in this java archive
+
     private Map<String, String> packages = new HashMap<>(); // all packages in this java archive
     private Map<String, Set<Class>> classes = new HashMap<>(); // all classes in this java archive
     private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in this java archive
     private Map<String, Map<Integer, Set<Variable>>> mappedVars = new HashMap<>(); // all variables in a single code line
 
+    public void addCompilationUnit(String targetPath, CompilationUnit compilationUnit) {
+        Validate.notEmpty(targetPath, "Target's path can not be empty.");
+        compilationUnits.put(targetPath, compilationUnit);
+    }
 
     public void addClasses(String targetPath, Set<Class> clsSet) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");

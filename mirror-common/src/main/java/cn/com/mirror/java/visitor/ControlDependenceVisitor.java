@@ -1,8 +1,13 @@
 package cn.com.mirror.java.visitor;
 
 import cn.com.mirror.java.edge.ControlNodeTypeEnum;
+import cn.com.mirror.utils.AstUtils;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author piggy
@@ -10,7 +15,9 @@ import org.eclipse.jdt.core.dom.*;
  * @date 18-8-2
  */
 @Slf4j
+@Getter
 public class ControlDependenceVisitor extends ASTVisitor {
+    private Map<Integer, Integer> controlEdges = new HashMap<>();
 
     private ASTNode searchDirectParentControlNode(ASTNode astNode) {
         ASTNode parent = astNode.getParent();
@@ -20,7 +27,7 @@ public class ControlDependenceVisitor extends ASTVisitor {
         }
 
         // mark the relationships between astNode and statement and return
-
+        controlEdges.put(AstUtils.getEndLine(astNode), AstUtils.getEndLine(parent));
         return parent;
     }
 
@@ -61,11 +68,11 @@ public class ControlDependenceVisitor extends ASTVisitor {
     }
 
     //    Block
-    @Override
-    public boolean visit(Block node) {
-        searchDirectParentControlNode(node);
-        return super.visit(node);
-    }
+//    @Override
+//    public boolean visit(Block node) {
+//        searchDirectParentControlNode(node);
+//        return super.visit(node);
+//    }
 
 
     //    BreakStatement

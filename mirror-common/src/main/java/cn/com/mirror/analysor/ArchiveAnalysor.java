@@ -24,6 +24,7 @@ public class ArchiveAnalysor {
 
         for (String targetPath : archive.getTargets()) {
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
+            archive.addCompilationUnit(targetPath, compilationUnit);
 
             // packages/classes analysis
             ClassDeclarationVisitor classDeclarationVisitor = new ClassDeclarationVisitor(targetPath);
