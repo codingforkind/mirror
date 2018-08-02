@@ -31,8 +31,27 @@ public class ControlDependenceVisitor extends ASTVisitor {
         return parent;
     }
 
+    private int getStartLineNum(ASTNode astNode) {
+        // handle the control nodes' start line num, eg. try-catch-finally, for, enhanced for, etc.
 
-    private final boolean isControlType(ASTNode astNode) {
+        int startLineNum = -1;
+
+        if (astNode instanceof MethodDeclaration) {
+            MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
+            startLineNum = AstUtils.getEndLine(methodDeclaration.getName());
+        }
+
+        if (astNode instanceof IfStatement) {
+            IfStatement ifStatement = (IfStatement) astNode;
+            startLineNum = AstUtils.getEndLine(ifStatement.getExpression());
+        }
+
+
+        return startLineNum;
+    }
+
+
+    private boolean isControlType(ASTNode astNode) {
         if (astNode instanceof MethodDeclaration) return true;
 
         if (astNode instanceof Statement) {
