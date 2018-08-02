@@ -8,75 +8,57 @@ import org.eclipse.jdt.core.dom.*;
  * @date 18-8-1
  */
 public enum ControlNodeTypeEnum {
-    Assert,
-    Block,    // front control type node
-    Break,
-    ConstructorInvocation,
-    Continue,
-    Do,    // front control type node
-    Empty,
-    Expression,
-    For,    // front control type node
-    If,    // front control type node
-    Labeled,    // front control type node
-    Return,
-    SuperConstructorInvocation,
-    SwitchCase,    // front control type node
-    Switch,    // front control type node
-    Synchronized,   // ?
-    Throw,
-    Try,    // front control type node
-    TypeDeclaration,
-    VariableDeclaration,
-    While,    // front control type node
-    EnhancedFor;    // front control type node
+    ASSERT,
+    BLOCK,    // front control type node
+    BREAK,
+    CONSTRUCTOR_INVOCATION,
+    CONTINUE,
+    DO,    // front control type node
+    EMPTY,
+    EXPRESSION,
+    FOR,    // front control type node
+    IF,    // front control type node
+    LABELED,    // front control type node
+    RETURN,
+    SUPER_CONSTRUCTOR_INVOCATION,
+    SWITCH_CASE,    // front control type node
+    SWITCH,    // front control type node
+    SYNCHRONIZED,   // ?
+    THROW,
+    TRY,    // front control type node
+    TYPE_DECLARATION,    // front control type node
+    VARIABLE_DECLARATION,
+    WHILE,    // front control type node
+    ENHANCED_FOR;    // front control type node
 
     private ControlNodeTypeEnum() {
 
     }
 
-    public final static boolean isControlType(Statement statement) {
-        switch (getControlNodeType(statement)) {
-            case Block:
-            case Do:
-            case For:
-            case If:
-            case Labeled:
-            case SwitchCase:
-            case Switch:
-            case Try:
-            case While:
-            case EnhancedFor:
-                return true;
-
-            default:
-                return false;
-        }
-    }
-
     public final static ControlNodeTypeEnum getControlNodeType(Statement statement) {
-        if (statement instanceof AssertStatement) return Assert;
-        if (statement instanceof org.eclipse.jdt.core.dom.Block) return Block;
-        if (statement instanceof BreakStatement) return Break;
-        if (statement instanceof org.eclipse.jdt.core.dom.ConstructorInvocation) return ConstructorInvocation;
-        if (statement instanceof ContinueStatement) return Continue;
-        if (statement instanceof DoStatement) return Do;
-        if (statement instanceof EmptyStatement) return Empty;
-        if (statement instanceof ExpressionStatement) return Expression;
-        if (statement instanceof ForStatement) return For;
-        if (statement instanceof IfStatement) return If;
-        if (statement instanceof LabeledStatement) return Labeled;
-        if (statement instanceof ReturnStatement) return Return;
-        if (statement instanceof org.eclipse.jdt.core.dom.SuperConstructorInvocation) return SuperConstructorInvocation;
-        if (statement instanceof org.eclipse.jdt.core.dom.SwitchCase) return SwitchCase;
-        if (statement instanceof SwitchStatement) return Switch;
-        if (statement instanceof SynchronizedStatement) return Synchronized;
-        if (statement instanceof ThrowStatement) return Throw;
-        if (statement instanceof TryStatement) return Try;
-        if (statement instanceof TypeDeclarationStatement) return TypeDeclaration;
-        if (statement instanceof VariableDeclarationStatement) return VariableDeclaration;
-        if (statement instanceof WhileStatement) return While;
-        if (statement instanceof EnhancedForStatement) return EnhancedFor;
+        if (statement instanceof AssertStatement) return ASSERT;
+        if (statement instanceof org.eclipse.jdt.core.dom.Block) return BLOCK;
+        if (statement instanceof BreakStatement) return BREAK;
+        if (statement instanceof org.eclipse.jdt.core.dom.ConstructorInvocation) return CONSTRUCTOR_INVOCATION;
+        if (statement instanceof ContinueStatement) return CONTINUE;
+        if (statement instanceof DoStatement) return DO;
+        if (statement instanceof EmptyStatement) return EMPTY;
+        if (statement instanceof ExpressionStatement) return EXPRESSION;
+        if (statement instanceof ForStatement) return FOR;
+        if (statement instanceof IfStatement) return IF;
+        if (statement instanceof LabeledStatement) return LABELED;
+        if (statement instanceof ReturnStatement) return RETURN;
+        if (statement instanceof org.eclipse.jdt.core.dom.SuperConstructorInvocation)
+            return SUPER_CONSTRUCTOR_INVOCATION;
+        if (statement instanceof org.eclipse.jdt.core.dom.SwitchCase) return SWITCH_CASE;
+        if (statement instanceof SwitchStatement) return SWITCH;
+        if (statement instanceof SynchronizedStatement) return SYNCHRONIZED;
+        if (statement instanceof ThrowStatement) return THROW;
+        if (statement instanceof TryStatement) return TRY;
+        if (statement instanceof TypeDeclarationStatement) return TYPE_DECLARATION;
+        if (statement instanceof VariableDeclarationStatement) return VARIABLE_DECLARATION;
+        if (statement instanceof WhileStatement) return WHILE;
+        if (statement instanceof EnhancedForStatement) return ENHANCED_FOR;
 
         throw new RuntimeException("No controll type node found!");
     }
