@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,7 +71,11 @@ public class ControlDependenceVisitor extends ASTVisitor {
 
         if (astNode instanceof TryStatement) {
             TryStatement tryStatement = (TryStatement) astNode;
-            // TODO
+            // TODO special treatment for this type of control node, the dependence of the nodes can also have some
+            // edges heading for catch part.
+            if (null != tryStatement.getBody()) {
+                List<Statement> statements = tryStatement.getBody().statements();
+            }
             return AstUtils.getEndLine(tryStatement);
         }
 
