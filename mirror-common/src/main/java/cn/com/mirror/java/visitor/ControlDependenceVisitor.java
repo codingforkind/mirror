@@ -39,6 +39,11 @@ public class ControlDependenceVisitor extends ASTVisitor {
     private int getStartLineNum(ASTNode astNode) {
         // handle the control nodes' start line num, eg. try-catch-finally, for, enhanced for, etc.
         // TODO need to be completed, be aware multi lines
+        /**
+         * the control dependence might have some edges points to the other direction,
+         * like try and do type, which are might have some dependence point at 'catch-finally'
+         * and 'while' part
+         */
 
         if (astNode instanceof TypeDeclaration) {
             TypeDeclaration typeDeclaration = (TypeDeclaration) astNode;
@@ -104,7 +109,8 @@ public class ControlDependenceVisitor extends ASTVisitor {
 
         if (astNode instanceof DoStatement) {
             DoStatement doStatement = (DoStatement) astNode;
-            // TODO
+            // TODO like the try type control node, the dependence of nodes might have some edges heading for
+            // while part.
             return AstUtils.getEndLine(doStatement);
         }
 
