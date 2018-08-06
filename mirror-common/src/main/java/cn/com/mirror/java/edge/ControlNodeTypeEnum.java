@@ -9,7 +9,7 @@ import org.eclipse.jdt.core.dom.*;
  */
 public enum ControlNodeTypeEnum {
     ASSERT,
-    BLOCK,    // front control type node
+//    BLOCK,    // front control type node
     BREAK,
     CONSTRUCTOR_INVOCATION,
     CONTINUE,
@@ -29,7 +29,9 @@ public enum ControlNodeTypeEnum {
     TYPE_DECLARATION,    // front control type node
     VARIABLE_DECLARATION,
     WHILE,    // front control type node
-    ENHANCED_FOR;    // front control type node
+    ENHANCED_FOR,    // front control type node
+
+    UNKNOWN_TYPE;
 
     private ControlNodeTypeEnum() {
 
@@ -37,7 +39,7 @@ public enum ControlNodeTypeEnum {
 
     public final static ControlNodeTypeEnum getControlNodeType(Statement statement) {
         if (statement instanceof AssertStatement) return ASSERT;
-        if (statement instanceof org.eclipse.jdt.core.dom.Block) return BLOCK;
+//        if (statement instanceof org.eclipse.jdt.core.dom.Block) return BLOCK;
         if (statement instanceof BreakStatement) return BREAK;
         if (statement instanceof org.eclipse.jdt.core.dom.ConstructorInvocation) return CONSTRUCTOR_INVOCATION;
         if (statement instanceof ContinueStatement) return CONTINUE;
@@ -60,7 +62,7 @@ public enum ControlNodeTypeEnum {
         if (statement instanceof WhileStatement) return WHILE;
         if (statement instanceof EnhancedForStatement) return ENHANCED_FOR;
 
-        throw new RuntimeException("No controll type node found!");
+        return UNKNOWN_TYPE;
     }
 
 

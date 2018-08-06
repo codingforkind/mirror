@@ -21,15 +21,17 @@ public class ControlDependenceVisitor extends ASTVisitor {
 
     private ASTNode searchDirectParentControlNode(ASTNode astNode) {
         ASTNode parent = astNode.getParent();
-        while (!isControlType(parent)) {
+        while (null != parent &&
+                !isControlType(parent)) {
             // locate the direct parent control type node's position
-            if (null == parent) break;
-
             parent = parent.getParent();
         }
 
         // mark the relationships between astNode and statement and return
-        controlEdges.put(getStartLineNum(astNode), getStartLineNum(parent));
+        int currentLine = getStartLineNum(astNode);
+        int directParentStartLine = getStartLineNum(parent);
+//        log.debug("{}: {} -> {}: {}", currentLine, astNode, directParentStartLine, parent);
+        controlEdges.put(currentLine, directParentStartLine);
         return parent;
     }
 
@@ -37,9 +39,16 @@ public class ControlDependenceVisitor extends ASTVisitor {
         // handle the control nodes' start line num, eg. try-catch-finally, for, enhanced for, etc.
         // TODO need to be completed
 
+        if (astNode instanceof TypeDeclaration) {
+            TypeDeclaration typeDeclaration = (TypeDeclaration) astNode;
+            return AstUtils.getEndLine(typeDeclaration.getName());
+        }
+
         if (astNode instanceof MethodDeclaration) {
             MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
-            return AstUtils.getEndLine(methodDeclaration.getName());
+
+            int methodStartLine = AstUtils.getEndLine(methodDeclaration.getName());
+            return methodStartLine;
         }
 
         if (astNode instanceof IfStatement) {
@@ -52,7 +61,6 @@ public class ControlDependenceVisitor extends ASTVisitor {
 
 
     private boolean isControlType(ASTNode astNode) {
-        if (null == astNode) return false;
 
         if (astNode instanceof MethodDeclaration) return true;
 
@@ -60,7 +68,6 @@ public class ControlDependenceVisitor extends ASTVisitor {
             Statement statement = (Statement) astNode;
 
             switch (ControlNodeTypeEnum.getControlNodeType(statement)) {
-                case BLOCK:
                 case DO:
                 case FOR:
                 case IF:
