@@ -27,13 +27,13 @@ public class ControlDependenceVisitor extends ASTVisitor {
         }
 
         // mark the relationships between astNode and statement and return
-        controlEdges.put(AstUtils.getEndLine(astNode), AstUtils.getEndLine(parent));
+        controlEdges.put(getStartLineNum(astNode), getStartLineNum(parent));
         return parent;
     }
 
     private int getStartLineNum(ASTNode astNode) {
         // handle the control nodes' start line num, eg. try-catch-finally, for, enhanced for, etc.
-
+        // TODO need to be completed
         int startLineNum = -1;
 
         if (astNode instanceof MethodDeclaration) {
