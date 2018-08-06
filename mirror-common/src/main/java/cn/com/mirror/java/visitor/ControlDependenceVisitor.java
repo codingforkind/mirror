@@ -34,7 +34,7 @@ public class ControlDependenceVisitor extends ASTVisitor {
     private int getStartLineNum(ASTNode astNode) {
         // handle the control nodes' start line num, eg. try-catch-finally, for, enhanced for, etc.
         // TODO need to be completed
-        int startLineNum = -1;
+        int startLineNum = AstUtils.getEndLine(astNode);
 
         if (astNode instanceof MethodDeclaration) {
             MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
