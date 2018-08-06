@@ -7,14 +7,16 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 /**
  * @author Piggy
- *
- * @description 
+ * @description
  * @since 2018年3月12日
  */
 public class AstUtils {
 
-	public static int getEndLine(ASTNode node) {
-        return ((CompilationUnit) node.getRoot()).getLineNumber(node.getStartPosition() + node.getLength() - 1);
+    public static int getEndLine(ASTNode node) {
+        if (null == node) return -1;
+
+        return ((CompilationUnit) node.getRoot()).getLineNumber(
+                node.getStartPosition() + node.getLength() - 1);
     }
 
     public static final CompilationUnit getCompUnitResolveBinding(String javaFile) {

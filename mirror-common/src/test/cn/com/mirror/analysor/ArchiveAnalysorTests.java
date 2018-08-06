@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Slf4j
 public class ArchiveAnalysorTests {
-    private static final String TEST_PATH = "/home/piggy/work/test/mirror";
+    private static final String TEST_PATH = "/home/piggy/work/mirror";
     private Archive archive;
     private ArchiveAnalysor archiveAnalysor;
 
