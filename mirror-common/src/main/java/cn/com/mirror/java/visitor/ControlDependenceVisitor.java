@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +31,7 @@ public class ControlDependenceVisitor extends ASTVisitor {
         // mark the relationships between astNode and statement and return
         int currentLine = getStartLineNum(astNode);
         int directParentStartLine = getStartLineNum(parent);
-//        log.debug("{}: {} -> {}: {}", currentLine, astNode, directParentStartLine, parent);
-        controlEdges.put(currentLine, directParentStartLine);
+        markEdges(currentLine, directParentStartLine);
         return parent;
     }
 
@@ -60,6 +60,9 @@ public class ControlDependenceVisitor extends ASTVisitor {
     }
 
 
+    /**
+     * check the control type node in a method
+     */
     private boolean isControlType(ASTNode astNode) {
 
         if (astNode instanceof MethodDeclaration) return true;
@@ -68,9 +71,9 @@ public class ControlDependenceVisitor extends ASTVisitor {
             Statement statement = (Statement) astNode;
 
             switch (ControlNodeTypeEnum.getControlNodeType(statement)) {
+                case IF:
                 case DO:
                 case FOR:
-                case IF:
                 case LABELED:
                 case SWITCH_CASE:
                 case SWITCH:
@@ -88,9 +91,33 @@ public class ControlDependenceVisitor extends ASTVisitor {
 
     }
 
+    private boolean markEdges(int curLine, int parentLine) {
+        if (-1 != parentLine &&
+                curLine != parentLine) {
+            controlEdges.put(curLine, parentLine);
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean visit(SimpleName node) {
         searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(TypeDeclaration node) {
+        int typeDecLine = AstUtils.getEndLine(node.getName());
+        Arrays.stream(node.getFields()).forEach(fieldDeclaration -> {
+            markEdges(getStartLineNum(fieldDeclaration.getType()), typeDecLine);
+        });
+
+        Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
+            markEdges(getStartLineNum(methodDeclaration.getName()), typeDecLine);
+        });
+
         return super.visit(node);
     }
 }
