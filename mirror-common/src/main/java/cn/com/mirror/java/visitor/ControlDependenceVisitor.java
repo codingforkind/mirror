@@ -37,7 +37,7 @@ public class ControlDependenceVisitor extends ASTVisitor {
 
     private int getStartLineNum(ASTNode astNode) {
         // handle the control nodes' start line num, eg. try-catch-finally, for, enhanced for, etc.
-        // TODO need to be completed
+        // TODO need to be completed, be aware multi lines
 
         if (astNode instanceof TypeDeclaration) {
             TypeDeclaration typeDeclaration = (TypeDeclaration) astNode;
@@ -56,6 +56,53 @@ public class ControlDependenceVisitor extends ASTVisitor {
             return AstUtils.getEndLine(ifStatement.getExpression());
         }
 
+        if (astNode instanceof SwitchCase) {
+            SwitchCase switchCase = (SwitchCase) astNode;
+            // be aware multi lines
+            return AstUtils.getEndLine(switchCase.getExpression());
+        }
+
+        if (astNode instanceof SwitchStatement) {
+            SwitchStatement switchStatement = (SwitchStatement) astNode;
+            // be aware multi lines
+            return AstUtils.getEndLine(switchStatement.getExpression());
+        }
+
+        if (astNode instanceof TryStatement) {
+            TryStatement tryStatement = (TryStatement) astNode;
+            // TODO
+            return AstUtils.getEndLine(tryStatement);
+        }
+
+        if (astNode instanceof WhileStatement) {
+            WhileStatement whileStatement = (WhileStatement) astNode;
+            // be aware multi lines
+            return AstUtils.getEndLine(whileStatement.getExpression());
+        }
+
+        if (astNode instanceof EnhancedForStatement) {
+            EnhancedForStatement enhancedForStatement = (EnhancedForStatement) astNode;
+            // be aware multi lines
+            return AstUtils.getEndLine(enhancedForStatement.getExpression());
+        }
+
+        if (astNode instanceof ForStatement) {
+            ForStatement forStatement = (ForStatement) astNode;
+            // be aware multi lines
+            return AstUtils.getEndLine(forStatement.getExpression());
+        }
+
+        if (astNode instanceof LabeledStatement) {
+            LabeledStatement labeledStatement = (LabeledStatement) astNode;
+            return AstUtils.getEndLine(labeledStatement.getLabel());
+        }
+
+        if (astNode instanceof DoStatement) {
+            DoStatement doStatement = (DoStatement) astNode;
+            // TODO
+            return AstUtils.getEndLine(doStatement);
+        }
+
         return AstUtils.getEndLine(astNode);
     }
 
@@ -72,14 +119,14 @@ public class ControlDependenceVisitor extends ASTVisitor {
 
             switch (ControlNodeTypeEnum.getControlNodeType(statement)) {
                 case IF:
-                case DO:
-                case FOR:
-                case LABELED:
                 case SWITCH_CASE:
                 case SWITCH:
                 case TRY:
                 case WHILE:
                 case ENHANCED_FOR:
+                case FOR:
+                case LABELED:
+                case DO:
                     return true;
 
                 default:
