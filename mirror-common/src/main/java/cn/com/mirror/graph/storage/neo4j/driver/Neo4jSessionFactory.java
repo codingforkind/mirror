@@ -1,6 +1,8 @@
 package cn.com.mirror.graph.storage.neo4j.driver;
 
-import org.neo4j.driver.internal.SessionFactory;
+import cn.com.mirror.graph.storage.neo4j.config.Neo4jProperty;
+import org.neo4j.ogm.config.Configuration;
+import org.neo4j.ogm.session.SessionFactory;
 
 /**
  * @author piggy
@@ -11,11 +13,15 @@ public class Neo4jSessionFactory {
     private final SessionFactory sessionFactory;
 
     public Neo4jSessionFactory() {
-//        Configuration configuration = new Configuration.Builder()
-//                .uri("bolt://localhost")
-//                .credentials("neo4j", "passwword")
-//                .build();
-//        SessionFactory sessionFactory = new SessionFactory(configuration, "com.mycompany.app.domainclasses");
-        this.sessionFactory = null;
+        this(Neo4jProperty.newInstance());
+    }
+
+    public Neo4jSessionFactory(Neo4jProperty neo4jProperty) {
+        Configuration configuration = new Configuration.Builder()
+                .uri(neo4jProperty.getServAddr())
+                .credentials(neo4jProperty.getUsername(), neo4jProperty.getPassword())
+                .build();
+
+        this.sessionFactory = new SessionFactory(configuration, "com.mycompany.app.domainclasses");
     }
 }
