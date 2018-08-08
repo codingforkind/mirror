@@ -21,6 +21,12 @@ public class Neo4jProperty {
     @Bind("neo4j.server")
     private String servAddr;
 
+    @Bind("neo4j.username")
+    private String username;
+
+    @Bind("neo4j.password")
+    private String password;
+
     /**
      * Get a Neo4jProperty instance.
      */
