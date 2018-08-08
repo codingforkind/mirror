@@ -13,5 +13,6 @@ public class Neo4jDriverTests {
     public void testDriver() {
         Neo4jDriver neo4jDriver = new Neo4jDriver();
         neo4jDriver.example("hello");
+        neo4jDriver.close();
     }
 }
