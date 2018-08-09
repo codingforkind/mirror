@@ -55,7 +55,7 @@ public class ArchiveAnalysorTests {
             log.info("Target path: {}", entry.getKey());
 
             for (Map.Entry<Integer, Set<Variable>> tm : entry.getValue().entrySet()) {
-                log.info("Line: {}", tm.getKey());
+                log.info("Node: {}", tm.getKey());
                 tm.getValue().stream().forEach(var -> {
                     System.out.println(var.getLineNum() + " "
                             + var.getName() + " "

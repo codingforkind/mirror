@@ -51,7 +51,7 @@ public class StatementNode extends MethodNode {
 	}
 
 	public void addVariable(Integer linenum, Variable variable) {
-		if (!this.getLinenum().equals(linenum)) {
+		if (!this.getLineNum().equals(linenum)) {
 			return;
 		}
 

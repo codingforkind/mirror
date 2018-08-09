@@ -1,49 +1,72 @@
 /**
- * 
+ *
  */
 package cn.com.mirror.java.node;
 
-import cn.com.mirror.utils.BeanUtils;
-import com.alibaba.fastjson.JSON;
-import lombok.Getter;
-import lombok.Setter;
+import cn.com.mirror.constant.NodeTypeEnum;
+import lombok.Data;
 import org.eclipse.jdt.core.dom.ASTNode;
+
+import java.io.Serializable;
 
 /**
  * @author Piggy
- *
  * @description
  * @since 2018年4月19日
  */
-@Getter
-@Setter
-public class ClassNode extends Node {
-	private static final long serialVersionUID = 1L;
+@Data
+public class ClassNode implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	private String packageName;
-	private String className;
-	private Integer classEndLinenum;
-	private ASTNode classContent;
+    private String nodeId;
+    private NodeTypeEnum nodeTypeEnum;
+    private Integer lineNum;
+    private String javaFilePath;
 
-	ClassNode() {
-	}
 
-	ClassNode(String packageName, String className, Integer classEndLinenum, ASTNode classContent) {
-		this.packageName = packageName;
-		this.className = className;
-		this.classEndLinenum = classEndLinenum;
-		this.classContent = classContent;
-	}
+    private String packageName;
+    private String className;
+    private Integer classEndLineNum;
+    private ASTNode classContent;
 
-	public static ClassNode instance(Node node) {
-		ClassNode classNode = (ClassNode) JSON.parse(JSON.toJSONString(node));
-		return classNode;
-	}
+    ClassNode() {
+    }
 
-	public static ClassNode instance(Node node, String packageName, String className, Integer classEndLinenum,
-			ASTNode classContent) {
-		ClassNode classNode = new ClassNode(packageName, className, classEndLinenum, classContent);
-		BeanUtils.copyProperties(classNode, node);
-		return classNode;
-	}
+    ClassNode(String packageName,
+              String className,
+              Integer classEndLineNum,
+              ASTNode classContent, String nodeId,
+              NodeTypeEnum nodeTypeEnum,
+              int lineNum,
+              String javaFilePath) {
+
+        this.nodeId = nodeId;
+        this.nodeTypeEnum = nodeTypeEnum;
+        this.lineNum = lineNum;
+        this.javaFilePath = javaFilePath;
+        this.packageName = packageName;
+        this.className = className;
+        this.classEndLineNum = classEndLineNum;
+        this.classContent = classContent;
+    }
+
+    public static ClassNode instance(String packageName,
+                                     String className,
+                                     Integer classEndLineNum,
+                                     ASTNode classContent,
+                                     String nodeId,
+                                     NodeTypeEnum nodeTypeEnum,
+                                     int lineNum,
+                                     String javaFilePath) {
+
+        ClassNode classNode = new ClassNode(packageName,
+                className,
+                classEndLineNum,
+                classContent,
+                nodeId,
+                nodeTypeEnum,
+                lineNum,
+                javaFilePath);
+        return classNode;
+    }
 }
