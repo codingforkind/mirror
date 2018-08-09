@@ -1,6 +1,6 @@
 package cn.com.mirror.graph;
 
-import cn.com.mirror.graph.storage.neo4j.config.Neo4jProperty;
+import cn.com.mirror.graph.neo4j.config.Neo4jProperty;
 import cn.com.mirror.utils.PropertyUtils;
 import org.junit.Test;
 

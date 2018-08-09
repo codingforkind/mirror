@@ -1,6 +1,6 @@
-package cn.com.mirror.graph.storage.neo4j.driver;
+package cn.com.mirror.graph.neo4j.driver;
 
-import cn.com.mirror.graph.storage.neo4j.config.Neo4jProperty;
+import cn.com.mirror.graph.neo4j.config.Neo4jProperty;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.session.SessionFactory;
 

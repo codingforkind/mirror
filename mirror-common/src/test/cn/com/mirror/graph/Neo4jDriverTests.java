@@ -1,6 +1,6 @@
 package cn.com.mirror.graph;
 
-import cn.com.mirror.graph.storage.neo4j.driver.Neo4jDriver;
+import cn.com.mirror.graph.neo4j.driver.Neo4jDriver;
 import org.junit.Test;
 
 /**
