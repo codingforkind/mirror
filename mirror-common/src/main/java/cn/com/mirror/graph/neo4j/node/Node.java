@@ -1,7 +1,9 @@
 package cn.com.mirror.graph.neo4j.node;
 
+import cn.com.mirror.graph.neo4j.edge.EdgeTypeEnum;
 import lombok.Data;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.io.Serializable;
 
@@ -20,4 +22,8 @@ public class Node implements Serializable {
     private String targetPath;
 
     private String nodeType;
+
+    @Relationship(type = EdgeTypeEnum.EdgeType.CONTROL_EDGE)
+    private Node controlDependentOnNode;
+
 }
