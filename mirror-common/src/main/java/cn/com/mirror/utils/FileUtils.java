@@ -12,8 +12,7 @@ import java.util.Set;
 
 /**
  * @author Piggy
- *
- * @description 
+ * @description
  * @since 2018年3月12日
  */
 public class FileUtils {
@@ -38,7 +37,7 @@ public class FileUtils {
     }
 
 
-    public static final String getFileName(String javaFile){
+    public static final String getFileName(String javaFile) {
         File file = new File(javaFile);
         String fileName = file.getName();
         return fileName.substring(0, fileName.lastIndexOf("."));
@@ -69,31 +68,31 @@ public class FileUtils {
         return lines;
     }
 
-	/**
-	 * Extract all the target in the archive
-	 */
-	public static final Set<String> extractTargetPath(String prjPath) {
-		File file = new File(prjPath);
-		if (!file.exists() || !file.isDirectory()) {
-			throw new ProjectException(prjPath + " is not a directory or even not exists!");
-		}
+    /**
+     * Extract all the target in the archive
+     */
+    public static final Set<String> extractTargetPath(String prjPath) {
+        File file = new File(prjPath);
+        if (!file.exists() || !file.isDirectory()) {
+            throw new ProjectException(prjPath + " is not a directory or even not exists!");
+        }
 
-		return initjavaFiles(file, new HashSet<>());
-	}
+        return initjavaFiles(file, new HashSet<>());
+    }
 
-	private static Set<String> initjavaFiles(File dir, Set<String> prjJavaFiles) {
-		File[] fs = dir.listFiles();
-		String tmpPath = null;
-		for (int i = 0; i < fs.length; i++) {
-			if (fs[i].getAbsolutePath().endsWith(".project")) {
-				tmpPath = fs[i].getAbsolutePath();
-				prjJavaFiles.add(tmpPath);
-			}
-			if (fs[i].isDirectory()) {
-				prjJavaFiles = initjavaFiles(fs[i], prjJavaFiles);
-			} // end if
-		} // end for
-		return prjJavaFiles;
-	}
+    private static Set<String> initjavaFiles(File dir, Set<String> prjJavaFiles) {
+        File[] fs = dir.listFiles();
+        String tmpPath = null;
+        for (int i = 0; i < fs.length; i++) {
+            if (fs[i].getAbsolutePath().endsWith(".java")) {
+                tmpPath = fs[i].getAbsolutePath();
+                prjJavaFiles.add(tmpPath);
+            }
+            if (fs[i].isDirectory()) {
+                prjJavaFiles = initjavaFiles(fs[i], prjJavaFiles);
+            } // end if
+        } // end for
+        return prjJavaFiles;
+    }
 
 }

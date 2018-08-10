@@ -17,7 +17,7 @@ public class LocalRepository implements CodeRepository {
     @Override
     public String getRepositoryUrl() {
         Properties props = new Properties();
-        InputStream stream = LocalRepository.class.getResourceAsStream("project.properties");
+        InputStream stream = LocalRepository.class.getResourceAsStream("/project.properties");
         try {
             props.load(stream);
         } catch (IOException e) {
