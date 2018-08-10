@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  * @date 18-7-25
  */
 @Slf4j
-public class ArchiveAnalysor {
+public class UnitAnalysor {
 
     public Unit targetAnalyze(String path) {
         // nas -> archive -> unzip -> tmppath -> analyze

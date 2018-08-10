@@ -19,10 +19,10 @@ import java.util.Set;
 public class UnitAnalysorTests {
     private static final String TEST_PATH = "/home/piggy/work/mirror";
     private Unit archive;
-    private ArchiveAnalysor archiveAnalysor;
+    private UnitAnalysor archiveAnalysor;
 
     public void init() {
-        this.archiveAnalysor = new ArchiveAnalysor();
+        this.archiveAnalysor = new UnitAnalysor();
         this.archive = archiveAnalysor.targetAnalyze(TEST_PATH);
     }
 

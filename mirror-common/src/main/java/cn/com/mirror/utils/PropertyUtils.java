@@ -2,6 +2,7 @@ package cn.com.mirror.utils;
 
 import cn.com.mirror.annotation.Bind;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
