@@ -1,6 +1,5 @@
 package cn.com.mirror.graph.neo4j.config;
 
-import cn.com.mirror.graph.neo4j.config.Neo4jProperty;
 import org.neo4j.ogm.config.ClasspathConfigurationSource;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.config.ConfigurationSource;
