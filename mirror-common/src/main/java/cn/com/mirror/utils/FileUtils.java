@@ -85,7 +85,7 @@ public class FileUtils {
 		File[] fs = dir.listFiles();
 		String tmpPath = null;
 		for (int i = 0; i < fs.length; i++) {
-			if (fs[i].getAbsolutePath().endsWith(".java")) {
+			if (fs[i].getAbsolutePath().endsWith(".project")) {
 				tmpPath = fs[i].getAbsolutePath();
 				prjJavaFiles.add(tmpPath);
 			}

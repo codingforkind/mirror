@@ -1,10 +1,10 @@
 package cn.com.mirror.analysor;
 
-import cn.com.mirror.project.Archive;
+import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
-import cn.com.mirror.java.visitor.ClassDeclarationVisitor;
-import cn.com.mirror.java.visitor.VariableVisitor;
+import cn.com.mirror.project.unit.visitor.ClassDeclarationVisitor;
+import cn.com.mirror.project.unit.visitor.VariableVisitor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
@@ -16,9 +16,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 @Slf4j
 public class ArchiveAnalysor {
 
-    public Archive targetAnalyze(String path) {
+    public Unit targetAnalyze(String path) {
         // nas -> archive -> unzip -> tmppath -> analyze
-        Archive archive = new Archive();
+        Unit archive = new Unit();
         // extract all target files in path
         archive.setTargets(FileUtils.extractTargetPath(path));
 

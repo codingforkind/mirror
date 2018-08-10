@@ -1,6 +1,5 @@
-package cn.com.mirror.graph.neo4j.config;
+package cn.com.mirror.repository.graph.neo4j.config;
 
-import cn.com.mirror.graph.neo4j.config.Neo4jProperty;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.neo4j.driver.v1.*;

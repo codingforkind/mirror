@@ -1,8 +1,8 @@
 package cn.com.mirror.analysor;
 
-import cn.com.mirror.java.variable.Variable;
-import cn.com.mirror.java.visitor.ControlDependenceVisitor;
-import cn.com.mirror.project.Archive;
+import cn.com.mirror.project.unit.variable.Variable;
+import cn.com.mirror.project.unit.visitor.ControlDependenceVisitor;
+import cn.com.mirror.project.unit.Unit;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
@@ -16,9 +16,9 @@ import java.util.Set;
  * @date 18-7-26
  */
 @Slf4j
-public class ArchiveAnalysorTests {
+public class UnitAnalysorTests {
     private static final String TEST_PATH = "/home/piggy/work/mirror";
-    private Archive archive;
+    private Unit archive;
     private ArchiveAnalysor archiveAnalysor;
 
     public void init() {

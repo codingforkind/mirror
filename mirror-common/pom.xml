@@ -63,7 +63,7 @@
         </dependency>
 
 
-        <!--neo4j java driver-->
+        <!--neo4j project driver-->
         <dependency>
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
