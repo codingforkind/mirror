@@ -17,13 +17,12 @@ import java.util.Set;
  */
 @Slf4j
 public class UnitAnalysorTests {
-    private static final String TEST_PATH = "/home/piggy/work/mirror";
     private Unit archive;
     private UnitAnalysor archiveAnalysor;
 
     public void init() {
         this.archiveAnalysor = new UnitAnalysor();
-        this.archive = archiveAnalysor.targetAnalyze(TEST_PATH);
+        this.archive = archiveAnalysor.analyze();
     }
 
     @Test
