@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.graph.neo4j.factory;
+package cn.com.mirror.repository.graph.factory;
 
 /**
  * @author piggy

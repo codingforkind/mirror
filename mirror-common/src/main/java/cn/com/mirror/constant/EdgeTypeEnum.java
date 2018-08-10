@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.graph.neo4j.edge;
+package cn.com.mirror.constant;
 
 import lombok.Getter;
 

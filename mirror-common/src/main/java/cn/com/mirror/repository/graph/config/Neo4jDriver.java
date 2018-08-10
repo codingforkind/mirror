@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.graph.neo4j.config;
+package cn.com.mirror.repository.graph.config;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
