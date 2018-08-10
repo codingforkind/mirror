@@ -1,10 +1,10 @@
-package cn.com.mirror.java.visitor;
+package cn.com.mirror.analysor.visitor;
 
-import cn.com.mirror.java.variable.Class;
-import cn.com.mirror.java.variable.Variable;
-import cn.com.mirror.java.variable.VariableType;
-import cn.com.mirror.java.variable.VariableType.PRIME;
-import cn.com.mirror.java.variable.VariableType.TYPE;
+import cn.com.mirror.project.unit.variable.Class;
+import cn.com.mirror.project.unit.variable.Variable;
+import cn.com.mirror.project.unit.variable.VariableType;
+import cn.com.mirror.project.unit.variable.VariableType.PRIME;
+import cn.com.mirror.project.unit.variable.VariableType.TYPE;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ import java.util.Map.Entry;
  * The type Variable visitor. visit all SimpleNodes and resolve its binding and
  * extract the variables for each line of codes
  * <p>
- * Extract all the variables in the java file.
+ * Extract all the variables in the project file.
  */
 @Getter
 @Setter
@@ -31,7 +31,7 @@ public class VariableVisitor extends ASTVisitor {
      */
     private final Map<String, Set<Class>> prjClasses;
 
-    private Set<Variable> variableSet = new HashSet<>(); // all variable defined in this java file
+    private Set<Variable> variableSet = new HashSet<>(); // all variable defined in this project file
     private Map<Integer, Set<Variable>> variableInFile = new TreeMap<>();
 
     public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {

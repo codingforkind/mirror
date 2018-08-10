@@ -1,6 +1,6 @@
-package cn.com.mirror.java.visitor;
+package cn.com.mirror.analysor.visitor;
 
-import cn.com.mirror.java.edge.ControlNodeTypeEnum;
+import cn.com.mirror.constant.ControlNodeTypeEnum;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

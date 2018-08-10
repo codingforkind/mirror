@@ -3,8 +3,8 @@ package cn.com.mirror.analysor;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
-import cn.com.mirror.project.unit.visitor.ClassDeclarationVisitor;
-import cn.com.mirror.project.unit.visitor.VariableVisitor;
+import cn.com.mirror.analysor.visitor.ClassDeclarationVisitor;
+import cn.com.mirror.analysor.visitor.VariableVisitor;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 

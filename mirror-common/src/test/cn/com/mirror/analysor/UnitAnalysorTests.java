@@ -1,7 +1,7 @@
 package cn.com.mirror.analysor;
 
 import cn.com.mirror.project.unit.variable.Variable;
-import cn.com.mirror.project.unit.visitor.ControlDependenceVisitor;
+import cn.com.mirror.analysor.visitor.ControlDependenceVisitor;
 import cn.com.mirror.project.unit.Unit;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
