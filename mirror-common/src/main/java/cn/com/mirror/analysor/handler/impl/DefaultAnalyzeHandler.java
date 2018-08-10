@@ -1,6 +1,6 @@
-package cn.com.mirror.handler.impl;
+package cn.com.mirror.analysor.handler.impl;
 
-import cn.com.mirror.handler.AnalyzeHandler;
+import cn.com.mirror.analysor.handler.AnalyzeHandler;
 import lombok.extern.slf4j.Slf4j;
 
 /**
