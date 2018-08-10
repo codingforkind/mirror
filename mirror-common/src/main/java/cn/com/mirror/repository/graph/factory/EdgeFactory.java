@@ -5,6 +5,6 @@ package cn.com.mirror.repository.graph.factory;
  * @description
  * @date 18-8-10
  */
-public class DependenceFactory {
+public class EdgeFactory {
     // construct edges
 }
