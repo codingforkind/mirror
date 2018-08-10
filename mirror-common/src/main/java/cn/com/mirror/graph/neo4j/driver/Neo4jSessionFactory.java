@@ -25,5 +25,4 @@ public class Neo4jSessionFactory {
         return sessionFactory.openSession();
     }
 
-
 }
