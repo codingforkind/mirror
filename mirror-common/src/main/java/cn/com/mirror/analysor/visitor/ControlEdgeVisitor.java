@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @Slf4j
 @Getter
-public class ControlDependenceVisitor extends ASTVisitor {
+public class ControlEdgeVisitor extends ASTVisitor {
     private Map<Integer, Integer> controlEdges = new HashMap<>();
 
     private ASTNode searchDirectParentControlNode(ASTNode astNode) {

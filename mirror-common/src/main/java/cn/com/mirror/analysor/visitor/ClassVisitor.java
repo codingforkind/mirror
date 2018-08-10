@@ -17,14 +17,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Slf4j
-public class ClassDeclarationVisitor extends ASTVisitor {
+public class ClassVisitor extends ASTVisitor {
     private final String file;
 
     private String packageName;
     // the first element in this list is the outer class, others are inner class in the first class.
     private Set<Class> clsSet = new HashSet<>();
 
-    public ClassDeclarationVisitor(String file) {
+    public ClassVisitor(String file) {
         this.file = file;
     }
 

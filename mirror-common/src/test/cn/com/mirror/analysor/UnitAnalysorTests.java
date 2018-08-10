@@ -1,7 +1,7 @@
 package cn.com.mirror.analysor;
 
 import cn.com.mirror.project.unit.variable.Variable;
-import cn.com.mirror.analysor.visitor.ControlDependenceVisitor;
+import cn.com.mirror.analysor.visitor.ControlEdgeVisitor;
 import cn.com.mirror.project.unit.Unit;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -31,7 +31,7 @@ public class UnitAnalysorTests {
         init();
 
         archive.getTargets().stream().forEach(targetPah -> {
-            ControlDependenceVisitor controlDependenceVisitor = new ControlDependenceVisitor();
+            ControlEdgeVisitor controlDependenceVisitor = new ControlEdgeVisitor();
             CompilationUnit compilationUnit = archive.getCompilationUnits().get(targetPah);
             compilationUnit.accept(controlDependenceVisitor);
             log.info("Target path: {}", targetPah);
