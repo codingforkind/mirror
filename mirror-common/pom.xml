@@ -36,12 +36,30 @@
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-core</artifactId>
             <version>${neo4j.ogm.core.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-bolt-driver</artifactId>
             <version>${neo4j.ogm.core.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Only add if you're using the HTTP driver -->
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-http-driver</artifactId>
+            <version>${neo4j.ogm.core.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Only add if you're using the Embedded driver -->
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-ogm-embedded-driver</artifactId>
+            <version>${neo4j.ogm.core.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
 

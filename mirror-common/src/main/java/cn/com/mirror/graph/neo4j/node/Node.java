@@ -2,10 +2,7 @@ package cn.com.mirror.graph.neo4j.node;
 
 import cn.com.mirror.graph.neo4j.edge.EdgeTypeEnum;
 import lombok.Data;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.*;
 
 import java.io.Serializable;
 
@@ -21,10 +18,13 @@ public class Node implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @Property(name = "line num")
     private Integer lineNum;
 
+    @Property(name = "target path")
     private String targetPath;
 
+    @Property(name = "node type")
     private String nodeType;
 
     @Relationship(type = EdgeTypeEnum.EdgeType.CONTROL_EDGE)
