@@ -1,7 +1,7 @@
 package cn.com.mirror.project.unit.factory;
 
-import cn.com.mirror.analysor.visitor.ClassVisitor;
-import cn.com.mirror.analysor.visitor.VariableVisitor;
+import cn.com.mirror.analyser.visitor.ClassVisitor;
+import cn.com.mirror.analyser.visitor.VariableVisitor;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
