@@ -12,12 +12,12 @@ import java.util.Properties;
  * @description
  * @date 18-8-10
  */
-public class LocalRepository implements CodeRepository {
+public class LocalLoader implements CodeLoader {
 
     @Override
     public String getRepositoryUrl() {
         Properties props = new Properties();
-        InputStream stream = LocalRepository.class.getResourceAsStream("/project.properties");
+        InputStream stream = LocalLoader.class.getResourceAsStream("/project.properties");
         try {
             props.load(stream);
         } catch (IOException e) {

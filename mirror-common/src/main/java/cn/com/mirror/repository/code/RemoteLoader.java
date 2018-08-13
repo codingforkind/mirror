@@ -5,7 +5,7 @@ package cn.com.mirror.repository.code;
  * @description
  * @date 18-8-10
  */
-public class RemoteRepository implements CodeRepository{
+public class RemoteLoader implements CodeLoader {
 
     @Override
     public String getRepositoryUrl() {

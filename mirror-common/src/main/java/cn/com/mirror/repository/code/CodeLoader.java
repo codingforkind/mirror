@@ -5,6 +5,6 @@ package cn.com.mirror.repository.code;
  * @description
  * @date 18-8-10
  */
-public interface CodeRepository {
+public interface CodeLoader {
     String getRepositoryUrl();
 }
