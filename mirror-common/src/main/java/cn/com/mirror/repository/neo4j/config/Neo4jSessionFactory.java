@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.graph.config;
+package cn.com.mirror.repository.neo4j.config;
 
 import org.neo4j.ogm.config.ClasspathConfigurationSource;
 import org.neo4j.ogm.config.Configuration;

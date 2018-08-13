@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.graph.node;
+package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeTypeEnum;
 import lombok.Data;

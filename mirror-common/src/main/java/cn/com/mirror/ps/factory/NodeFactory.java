@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.graph.factory;
+package cn.com.mirror.ps.factory;
 
 /**
  * @author piggy

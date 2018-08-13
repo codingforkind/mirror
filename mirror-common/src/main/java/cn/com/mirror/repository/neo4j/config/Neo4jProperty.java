@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.graph.config;
+package cn.com.mirror.repository.neo4j.config;
 
 import cn.com.mirror.annotation.Bind;
 import cn.com.mirror.utils.PropertyUtils;
