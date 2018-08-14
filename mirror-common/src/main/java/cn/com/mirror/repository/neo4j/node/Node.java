@@ -28,6 +28,6 @@ public class Node implements Serializable {
     private String nodeType;
 
     @Relationship(type = EdgeTypeEnum.EdgeType.CONTROL_EDGE)
-    private Node controlDependentOnNode;
+    private Node ctrlDepNode;
 
 }
