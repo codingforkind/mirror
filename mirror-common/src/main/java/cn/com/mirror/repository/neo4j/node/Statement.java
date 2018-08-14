@@ -22,22 +22,14 @@ import java.util.Set;
 public class Statement extends Method {
     private static final long serialVersionUID = 1L;
 
-    private ASTNode statementContent;
+    private String statementContent;
 
     private Set<Variable> variables = new HashSet<>();
 
-    Statement() {
-    }
-
-    Statement(String methodName,
-              Integer methodStartLineNum,
-              Integer methodEndLineNum,
-              ASTNode methodContent,
-              ASTNode statementContent,
+    Statement(ASTNode statementContent,
               Set<Variable> variables) {
 
-        super(methodName, methodStartLineNum, methodEndLineNum, methodContent);
-        this.statementContent = statementContent;
+        this.statementContent = statementContent.toString();
         this.variables = variables;
     }
 
@@ -47,15 +39,10 @@ public class Statement extends Method {
     }
 
     public static Statement instance(Method method,
-                                     String methodName,
-                                     Integer methodStartLinenum,
-                                     Integer methodEndLinenum,
-                                     ASTNode methodContent,
                                      ASTNode statementContent,
                                      Set<Variable> variables) {
 
-        Statement statementNode = new Statement(methodName, methodStartLinenum, methodEndLinenum, methodContent,
-                statementContent, variables);
+        Statement statementNode = new Statement(statementContent, variables);
         BeanUtils.copyProperties(statementNode, method);
         return statementNode;
     }

@@ -20,30 +20,33 @@ public class Class extends Node {
 
     private String packageName;
     private String className;
+    private Integer classStartLineNum;
     private Integer classEndLineNum;
-    private ASTNode classContent;
+    private String classContent;
 
     Class() {
     }
 
     Class(String packageName,
           String className,
+          Integer classStartLineNum,
           Integer classEndLineNum,
           ASTNode classContent) {
 
         this.packageName = packageName;
         this.className = className;
+        this.classStartLineNum = classStartLineNum;
         this.classEndLineNum = classEndLineNum;
-        this.classContent = classContent;
+        this.classContent = classContent.toString();
     }
 
     public static Class instance(String packageName,
                                  String className,
+                                 Integer classStartLineNum,
                                  Integer classEndLineNum,
                                  ASTNode classContent) {
 
-        Class classNode = new Class(packageName,
-                className, classEndLineNum, classContent);
+        Class classNode = new Class(packageName, className, classStartLineNum, classEndLineNum, classContent);
         return classNode;
     }
 }

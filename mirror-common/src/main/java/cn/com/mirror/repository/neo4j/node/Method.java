@@ -24,7 +24,7 @@ public class Method extends Class {
     private String methodName;
     private Integer methodStartLineNum;
     private Integer methodEndLineNum;
-    private ASTNode methodContent;
+    private String methodContent;
 
     Method() {
     }
@@ -37,7 +37,12 @@ public class Method extends Class {
         this.methodName = methodName;
         this.methodStartLineNum = methodStartLineNum;
         this.methodEndLineNum = methodEndLineNum;
-        this.methodContent = methodContent;
+        this.methodContent = methodContent.toString();
+    }
+
+    public static Method instance(Class classNode) {
+        Method method = (Method) JSON.parse(JSON.toJSONString(classNode));
+        return method;
     }
 
     public static Method instance(Class classNode,
@@ -51,8 +56,4 @@ public class Method extends Class {
         return method;
     }
 
-    public static Method instance(Class classNode) {
-        Method method = (Method) JSON.parse(JSON.toJSONString(classNode));
-        return method;
-    }
 }
