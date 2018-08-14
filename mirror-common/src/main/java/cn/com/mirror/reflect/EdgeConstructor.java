@@ -1,4 +1,4 @@
-package cn.com.mirror.ps.factory;
+package cn.com.mirror.reflect;
 
 /**
  * @author piggy
