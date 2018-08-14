@@ -16,28 +16,28 @@ public class UnitFactory {
 
     public Unit newUnit(String url) {
         // nas -> archive -> unzip -> tmppath -> analyze
-        Unit archive = new Unit();
+        Unit unit = new Unit();
         // extract all target files in s
-        archive.setTargets(FileUtils.extractTargetPath(url));
+        unit.setTargets(FileUtils.extractTargetPath(url));
 
-        for (String targetPath : archive.getTargets()) {
+        for (String targetPath : unit.getTargets()) {
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
-            archive.addCompilationUnit(targetPath, compilationUnit);
+            unit.addCompilationUnit(targetPath, compilationUnit);
 
             // packages/classes analysis
             ClassVisitor classDeclarationVisitor = new ClassVisitor(targetPath);
             compilationUnit.accept(classDeclarationVisitor);
-            archive.addPackages(targetPath, classDeclarationVisitor.getPackageName());
-            archive.addClasses(targetPath, classDeclarationVisitor.getClsSet());
+            unit.addPackages(targetPath, classDeclarationVisitor.getPackageName());
+            unit.addClasses(targetPath, classDeclarationVisitor.getClsSet());
 
             // variable analysis
             VariableVisitor variableVisitor = new VariableVisitor(targetPath,
-                    archive.getPackages().get(targetPath), archive.getClasses());
+                    unit.getPackages().get(targetPath), unit.getClasses());
             compilationUnit.accept(variableVisitor);
-            archive.addVariables(targetPath, variableVisitor.getVariableSet());
-            archive.addMappedVars(targetPath, variableVisitor.getVariableInFile());
+            unit.addVariables(targetPath, variableVisitor.getVariableSet());
+            unit.addMappedVars(targetPath, variableVisitor.getVariableInFile());
         }
 
-        return archive;
+        return unit;
     }
 }

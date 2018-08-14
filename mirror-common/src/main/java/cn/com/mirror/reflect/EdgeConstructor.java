@@ -6,5 +6,6 @@ package cn.com.mirror.reflect;
  * @date 18-8-10
  */
 public class EdgeConstructor {
-    // construct edges
+
+    private NodeFactory nodeFactory;
 }
