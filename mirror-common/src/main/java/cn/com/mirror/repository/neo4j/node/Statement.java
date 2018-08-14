@@ -3,12 +3,15 @@
  */
 package cn.com.mirror.repository.neo4j.node;
 
+import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.utils.BeanUtils;
 import cn.com.mirror.project.unit.variable.Variable;
-import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,10 +22,16 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@NodeEntity(label = "a line of code in target file")
 public class Statement extends Method {
     private static final long serialVersionUID = 1L;
 
+    @Property(name = "statement content")
     private String statementContent;
+
+    @Property(name = "current statement belongs to this method")
+    @Relationship(type = EdgeType.EDGE_TYPE.STATEMENT_TO_METHOD_CTRL_EDGE)
+    private Method method;
 
     private Set<Variable> variables = new HashSet<>();
 
@@ -38,7 +47,9 @@ public class Statement extends Method {
                                      Set<Variable> variables) {
 
         Statement statementNode = new Statement(statementContent, variables);
+
         BeanUtils.copyProperties(statementNode, method);
+        statementNode.setMethod(method);
         return statementNode;
     }
 

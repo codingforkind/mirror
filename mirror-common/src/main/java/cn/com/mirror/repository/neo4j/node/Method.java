@@ -3,13 +3,15 @@
  */
 package cn.com.mirror.repository.neo4j.node;
 
+import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.utils.BeanUtils;
 import org.eclipse.jdt.core.dom.ASTNode;
 
-import com.alibaba.fastjson.JSON;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
 
 /**
  * @author Piggy
@@ -18,13 +20,25 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@NodeEntity(label = "a method in target")
 public class Method extends Class {
     private static final long serialVersionUID = 1L;
 
+    @Property(name = "method name")
     private String methodName;
+
+    @Property(name = "method start line num")
     private Integer methodStartLineNum;
+
+    @Property(name = "method end line num")
     private Integer methodEndLineNum;
+
+    @Property(name = "method content")
     private String methodContent;
+
+    @Property(name = "current method belongs to this class")
+    @Relationship(type = EdgeType.EDGE_TYPE.METHOD_TO_CLASS_CTRL_EDGE)
+    private Class cls;
 
     Method() {
     }

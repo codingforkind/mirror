@@ -1,6 +1,6 @@
 package cn.com.mirror.repository.neo4j.node;
 
-import cn.com.mirror.constant.EdgeTypeEnum;
+import cn.com.mirror.constant.EdgeType;
 import lombok.Data;
 import org.neo4j.ogm.annotation.*;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @date 18-8-9
  */
 @Data
-@NodeEntity(label = "a line of code in target")
+@NodeEntity(label = "a node in target which contains some basic information")
 public class Node implements Serializable {
     @Id
     @GeneratedValue
@@ -27,7 +27,7 @@ public class Node implements Serializable {
     @Property(name = "node type")
     private String nodeType;
 
-    @Relationship(type = EdgeTypeEnum.EdgeType.CONTROL_EDGE)
+    @Relationship(type = EdgeType.EDGE_TYPE.NODE_TO_NODE_CTRL_EDGE)
     private Node ctrlDepNode;
 
 }

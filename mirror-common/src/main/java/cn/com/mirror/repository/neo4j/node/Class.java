@@ -7,6 +7,8 @@ import cn.com.mirror.constant.NodeTypeEnum;
 import cn.com.mirror.utils.BeanUtils;
 import lombok.Data;
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
 
 import java.io.Serializable;
 
@@ -16,13 +18,23 @@ import java.io.Serializable;
  * @since 2018年4月19日
  */
 @Data
+@NodeEntity(label = "a class in target")
 public class Class extends Node {
     private static final long serialVersionUID = 1L;
 
+    @Property(name = "package name")
     private String packageName;
+
+    @Property(name = "class name")
     private String className;
+
+    @Property(name = "class start line num")
     private Integer classStartLineNum;
+
+    @Property(name = "class end line num")
     private Integer classEndLineNum;
+
+    @Property(name = "class content")
     private String classContent;
 
     Class() {
