@@ -40,11 +40,6 @@ public class Method extends Class {
         this.methodContent = methodContent.toString();
     }
 
-    public static Method instance(Class classNode) {
-        Method method = (Method) JSON.parse(JSON.toJSONString(classNode));
-        return method;
-    }
-
     public static Method instance(Class classNode,
                                   String methodName,
                                   Integer methodStartLineNum,

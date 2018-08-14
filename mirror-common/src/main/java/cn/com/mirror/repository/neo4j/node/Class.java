@@ -4,6 +4,7 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.NodeTypeEnum;
+import cn.com.mirror.utils.BeanUtils;
 import lombok.Data;
 import org.eclipse.jdt.core.dom.ASTNode;
 
@@ -40,13 +41,15 @@ public class Class extends Node {
         this.classContent = classContent.toString();
     }
 
-    public static Class instance(String packageName,
+    public static Class instance(Node node,
+                                 String packageName,
                                  String className,
                                  Integer classStartLineNum,
                                  Integer classEndLineNum,
                                  ASTNode classContent) {
 
         Class classNode = new Class(packageName, className, classStartLineNum, classEndLineNum, classContent);
+        BeanUtils.copyProperties(classNode, node);
         return classNode;
     }
 }

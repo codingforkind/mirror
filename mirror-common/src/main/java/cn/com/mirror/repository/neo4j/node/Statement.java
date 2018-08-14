@@ -33,11 +33,6 @@ public class Statement extends Method {
         this.variables = variables;
     }
 
-    public static Statement instance(Method method) {
-        Statement statementNode = (Statement) JSON.parse(JSON.toJSONString(method));
-        return statementNode;
-    }
-
     public static Statement instance(Method method,
                                      ASTNode statementContent,
                                      Set<Variable> variables) {
