@@ -18,6 +18,10 @@ import java.util.Set;
  */
 @Data
 public class Unit implements Serializable {
+    /**
+     * Unit is represent a project posted by a user.
+     *
+     */
 
     private String path; // archive's location
     private Set<String> targets; // target files in the archive, such as project file in a project project.

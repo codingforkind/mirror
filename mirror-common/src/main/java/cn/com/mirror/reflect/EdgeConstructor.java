@@ -18,6 +18,7 @@ public class EdgeConstructor {
     private Pair pair;
 
     public void preConstruct() {
+        // analyze the project
         PairAnalyser pairAnalyser = new PairAnalyser();
         UnitAnalyser unitAnalyser = new UnitAnalyser();
 

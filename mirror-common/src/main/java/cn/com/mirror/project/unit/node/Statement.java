@@ -20,33 +20,33 @@ import java.util.Set;
  */
 @Getter
 @Setter
-public class StatementNode extends MethodNode {
+public class Statement extends Method {
 	private static final long serialVersionUID = 1L;
 
 	private ASTNode statementContent;
 
 	private Set<Variable> variables = new HashSet<>();
 
-	StatementNode() {
+	Statement() {
 	}
 
-	StatementNode(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent,
-			ASTNode statementContent, Set<Variable> variables) {
+	Statement(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent,
+              ASTNode statementContent, Set<Variable> variables) {
 		this.statementContent = statementContent;
 		this.variables = variables;
 	}
 
-	public static StatementNode instance(MethodNode methodNode) {
-		StatementNode statementNode = (StatementNode) JSON.parse(JSON.toJSONString(methodNode));
+	public static Statement instance(Method method) {
+		Statement statementNode = (Statement) JSON.parse(JSON.toJSONString(method));
 		return statementNode;
 	}
 
-	public static StatementNode instance(MethodNode methodNode, String methodName, Integer methodStartLinenum,
-			Integer methodEndLinenum, ASTNode methodContent, ASTNode statementContent, Set<Variable> variables) {
+	public static Statement instance(Method method, String methodName, Integer methodStartLinenum,
+                                     Integer methodEndLinenum, ASTNode methodContent, ASTNode statementContent, Set<Variable> variables) {
 
-		StatementNode statementNode = new StatementNode(methodName, methodStartLinenum, methodEndLinenum, methodContent,
+		Statement statementNode = new Statement(methodName, methodStartLinenum, methodEndLinenum, methodContent,
 				statementContent, variables);
-		BeanUtils.copyProperties(statementNode, methodNode);
+		BeanUtils.copyProperties(statementNode, method);
 		return statementNode;
 	}
 

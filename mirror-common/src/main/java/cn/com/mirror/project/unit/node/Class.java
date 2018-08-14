@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @since 2018年4月19日
  */
 @Data
-public class ClassNode implements Serializable {
+public class Class implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String nodeId;
@@ -29,16 +29,16 @@ public class ClassNode implements Serializable {
     private Integer classEndLineNum;
     private ASTNode classContent;
 
-    ClassNode() {
+    Class() {
     }
 
-    ClassNode(String packageName,
-              String className,
-              Integer classEndLineNum,
-              ASTNode classContent, String nodeId,
-              NodeTypeEnum nodeTypeEnum,
-              int lineNum,
-              String javaFilePath) {
+    Class(String packageName,
+          String className,
+          Integer classEndLineNum,
+          ASTNode classContent, String nodeId,
+          NodeTypeEnum nodeTypeEnum,
+          int lineNum,
+          String javaFilePath) {
 
         this.nodeId = nodeId;
         this.nodeTypeEnum = nodeTypeEnum;
@@ -50,16 +50,16 @@ public class ClassNode implements Serializable {
         this.classContent = classContent;
     }
 
-    public static ClassNode instance(String packageName,
-                                     String className,
-                                     Integer classEndLineNum,
-                                     ASTNode classContent,
-                                     String nodeId,
-                                     NodeTypeEnum nodeTypeEnum,
-                                     int lineNum,
-                                     String javaFilePath) {
+    public static Class instance(String packageName,
+                                 String className,
+                                 Integer classEndLineNum,
+                                 ASTNode classContent,
+                                 String nodeId,
+                                 NodeTypeEnum nodeTypeEnum,
+                                 int lineNum,
+                                 String javaFilePath) {
 
-        ClassNode classNode = new ClassNode(packageName,
+        Class classNode = new Class(packageName,
                 className,
                 classEndLineNum,
                 classContent,
