@@ -22,7 +22,6 @@ public class PairAnalyserTests {
         Set<Map.Entry<String, Map<Integer, Integer>>> entries =
                 pair.getDirectCtrlEdges().entrySet();
         entries.stream().forEach(entry -> {
-//            String key = entry.getKey();
             log.info("Target: {}", entry.getKey());
             log.info("Pair: {}", entry.getValue());
         });
