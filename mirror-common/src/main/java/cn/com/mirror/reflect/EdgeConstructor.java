@@ -6,6 +6,9 @@ import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
 import lombok.Data;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author piggy
  * @description
@@ -28,6 +31,14 @@ public class EdgeConstructor {
 
     public void construct() {
         // construct
+        Set<Map.Entry<String, Map<Integer, Integer>>> entrySet =
+                pair.getDirectCtrlEdges().entrySet();
+
+        entrySet.stream().forEach(entry -> {
+            String targetPath = entry.getKey();
+            Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
+
+        });
 
     }
 }
