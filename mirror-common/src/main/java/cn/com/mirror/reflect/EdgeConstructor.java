@@ -4,6 +4,7 @@ import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.variable.Variable;
 import lombok.Data;
 
 import java.util.Map;
@@ -36,7 +37,13 @@ public class EdgeConstructor {
 
         entrySet.stream().forEach(entry -> {
             String targetPath = entry.getKey();
+            // all variable in the unit
+            Map<String, Map<Integer, Set<Variable>>> mappedVars = unit.getMappedVars();
+
             Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
+
+
+            Map<Integer, Set<Variable>> integerSetMap = mappedVars.get(targetPath);
 
         });
 

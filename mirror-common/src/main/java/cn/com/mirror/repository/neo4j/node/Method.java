@@ -13,6 +13,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.util.Objects;
+
 /**
  * @author Piggy
  * @description
@@ -65,4 +67,23 @@ public class Method extends Class {
         return method;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        
+        Method method = (Method) o;
+        return Objects.equals(methodName, method.methodName) &&
+                Objects.equals(methodStartLineNum, method.methodStartLineNum) &&
+                Objects.equals(methodEndLineNum, method.methodEndLineNum) &&
+                Objects.equals(methodContent, method.methodContent) &&
+                Objects.equals(cls, method.cls);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), methodName, methodStartLineNum, methodEndLineNum, methodContent, cls);
+    }
 }

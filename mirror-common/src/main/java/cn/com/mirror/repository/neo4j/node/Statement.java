@@ -14,6 +14,7 @@ import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -66,4 +67,21 @@ public class Statement extends Method {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Statement statement = (Statement) o;
+        return Objects.equals(statementContent, statement.statementContent) &&
+                Objects.equals(method, statement.method) &&
+                Objects.equals(variables, statement.variables);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), statementContent, method, variables);
+    }
 }

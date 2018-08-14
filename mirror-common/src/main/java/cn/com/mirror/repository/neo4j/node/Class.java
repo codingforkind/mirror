@@ -11,6 +11,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author Piggy
@@ -63,5 +64,25 @@ public class Class extends Node {
         Class classNode = new Class(packageName, className, classStartLineNum, classEndLineNum, classContent);
         BeanUtils.copyProperties(classNode, node);
         return classNode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Class aClass = (Class) o;
+        return Objects.equals(packageName, aClass.packageName) &&
+                Objects.equals(className, aClass.className) &&
+                Objects.equals(classStartLineNum, aClass.classStartLineNum) &&
+                Objects.equals(classEndLineNum, aClass.classEndLineNum) &&
+                Objects.equals(classContent, aClass.classContent);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), packageName, className, classStartLineNum, classEndLineNum, classContent);
     }
 }
