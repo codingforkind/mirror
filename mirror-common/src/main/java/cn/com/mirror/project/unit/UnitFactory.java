@@ -1,4 +1,4 @@
-package cn.com.mirror.project.unit.factory;
+package cn.com.mirror.project.unit;
 
 import cn.com.mirror.analyser.visitor.ClassVisitor;
 import cn.com.mirror.analyser.visitor.VariableVisitor;

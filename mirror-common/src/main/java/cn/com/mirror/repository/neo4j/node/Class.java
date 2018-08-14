@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.com.mirror.project.unit.node;
+package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.NodeTypeEnum;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package cn.com.mirror.reflect;
 
-import cn.com.mirror.project.unit.node.Statement;
+import cn.com.mirror.repository.neo4j.node.Statement;
 import cn.com.mirror.repository.neo4j.node.Node;
 
 /**
