@@ -11,7 +11,6 @@ import org.apache.commons.beanutils.BeanUtilsBean;
  * @author Piggy
  *
  * @description
- * @date 2018年4月28日
  */
 public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
 

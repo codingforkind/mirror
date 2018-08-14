@@ -13,7 +13,6 @@ import java.util.Set;
 /**
  * @author Piggy
  * @description
- * @since 2018年3月12日
  */
 public class FileUtils {
     private static Logger log = LoggerFactory.getLogger(FileUtils.class);

@@ -8,7 +8,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 /**
  * @author Piggy
  * @description
- * @since 2018年3月12日
  */
 public class AstUtils {
 

@@ -9,7 +9,6 @@ import java.util.UUID;
  * @author Piggy
  *
  * @description 
- * @date 2018年4月28日
  */
 public class UUIDUtils {
 
