@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cn.com.mirror.repository.neo4j.node;
 
@@ -15,52 +15,62 @@ import java.util.Set;
 
 /**
  * @author Piggy
- *
  * @description
  */
 @Getter
 @Setter
 public class Statement extends Method {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private ASTNode statementContent;
+    private ASTNode statementContent;
 
-	private Set<Variable> variables = new HashSet<>();
+    private Set<Variable> variables = new HashSet<>();
 
-	Statement() {
-	}
+    Statement() {
+    }
 
-	Statement(String methodName, Integer methodStartLinenum, Integer methodEndLinenum, ASTNode methodContent,
-              ASTNode statementContent, Set<Variable> variables) {
-		this.statementContent = statementContent;
-		this.variables = variables;
-	}
+    Statement(String methodName,
+              Integer methodStartLineNum,
+              Integer methodEndLineNum,
+              ASTNode methodContent,
+              ASTNode statementContent,
+              Set<Variable> variables) {
 
-	public static Statement instance(Method method) {
-		Statement statementNode = (Statement) JSON.parse(JSON.toJSONString(method));
-		return statementNode;
-	}
+        super(methodName, methodStartLineNum, methodEndLineNum, methodContent);
+        this.statementContent = statementContent;
+        this.variables = variables;
+    }
 
-	public static Statement instance(Method method, String methodName, Integer methodStartLinenum,
-                                     Integer methodEndLinenum, ASTNode methodContent, ASTNode statementContent, Set<Variable> variables) {
+    public static Statement instance(Method method) {
+        Statement statementNode = (Statement) JSON.parse(JSON.toJSONString(method));
+        return statementNode;
+    }
 
-		Statement statementNode = new Statement(methodName, methodStartLinenum, methodEndLinenum, methodContent,
-				statementContent, variables);
-		BeanUtils.copyProperties(statementNode, method);
-		return statementNode;
-	}
+    public static Statement instance(Method method,
+                                     String methodName,
+                                     Integer methodStartLinenum,
+                                     Integer methodEndLinenum,
+                                     ASTNode methodContent,
+                                     ASTNode statementContent,
+                                     Set<Variable> variables) {
 
-	public void addVariable(Integer linenum, Variable variable) {
-		if (!this.getLineNum().equals(linenum)) {
-			return;
-		}
+        Statement statementNode = new Statement(methodName, methodStartLinenum, methodEndLinenum, methodContent,
+                statementContent, variables);
+        BeanUtils.copyProperties(statementNode, method);
+        return statementNode;
+    }
 
-		if (null != variables) {
-			variables.add(variable);
-		} else {
-			variables = new HashSet<>();
-			variables.add(variable);
-		}
-	}
+    public void addVariable(Integer linenum, Variable variable) {
+        if (!this.getLineNum().equals(linenum)) {
+            return;
+        }
+
+        if (null != variables) {
+            variables.add(variable);
+        } else {
+            variables = new HashSet<>();
+            variables.add(variable);
+        }
+    }
 
 }

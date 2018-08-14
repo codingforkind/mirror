@@ -15,14 +15,8 @@ import java.io.Serializable;
  * @since 2018年4月19日
  */
 @Data
-public class Class implements Serializable {
+public class Class extends Node {
     private static final long serialVersionUID = 1L;
-
-    private String nodeId;
-    private NodeTypeEnum nodeTypeEnum;
-    private Integer lineNum;
-    private String javaFilePath;
-
 
     private String packageName;
     private String className;
@@ -35,15 +29,8 @@ public class Class implements Serializable {
     Class(String packageName,
           String className,
           Integer classEndLineNum,
-          ASTNode classContent, String nodeId,
-          NodeTypeEnum nodeTypeEnum,
-          int lineNum,
-          String javaFilePath) {
+          ASTNode classContent) {
 
-        this.nodeId = nodeId;
-        this.nodeTypeEnum = nodeTypeEnum;
-        this.lineNum = lineNum;
-        this.javaFilePath = javaFilePath;
         this.packageName = packageName;
         this.className = className;
         this.classEndLineNum = classEndLineNum;
@@ -53,20 +40,10 @@ public class Class implements Serializable {
     public static Class instance(String packageName,
                                  String className,
                                  Integer classEndLineNum,
-                                 ASTNode classContent,
-                                 String nodeId,
-                                 NodeTypeEnum nodeTypeEnum,
-                                 int lineNum,
-                                 String javaFilePath) {
+                                 ASTNode classContent) {
 
         Class classNode = new Class(packageName,
-                className,
-                classEndLineNum,
-                classContent,
-                nodeId,
-                nodeTypeEnum,
-                lineNum,
-                javaFilePath);
+                className, classEndLineNum, classContent);
         return classNode;
     }
 }
