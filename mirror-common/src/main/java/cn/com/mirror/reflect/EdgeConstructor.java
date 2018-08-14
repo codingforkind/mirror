@@ -40,7 +40,12 @@ public class EdgeConstructor {
             // all variable in the unit
             Map<String, Map<Integer, Set<Variable>>> mappedVars = unit.getMappedVars();
 
+            // basic control edges in the target file
             Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
+            directCtrlEdgeMap.forEach((ctrlKey, ctrlVal) -> {
+                // create ctrlKey node and ctrlVal node as a statement and build up they relationships
+                //TODO xyz create node and build relationships
+            });
 
 
             Map<Integer, Set<Variable>> integerSetMap = mappedVars.get(targetPath);
