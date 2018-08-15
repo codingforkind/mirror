@@ -1,9 +1,7 @@
 package cn.com.mirror.project.unit;
 
 import cn.com.mirror.analyser.visitor.ClassVisitor;
-import cn.com.mirror.analyser.visitor.MethodVisitor;
 import cn.com.mirror.analyser.visitor.VariableVisitor;
-import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -30,10 +28,6 @@ public class UnitFactory {
             compilationUnit.accept(classDeclarationVisitor);
             unit.addPackages(targetPath, classDeclarationVisitor.getPackageName());
             unit.addClasses(targetPath, classDeclarationVisitor.getClsSet());
-
-            MethodVisitor methodVisitor = new MethodVisitor();
-            compilationUnit.accept(methodVisitor);
-            unit.addMethods(targetPath, methodVisitor.getMethodSet());
 
             // element analysis
             VariableVisitor variableVisitor = new VariableVisitor(targetPath,

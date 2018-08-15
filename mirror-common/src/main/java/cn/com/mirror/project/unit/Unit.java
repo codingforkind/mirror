@@ -2,10 +2,12 @@ package cn.com.mirror.project.unit;
 
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.project.unit.element.Variable;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.neo4j.driver.v1.summary.StatementType;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -31,8 +33,8 @@ public class Unit implements Serializable {
     private Map<String, String> packages = new HashMap<>();
     private Map<String, Set<Class>> classes = new HashMap<>();
     private Map<String, Set<Method>> methods = new HashMap<>();
+    private Map<String, Map<Integer, Statement>> statements = new HashMap<>(); // all variables in a single code line
     private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in the unit
-    private Map<String, Map<Integer, Set<Variable>>> mappedVars = new HashMap<>(); // all variables in a single code line
 
     public void addCompilationUnit(String targetPath, CompilationUnit compilationUnit) {
         checkTargetPath(targetPath);
@@ -61,9 +63,9 @@ public class Unit implements Serializable {
         this.variables.put(targetPath, variableSet);
     }
 
-    public void addMappedVars(String targetPath, Map<Integer, Set<Variable>> variableInFile) {
+    public void addMappedVars(String targetPath, Map<Integer, Statement> statements) {
         checkTargetPath(targetPath);
-        this.mappedVars.put(targetPath, variableInFile);
+        this.statements.put(targetPath, statements);
     }
 
     private void checkTargetPath(String targetPath) {

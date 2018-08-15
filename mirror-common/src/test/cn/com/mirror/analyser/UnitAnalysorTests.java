@@ -1,14 +1,13 @@
 package cn.com.mirror.analyser;
 
-import cn.com.mirror.project.unit.element.Variable;
 import cn.com.mirror.analyser.visitor.ControlEdgeVisitor;
 import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.element.Statement;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author piggy
@@ -50,12 +49,12 @@ public class UnitAnalysorTests {
 //            log.info("Variables: {}", entry.getValue());
 //        }
 
-        for (Map.Entry<String, Map<Integer, Set<Variable>>> entry : archive.getMappedVars().entrySet()) {
+        for (Map.Entry<String, Map<Integer, Statement>> entry : archive.getStatements().entrySet()) {
             log.info("Target path: {}", entry.getKey());
 
-            for (Map.Entry<Integer, Set<Variable>> tm : entry.getValue().entrySet()) {
+            for (Map.Entry<Integer, Statement> tm : entry.getValue().entrySet()) {
                 log.info("Node: {}", tm.getKey());
-                tm.getValue().stream().forEach(var -> {
+                tm.getValue().getVarsInStat().stream().forEach(var -> {
                     System.out.println(var.getLineNum() + " "
                             + var.getName() + " "
                             + var.getVariableType() + " "

@@ -19,6 +19,8 @@ public class Method implements Serializable {
     private Integer startLineNum;
     private Integer endLineNum;
 
+    private Class inClass;
+
     Method() {
     }
 

@@ -27,10 +27,10 @@ import java.util.Set;
 public class Statement extends Method {
     private static final long serialVersionUID = 1L;
 
-    @Property(name = "statement content")
+    @Property(name = "statements content")
     private String statementContent;
 
-    @Property(name = "current statement belongs to this method")
+    @Property(name = "current statements belongs to this method")
     @Relationship(type = EdgeType.EDGE_TYPE.STATEMENT_TO_METHOD_CTRL_EDGE)
     private Method method;
 

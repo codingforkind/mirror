@@ -6,7 +6,7 @@ import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
-import cn.com.mirror.project.unit.element.Variable;
+import cn.com.mirror.project.unit.element.Statement;
 import lombok.Data;
 
 import java.util.Map;
@@ -39,28 +39,28 @@ public class EdgeConstructor {
 
         Map<String, Set<Class>> mappedClasses = unit.getClasses();
         Map<String, Set<Method>> mappedMethods = unit.getMethods();
-        Map<String, Map<Integer, Set<Variable>>> mappedVars = unit.getMappedVars();
+        Map<String, Map<Integer, Statement>> mappedStatements = unit.getStatements();
 
         entrySet.stream().forEach(entry -> {
             String targetPath = entry.getKey();
             // all element in the unit
             Set<Class> classesInTarget = mappedClasses.get(targetPath);
             Set<Method> methodsInTarget = mappedMethods.get(targetPath);
-            Map<Integer, Set<Variable>> varsInTarget = mappedVars.get(targetPath);
+            Map<Integer, Statement> varsInTarget = mappedStatements.get(targetPath);
 
 
             // basic control edges in the target file
             Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
             directCtrlEdgeMap.forEach((ctrlKey, ctrlVal) -> {
-                // create ctrlKey node and ctrlVal node as a statement and build up they relationships
+                // create ctrlKey node and ctrlVal node as a statements and build up they relationships
                 //TODO xyz create node and build relationships
-                Set<Variable> varsInHead = varsInTarget.get(ctrlKey);
-                Set<Variable> varsInTail = varsInTarget.get(ctrlVal);
+                Statement headStat = varsInTarget.get(ctrlKey);
+                Statement tailStat = varsInTarget.get(ctrlVal);
 
             });
 
 
-            Map<Integer, Set<Variable>> integerSetMap = mappedVars.get(targetPath);
+            Map<Integer, Statement> integerSetMap = mappedStatements.get(targetPath);
 
         });
 

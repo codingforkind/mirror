@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public enum EdgeType {
     CONTROL_EDGE("1", "control dependence"),
-    STATEMENT_TO_METHOD_CTRL_EDGE("2", "statement to method control edge"),
+    STATEMENT_TO_METHOD_CTRL_EDGE("2", "statements to method control edge"),
     METHOD_TO_CLASS_CTRL_EDGE("3", "method to class control edge"),
     SIMPLE_DATA_EDGE("99", "simple date dependence");
 

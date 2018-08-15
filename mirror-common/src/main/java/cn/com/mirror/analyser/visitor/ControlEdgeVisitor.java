@@ -29,7 +29,7 @@ public class ControlEdgeVisitor extends ASTVisitor {
             parent = parent.getParent();
         }
 
-        // mark the relationships between astNode and statement and return
+        // mark the relationships between astNode and statements and return
         int currentLine = getStartLineNum(astNode);
         int directParentStartLine = getStartLineNum(parent);
         markEdges(currentLine, directParentStartLine);

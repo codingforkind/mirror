@@ -39,7 +39,7 @@ public enum ControlNodeTypeEnum {
 
     public final static ControlNodeTypeEnum getControlNodeType(Statement statement) {
         if (statement instanceof AssertStatement) return ASSERT;
-//        if (statement instanceof org.eclipse.jdt.core.dom.Block) return BLOCK;
+//        if (statements instanceof org.eclipse.jdt.core.dom.Block) return BLOCK;
         if (statement instanceof BreakStatement) return BREAK;
         if (statement instanceof org.eclipse.jdt.core.dom.ConstructorInvocation) return CONSTRUCTOR_INVOCATION;
         if (statement instanceof ContinueStatement) return CONTINUE;

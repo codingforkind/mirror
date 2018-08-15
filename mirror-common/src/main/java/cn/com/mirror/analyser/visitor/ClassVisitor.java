@@ -1,8 +1,11 @@
 package cn.com.mirror.analyser.visitor;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.utils.AstUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -23,6 +26,7 @@ public class ClassVisitor extends ASTVisitor {
     private String packageName;
     // the first element in this list is the outer class, others are inner class in the first class.
     private Set<Class> clsSet = new HashSet<>();
+    private Set<Method> methodSet = new HashSet<>();
 
     public ClassVisitor(String file) {
         this.file = file;
@@ -55,6 +59,15 @@ public class ClassVisitor extends ASTVisitor {
             }
 
             this.clsSet.add(mirrorClass);
+
+            Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
+                Method method = Method.instance(methodDeclaration.getName().getIdentifier(),
+                        methodDeclaration.toString(),
+                        AstUtils.getEndLine(methodDeclaration.getName()),
+                        AstUtils.getEndLine(methodDeclaration));
+                method.setInClass(mirrorClass);
+                methodSet.add(method);
+            });
         } else {
             log.error("NULL resolve binding for node: ~{}~", typeBinding);
         }

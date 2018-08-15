@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author piggy
@@ -14,5 +15,11 @@ import java.util.Set;
 public class Statement implements Serializable {
     private Integer lineNum;
     private String content;
-    private Set<Variable> varsInStat;
+    private Set<Variable> varsInStat = new TreeSet<>();
+
+    private Method inMethod;
+
+    public Statement(Integer lineNum) {
+        this.lineNum = lineNum;
+    }
 }

@@ -1,6 +1,7 @@
 package cn.com.mirror.analyser.visitor;
 
 import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.project.unit.element.Variable;
 import cn.com.mirror.project.unit.element.VariableType;
 import cn.com.mirror.project.unit.element.VariableType.PRIME;
@@ -32,7 +33,7 @@ public class VariableVisitor extends ASTVisitor {
     private final Map<String, Set<Class>> prjClasses;
 
     private Set<Variable> variableSet = new HashSet<>(); // all element defined in this project file
-    private Map<Integer, Set<Variable>> variableInFile = new TreeMap<>();
+    private Map<Integer, Statement> variableInFile = new TreeMap<>();
 
     public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
         this.file = file;
@@ -63,14 +64,16 @@ public class VariableVisitor extends ASTVisitor {
     }
 
 
-// private methods
+
+    // private methods
     private void addVariable(Integer lineNum, Variable variable) {
         if (!variableInFile.containsKey(lineNum)) {
-            Set<Variable> set = new HashSet<>();
-            set.add(variable);
-            variableInFile.put(lineNum, set);
+            Statement statement = new Statement(lineNum);
+            statement.getVarsInStat().add(variable);
+            variableInFile.put(lineNum, statement);
         } else {
-            variableInFile.get(lineNum).add(variable);
+
+            variableInFile.get(lineNum).getVarsInStat().add(variable);
         }
     }
 
