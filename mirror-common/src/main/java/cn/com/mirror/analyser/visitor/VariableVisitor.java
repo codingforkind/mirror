@@ -75,7 +75,7 @@ public class VariableVisitor extends ASTVisitor {
     }
 
     /**
-     * check the qualified class name is included in this project, if not then skip
+     * check the qualified class mtdName is included in this project, if not then skip
      * it if so just initializing this class element type into the project object.
      */
     private VariableType analysisVariableType(ITypeBinding typeBinding) {
@@ -132,7 +132,7 @@ public class VariableVisitor extends ASTVisitor {
             Entry<String, Set<Class>> nextClass = classIterator.next();
             Set<Class> clsValSet = nextClass.getValue();
             for (Class clsVal : clsValSet) {
-                if (clsVal.getQualifiedName().contains(qualifiedClassName)) {
+                if (clsVal.getClsQualifiedName().contains(qualifiedClassName)) {
                     return true;
                 }
             }

@@ -38,13 +38,13 @@ public class ClassVisitor extends ASTVisitor {
     public boolean visit(TypeDeclaration node) {
         ITypeBinding typeBinding = node.resolveBinding();
         if (null != typeBinding) {
-            // log.info("class name: {}", typeBinding.getQualifiedName());
+            // log.info("class mtdName: {}", typeBinding.getClsQualifiedName());
             Class mirrorClass = new Class();
             mirrorClass.setFile(this.file);
             mirrorClass.setInterface(node.isInterface());
-            mirrorClass.setName(node.getName().getIdentifier());
+            mirrorClass.setClsName(node.getName().getIdentifier());
             mirrorClass.setTypeDeclaration(node);
-            mirrorClass.setQualifiedName(typeBinding.getQualifiedName());
+            mirrorClass.setClsQualifiedName(typeBinding.getQualifiedName());
 
             if (null != typeBinding.getPackage()) {
                 if (!StringUtils.isEmpty(typeBinding.getPackage().getName())) {

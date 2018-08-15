@@ -22,7 +22,7 @@ public class MethodVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(MethodDeclaration node) {
-        Method method = new Method(node.getName().getIdentifier(),
+        Method method = Method.instance(node.getName().getIdentifier(),
                 node.toString(),
                 AstUtils.getEndLine(node.getName()),
                 AstUtils.getEndLine(node));

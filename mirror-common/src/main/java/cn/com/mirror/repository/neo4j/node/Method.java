@@ -26,7 +26,7 @@ import java.util.Objects;
 public class Method extends Class {
     private static final long serialVersionUID = 1L;
 
-    @Property(name = "method name")
+    @Property(name = "method mtdName")
     private String methodName;
 
     @Property(name = "method start line num")
@@ -35,7 +35,7 @@ public class Method extends Class {
     @Property(name = "method end line num")
     private Integer methodEndLineNum;
 
-    @Property(name = "method content")
+    @Property(name = "method methodContent")
     private String methodContent;
 
     @Property(name = "current method belongs to this class")
@@ -72,7 +72,7 @@ public class Method extends Class {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        
+
         Method method = (Method) o;
         return Objects.equals(methodName, method.methodName) &&
                 Objects.equals(methodStartLineNum, method.methodStartLineNum) &&

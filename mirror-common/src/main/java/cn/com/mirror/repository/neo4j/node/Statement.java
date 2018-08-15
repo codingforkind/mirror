@@ -27,7 +27,7 @@ import java.util.Set;
 public class Statement extends Method {
     private static final long serialVersionUID = 1L;
 
-    @Property(name = "statement content")
+    @Property(name = "statement methodContent")
     private String statementContent;
 
     @Property(name = "current statement belongs to this method")
