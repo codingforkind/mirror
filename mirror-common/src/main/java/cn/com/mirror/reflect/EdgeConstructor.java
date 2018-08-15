@@ -5,6 +5,7 @@ import cn.com.mirror.analyser.UnitAnalyser;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Variable;
 import lombok.Data;
 
@@ -36,12 +37,17 @@ public class EdgeConstructor {
         Set<Map.Entry<String, Map<Integer, Integer>>> entrySet =
                 pair.getDirectCtrlEdges().entrySet();
 
-        Map<String, Map<Integer, Set<Variable>>> mappedVars = unit.getMappedVars();
         Map<String, Set<Class>> mappedClasses = unit.getClasses();
+        Map<String, Set<Method>> mappedMethods = unit.getMethods();
+        Map<String, Map<Integer, Set<Variable>>> mappedVars = unit.getMappedVars();
+
         entrySet.stream().forEach(entry -> {
             String targetPath = entry.getKey();
             // all element in the unit
+            Set<Class> classesInTarget = mappedClasses.get(targetPath);
+            Set<Method> methodsInTarget = mappedMethods.get(targetPath);
             Map<Integer, Set<Variable>> varsInTarget = mappedVars.get(targetPath);
+
 
             // basic control edges in the target file
             Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
