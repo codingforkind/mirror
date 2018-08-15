@@ -1,10 +1,10 @@
 package cn.com.mirror.analyser.visitor;
 
-import cn.com.mirror.project.unit.variable.Class;
-import cn.com.mirror.project.unit.variable.Variable;
-import cn.com.mirror.project.unit.variable.VariableType;
-import cn.com.mirror.project.unit.variable.VariableType.PRIME;
-import cn.com.mirror.project.unit.variable.VariableType.TYPE;
+import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Variable;
+import cn.com.mirror.project.unit.element.VariableType;
+import cn.com.mirror.project.unit.element.VariableType.PRIME;
+import cn.com.mirror.project.unit.element.VariableType.TYPE;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ public class VariableVisitor extends ASTVisitor {
      */
     private final Map<String, Set<Class>> prjClasses;
 
-    private Set<Variable> variableSet = new HashSet<>(); // all variable defined in this project file
+    private Set<Variable> variableSet = new HashSet<>(); // all element defined in this project file
     private Map<Integer, Set<Variable>> variableInFile = new TreeMap<>();
 
     public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
@@ -76,7 +76,7 @@ public class VariableVisitor extends ASTVisitor {
 
     /**
      * check the qualified class name is included in this project, if not then skip
-     * it if so just initializing this class variable type into the project object.
+     * it if so just initializing this class element type into the project object.
      */
     private VariableType analysisVariableType(ITypeBinding typeBinding) {
         VariableType varType = null;

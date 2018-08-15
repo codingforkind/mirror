@@ -1,6 +1,6 @@
 package cn.com.mirror.analyser;
 
-import cn.com.mirror.project.unit.variable.Variable;
+import cn.com.mirror.project.unit.element.Variable;
 import cn.com.mirror.analyser.visitor.ControlEdgeVisitor;
 import cn.com.mirror.project.unit.Unit;
 import lombok.extern.slf4j.Slf4j;

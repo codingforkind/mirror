@@ -1,4 +1,4 @@
-package cn.com.mirror.project.unit.variable;
+package cn.com.mirror.project.unit.element;
 
 import java.util.Objects;
 
@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import lombok.Data;
 
 /**
- * The type Variable. A variable which defined and used in the project is
+ * The type Variable. A element which defined and used in the project is
  * unique.
  */
 @Data

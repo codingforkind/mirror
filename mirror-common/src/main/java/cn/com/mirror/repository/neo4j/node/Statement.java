@@ -5,7 +5,7 @@ package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.utils.BeanUtils;
-import cn.com.mirror.project.unit.variable.Variable;
+import cn.com.mirror.project.unit.element.Variable;
 import lombok.Getter;
 import lombok.Setter;
 import org.eclipse.jdt.core.dom.ASTNode;

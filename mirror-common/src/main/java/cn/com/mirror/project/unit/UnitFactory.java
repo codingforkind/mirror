@@ -30,7 +30,7 @@ public class UnitFactory {
             unit.addPackages(targetPath, classDeclarationVisitor.getPackageName());
             unit.addClasses(targetPath, classDeclarationVisitor.getClsSet());
 
-            // variable analysis
+            // element analysis
             VariableVisitor variableVisitor = new VariableVisitor(targetPath,
                     unit.getPackages().get(targetPath), unit.getClasses());
             compilationUnit.accept(variableVisitor);
