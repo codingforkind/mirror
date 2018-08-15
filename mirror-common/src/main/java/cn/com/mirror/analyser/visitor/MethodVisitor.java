@@ -2,6 +2,7 @@ package cn.com.mirror.analyser.visitor;
 
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.utils.AstUtils;
+import lombok.Getter;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
@@ -14,6 +15,7 @@ import java.util.Set;
  * @description
  * @date 18-8-15
  */
+@Getter
 public class MethodVisitor extends ASTVisitor {
 
     private Set<Method> methodSet = new HashSet<>();
