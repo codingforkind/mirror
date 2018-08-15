@@ -24,7 +24,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NodeEntity(label = "a line of code in target file")
-public class Statement extends Method {
+public class StatementNode extends MethodNode {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "statements content")
@@ -32,22 +32,22 @@ public class Statement extends Method {
 
     @Property(name = "current statements belongs to this method")
     @Relationship(type = EdgeType.EDGE_TYPE.STATEMENT_TO_METHOD_CTRL_EDGE)
-    private Method method;
+    private MethodNode method;
 
     private Set<Variable> variables = new HashSet<>();
 
-    Statement(ASTNode statementContent,
-              Set<Variable> variables) {
+    StatementNode(ASTNode statementContent,
+                  Set<Variable> variables) {
 
         this.statementContent = statementContent.toString();
         this.variables = variables;
     }
 
-    public static Statement instance(Method method,
-                                     ASTNode statementContent,
-                                     Set<Variable> variables) {
+    public static StatementNode instance(MethodNode method,
+                                         ASTNode statementContent,
+                                         Set<Variable> variables) {
 
-        Statement statementNode = new Statement(statementContent, variables);
+        StatementNode statementNode = new StatementNode(statementContent, variables);
 
         BeanUtils.copyProperties(statementNode, method);
         statementNode.setMethod(method);
@@ -73,7 +73,7 @@ public class Statement extends Method {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        Statement statement = (Statement) o;
+        StatementNode statement = (StatementNode) o;
         return Objects.equals(statementContent, statement.statementContent) &&
                 Objects.equals(method, statement.method) &&
                 Objects.equals(variables, statement.variables);

@@ -53,7 +53,7 @@ public class UnitAnalysorTests {
             log.info("Target path: {}", entry.getKey());
 
             for (Map.Entry<Integer, Statement> tm : entry.getValue().entrySet()) {
-                log.info("Node: {}", tm.getKey());
+                log.info("BaseNode: {}", tm.getKey());
                 tm.getValue().getVarsInStat().stream().forEach(var -> {
                     System.out.println(var.getLineNum() + " "
                             + var.getName() + " "

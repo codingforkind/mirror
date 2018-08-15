@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 @Data
 @NodeEntity(label = "a node in target which contains some basic information")
-public class Node implements Serializable {
+public class BaseNode implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -29,14 +29,14 @@ public class Node implements Serializable {
     private String nodeType;
 
     @Relationship(type = EdgeType.EDGE_TYPE.NODE_TO_NODE_CTRL_EDGE)
-    private Node ctrlDepNode;
+    private BaseNode ctrlDepNode;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Node node = (Node) o;
+        BaseNode node = (BaseNode) o;
         return Objects.equals(id, node.id) &&
                 Objects.equals(lineNum, node.lineNum) &&
                 Objects.equals(targetPath, node.targetPath) &&

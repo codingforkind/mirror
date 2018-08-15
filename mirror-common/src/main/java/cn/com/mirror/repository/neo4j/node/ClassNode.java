@@ -3,14 +3,12 @@
  */
 package cn.com.mirror.repository.neo4j.node;
 
-import cn.com.mirror.constant.NodeTypeEnum;
 import cn.com.mirror.utils.BeanUtils;
 import lombok.Data;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -20,7 +18,7 @@ import java.util.Objects;
  */
 @Data
 @NodeEntity(label = "a class in target")
-public class Class extends Node {
+public class ClassNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "package name")
@@ -38,14 +36,14 @@ public class Class extends Node {
     @Property(name = "class content")
     private String classContent;
 
-    Class() {
+    ClassNode() {
     }
 
-    Class(String packageName,
-          String className,
-          Integer classStartLineNum,
-          Integer classEndLineNum,
-          ASTNode classContent) {
+    ClassNode(String packageName,
+              String className,
+              Integer classStartLineNum,
+              Integer classEndLineNum,
+              ASTNode classContent) {
 
         this.packageName = packageName;
         this.className = className;
@@ -54,14 +52,14 @@ public class Class extends Node {
         this.classContent = classContent.toString();
     }
 
-    public static Class instance(Node node,
-                                 String packageName,
-                                 String className,
-                                 Integer classStartLineNum,
-                                 Integer classEndLineNum,
-                                 ASTNode classContent) {
+    public static ClassNode instance(BaseNode node,
+                                     String packageName,
+                                     String className,
+                                     Integer classStartLineNum,
+                                     Integer classEndLineNum,
+                                     ASTNode classContent) {
 
-        Class classNode = new Class(packageName, className, classStartLineNum, classEndLineNum, classContent);
+        ClassNode classNode = new ClassNode(packageName, className, classStartLineNum, classEndLineNum, classContent);
         BeanUtils.copyProperties(classNode, node);
         return classNode;
     }
@@ -72,7 +70,7 @@ public class Class extends Node {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        Class aClass = (Class) o;
+        ClassNode aClass = (ClassNode) o;
         return Objects.equals(packageName, aClass.packageName) &&
                 Objects.equals(className, aClass.className) &&
                 Objects.equals(classStartLineNum, aClass.classStartLineNum) &&

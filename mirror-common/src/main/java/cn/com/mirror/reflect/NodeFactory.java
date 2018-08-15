@@ -1,7 +1,7 @@
 package cn.com.mirror.reflect;
 
-import cn.com.mirror.repository.neo4j.node.Statement;
-import cn.com.mirror.repository.neo4j.node.Node;
+import cn.com.mirror.repository.neo4j.node.StatementNode;
+import cn.com.mirror.repository.neo4j.node.BaseNode;
 
 /**
  * @author piggy
@@ -10,7 +10,7 @@ import cn.com.mirror.repository.neo4j.node.Node;
  */
 public class NodeFactory {
     // create neo4j nodes
-    public Node nodeInstance(Statement statementNode) {
+    public BaseNode nodeInstance(StatementNode statementNode) {
         return null;
     }
 

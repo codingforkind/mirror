@@ -23,7 +23,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NodeEntity(label = "a method in target")
-public class Method extends Class {
+public class MethodNode extends ClassNode {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "method name")
@@ -40,15 +40,15 @@ public class Method extends Class {
 
     @Property(name = "current method belongs to this class")
     @Relationship(type = EdgeType.EDGE_TYPE.METHOD_TO_CLASS_CTRL_EDGE)
-    private Class cls;
+    private ClassNode cls;
 
-    Method() {
+    MethodNode() {
     }
 
-    Method(String methodName,
-           Integer methodStartLineNum,
-           Integer methodEndLineNum,
-           ASTNode methodContent) {
+    MethodNode(String methodName,
+               Integer methodStartLineNum,
+               Integer methodEndLineNum,
+               ASTNode methodContent) {
 
         this.methodName = methodName;
         this.methodStartLineNum = methodStartLineNum;
@@ -56,13 +56,13 @@ public class Method extends Class {
         this.methodContent = methodContent.toString();
     }
 
-    public static Method instance(Class classNode,
-                                  String methodName,
-                                  Integer methodStartLineNum,
-                                  Integer methodEndLineNum,
-                                  ASTNode methodContent) {
+    public static MethodNode instance(ClassNode classNode,
+                                      String methodName,
+                                      Integer methodStartLineNum,
+                                      Integer methodEndLineNum,
+                                      ASTNode methodContent) {
 
-        Method method = new Method(methodName, methodStartLineNum, methodEndLineNum, methodContent);
+        MethodNode method = new MethodNode(methodName, methodStartLineNum, methodEndLineNum, methodContent);
         BeanUtils.copyProperties(method, classNode);
         return method;
     }
@@ -73,7 +73,7 @@ public class Method extends Class {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        Method method = (Method) o;
+        MethodNode method = (MethodNode) o;
         return Objects.equals(methodName, method.methodName) &&
                 Objects.equals(methodStartLineNum, method.methodStartLineNum) &&
                 Objects.equals(methodEndLineNum, method.methodEndLineNum) &&
