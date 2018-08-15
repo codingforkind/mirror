@@ -11,8 +11,8 @@ import lombok.Data;
 public class Class implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String file;
-	private String clsName;
-	private String clsQualifiedName;
+	private String name;
+	private String qualifiedName;
 	private String packageName;
 	private TypeDeclaration typeDeclaration;
 	private boolean isInterface;

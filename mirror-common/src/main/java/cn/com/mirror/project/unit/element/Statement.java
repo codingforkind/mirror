@@ -2,6 +2,7 @@ package cn.com.mirror.project.unit.element;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -10,8 +11,8 @@ import java.util.Set;
  * @date 18-8-15
  */
 @Data
-public class Statement extends Method {
-    private Integer statLineNum;
-    private String statContent;
+public class Statement implements Serializable {
+    private Integer lineNum;
+    private String content;
     private Set<Variable> varsInStat;
 }

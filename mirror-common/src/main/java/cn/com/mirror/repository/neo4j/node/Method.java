@@ -26,7 +26,7 @@ import java.util.Objects;
 public class Method extends Class {
     private static final long serialVersionUID = 1L;
 
-    @Property(name = "method mtdName")
+    @Property(name = "method name")
     private String methodName;
 
     @Property(name = "method start line num")
@@ -35,7 +35,7 @@ public class Method extends Class {
     @Property(name = "method end line num")
     private Integer methodEndLineNum;
 
-    @Property(name = "method methodContent")
+    @Property(name = "method content")
     private String methodContent;
 
     @Property(name = "current method belongs to this class")

@@ -23,10 +23,10 @@ import java.util.Objects;
 public class Class extends Node {
     private static final long serialVersionUID = 1L;
 
-    @Property(name = "package mtdName")
+    @Property(name = "package name")
     private String packageName;
 
-    @Property(name = "class mtdName")
+    @Property(name = "class name")
     private String className;
 
     @Property(name = "class start line num")
@@ -35,7 +35,7 @@ public class Class extends Node {
     @Property(name = "class end line num")
     private Integer classEndLineNum;
 
-    @Property(name = "class methodContent")
+    @Property(name = "class content")
     private String classContent;
 
     Class() {

@@ -52,7 +52,7 @@ public class Unit implements Serializable {
 
     public void addPackages(String targetPath, String packageName) {
         checkTargetPath(targetPath);
-        Validate.notEmpty(packageName, "Package mtdName can not be empty.");
+        Validate.notEmpty(packageName, "Package name can not be empty.");
         this.packages.put(targetPath, packageName);
     }
 
