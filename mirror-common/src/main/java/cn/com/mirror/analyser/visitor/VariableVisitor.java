@@ -1,9 +1,8 @@
 package cn.com.mirror.analyser.visitor;
 
+import cn.com.mirror.project.unit.element.*;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Statement;
-import cn.com.mirror.project.unit.element.Variable;
-import cn.com.mirror.project.unit.element.VariableType;
 import cn.com.mirror.project.unit.element.VariableType.PRIME;
 import cn.com.mirror.project.unit.element.VariableType.TYPE;
 import cn.com.mirror.utils.AstUtils;
@@ -31,14 +30,20 @@ public class VariableVisitor extends ASTVisitor {
      * all classes defined in the project
      */
     private final Map<String, Set<Class>> prjClasses;
+    private final Set<Method> targetMethods;
 
     private Set<Variable> variableSet = new HashSet<>(); // all element defined in this project file
     private Map<Integer, Statement> variableInFile = new TreeMap<>();
 
-    public VariableVisitor(String file, String packageName, Map<String, Set<Class>> prjClasses) {
+    public VariableVisitor(String file,
+                           String packageName,
+                           Map<String, Set<Class>> prjClasses,
+                           Set<Method> methods) {
+
         this.file = file;
         this.packageName = packageName;
         this.prjClasses = prjClasses;
+        this.targetMethods = methods;
     }
 
     @Override
@@ -64,7 +69,6 @@ public class VariableVisitor extends ASTVisitor {
     }
 
 
-
     // private methods
     private void addVariable(Integer lineNum, Variable variable) {
         if (!variableInFile.containsKey(lineNum)) {
@@ -75,6 +79,15 @@ public class VariableVisitor extends ASTVisitor {
 
             variableInFile.get(lineNum).getVarsInStat().add(variable);
         }
+
+        targetMethods.stream().forEach(method -> {
+            if (lineNum <= method.getStartLineNum()
+                    && lineNum >= method.getEndLineNum()) {
+                // looking for what method the statement belongs
+                variableInFile.get(lineNum).setInMethod(method);
+                return;
+            }
+        });
     }
 
     /**

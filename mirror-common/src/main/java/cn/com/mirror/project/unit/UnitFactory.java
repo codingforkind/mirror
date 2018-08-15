@@ -28,10 +28,11 @@ public class UnitFactory {
             compilationUnit.accept(classDeclarationVisitor);
             unit.addPackages(targetPath, classDeclarationVisitor.getPackageName());
             unit.addClasses(targetPath, classDeclarationVisitor.getClsSet());
+            unit.addMethods(targetPath, classDeclarationVisitor.getMethodSet());
 
             // element analysis
             VariableVisitor variableVisitor = new VariableVisitor(targetPath,
-                    unit.getPackages().get(targetPath), unit.getClasses());
+                    unit.getPackages().get(targetPath), unit.getClasses(), unit.getMethods().get(targetPath));
             compilationUnit.accept(variableVisitor);
             unit.addVariables(targetPath, variableVisitor.getVariableSet());
             unit.addMappedVars(targetPath, variableVisitor.getVariableInFile());
