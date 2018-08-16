@@ -1,6 +1,7 @@
 package cn.com.mirror.project.unit.element;
 
 import lombok.Data;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -18,6 +19,7 @@ public class Method implements Serializable {
     private String content;
     private Integer startLineNum;
     private Integer endLineNum;
+    private MethodDeclaration methodDeclaration;
 
     private Class inClass;
 

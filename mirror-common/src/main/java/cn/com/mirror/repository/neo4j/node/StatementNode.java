@@ -4,7 +4,9 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
-import cn.com.mirror.utils.BeanUtils;
+import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.project.unit.element.Variable;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +15,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -24,7 +26,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NodeEntity(label = "a line of code in target file")
-public class StatementNode extends MethodNode {
+public class StatementNode implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "statements content")
@@ -43,45 +45,13 @@ public class StatementNode extends MethodNode {
         this.variables = variables;
     }
 
-    public static StatementNode instance(MethodNode method,
-                                         ASTNode statementContent,
-                                         Set<Variable> variables) {
+    public static StatementNode instance(Statement statement) {
 
-        StatementNode statementNode = new StatementNode(statementContent, variables);
+        Method mtd = statement.getInMethod();
+        Class cls = mtd.getInClass();
 
-        BeanUtils.copyProperties(statementNode, method);
-        statementNode.setMethod(method);
-        return statementNode;
+//        TODO xyz isolated all nodes
+        return null;
     }
 
-    public void addVariable(Integer linenum, Variable variable) {
-        if (!this.getLineNum().equals(linenum)) {
-            return;
-        }
-
-        if (null != variables) {
-            variables.add(variable);
-        } else {
-            variables = new HashSet<>();
-            variables.add(variable);
-        }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        StatementNode statement = (StatementNode) o;
-        return Objects.equals(statementContent, statement.statementContent) &&
-                Objects.equals(method, statement.method) &&
-                Objects.equals(variables, statement.variables);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), statementContent, method, variables);
-    }
 }

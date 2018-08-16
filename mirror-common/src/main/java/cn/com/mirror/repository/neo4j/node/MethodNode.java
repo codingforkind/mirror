@@ -4,16 +4,15 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
-import cn.com.mirror.utils.BeanUtils;
-import org.eclipse.jdt.core.dom.ASTNode;
-
+import cn.com.mirror.project.unit.element.Method;
 import lombok.Getter;
 import lombok.Setter;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.Objects;
+import java.io.Serializable;
 
 /**
  * @author Piggy
@@ -23,7 +22,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NodeEntity(label = "a method in target")
-public class MethodNode extends ClassNode {
+public class MethodNode implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "method name")
@@ -56,34 +55,11 @@ public class MethodNode extends ClassNode {
         this.methodContent = methodContent.toString();
     }
 
-    public static MethodNode instance(ClassNode classNode,
-                                      String methodName,
-                                      Integer methodStartLineNum,
-                                      Integer methodEndLineNum,
-                                      ASTNode methodContent) {
-
-        MethodNode method = new MethodNode(methodName, methodStartLineNum, methodEndLineNum, methodContent);
-        BeanUtils.copyProperties(method, classNode);
-        return method;
+    private static MethodNode instance(Method method) {
+        return new MethodNode(method.getName(),
+                method.getStartLineNum(),
+                method.getEndLineNum(),
+                method.getMethodDeclaration());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        MethodNode method = (MethodNode) o;
-        return Objects.equals(methodName, method.methodName) &&
-                Objects.equals(methodStartLineNum, method.methodStartLineNum) &&
-                Objects.equals(methodEndLineNum, method.methodEndLineNum) &&
-                Objects.equals(methodContent, method.methodContent) &&
-                Objects.equals(cls, method.cls);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), methodName, methodStartLineNum, methodEndLineNum, methodContent, cls);
-    }
 }

@@ -3,13 +3,13 @@
  */
 package cn.com.mirror.repository.neo4j.node;
 
-import cn.com.mirror.utils.BeanUtils;
+import cn.com.mirror.project.unit.element.Class;
 import lombok.Data;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
-import java.util.Objects;
+import java.io.Serializable;
 
 /**
  * @author Piggy
@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 @Data
 @NodeEntity(label = "a class in target")
-public class ClassNode extends BaseNode {
+public class ClassNode implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "package name")
@@ -52,35 +52,15 @@ public class ClassNode extends BaseNode {
         this.classContent = classContent.toString();
     }
 
-    public static ClassNode instance(BaseNode node,
-                                     String packageName,
-                                     String className,
-                                     Integer classStartLineNum,
-                                     Integer classEndLineNum,
-                                     ASTNode classContent) {
+    public static ClassNode instance(Class cls,
+                                     Integer lineNum,
+                                     String targetPath) {
 
-        ClassNode classNode = new ClassNode(packageName, className, classStartLineNum, classEndLineNum, classContent);
-        BeanUtils.copyProperties(classNode, node);
-        return classNode;
+        return new ClassNode(cls.getPackageName(),
+                cls.getName(),
+                cls.getClsStartLineNum(),
+                cls.getClsEndLineNum(),
+                cls.getTypeDeclaration());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        ClassNode aClass = (ClassNode) o;
-        return Objects.equals(packageName, aClass.packageName) &&
-                Objects.equals(className, aClass.className) &&
-                Objects.equals(classStartLineNum, aClass.classStartLineNum) &&
-                Objects.equals(classEndLineNum, aClass.classEndLineNum) &&
-                Objects.equals(classContent, aClass.classContent);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), packageName, className, classStartLineNum, classEndLineNum, classContent);
-    }
 }

@@ -7,6 +7,7 @@ import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
+import cn.com.mirror.repository.neo4j.node.StatementNode;
 import lombok.Data;
 
 import java.util.Map;
@@ -55,7 +56,11 @@ public class EdgeConstructor {
                 // create ctrlKey node and ctrlVal node as a statements and build up they relationships
                 //TODO xyz create node and build relationships
                 Statement headStat = varsInTarget.get(ctrlKey);
+
+
+
                 Statement tailStat = varsInTarget.get(ctrlVal);
+
 
             });
 

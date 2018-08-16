@@ -14,6 +14,8 @@ public class Class implements Serializable{
 	private String name;
 	private String qualifiedName;
 	private String packageName;
+	private Integer clsStartLineNum;
+	private Integer clsEndLineNum;
 	private TypeDeclaration typeDeclaration;
 	private boolean isInterface;
 	private boolean isPublic;

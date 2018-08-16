@@ -49,6 +49,8 @@ public class ClassVisitor extends ASTVisitor {
             mirrorClass.setName(node.getName().getIdentifier());
             mirrorClass.setTypeDeclaration(node);
             mirrorClass.setQualifiedName(typeBinding.getQualifiedName());
+            mirrorClass.setClsStartLineNum(AstUtils.getEndLine(node));
+            mirrorClass.setClsEndLineNum(AstUtils.getEndLine(node.getName()));
 
             if (null != typeBinding.getPackage()) {
                 if (!StringUtils.isEmpty(typeBinding.getPackage().getName())) {
@@ -65,6 +67,7 @@ public class ClassVisitor extends ASTVisitor {
                         methodDeclaration.toString(),
                         AstUtils.getEndLine(methodDeclaration.getName()),
                         AstUtils.getEndLine(methodDeclaration));
+                method.setMethodDeclaration(methodDeclaration);
                 method.setInClass(mirrorClass);
                 methodSet.add(method);
             });
