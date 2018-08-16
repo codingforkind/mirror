@@ -5,10 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Piggy
@@ -16,6 +13,9 @@ import java.util.Set;
  */
 public class FileUtils {
     private static Logger log = LoggerFactory.getLogger(FileUtils.class);
+
+    private static Map<String, List<String>> lineCodesInUnit = new HashMap<>();
+
 
     public static final String getFileContent(String javaFile) {
         byte[] input = null;
@@ -43,6 +43,10 @@ public class FileUtils {
     }
 
     public static final List<String> listCodeLines(String path) {
+        if (lineCodesInUnit.containsKey(path)) {
+            return lineCodesInUnit.get(path);
+        }
+
         RandomAccessFile accessFile = null;
         try {
             accessFile = new RandomAccessFile(new File(path), "r");
@@ -64,7 +68,16 @@ public class FileUtils {
             log.error("Read file: " + path);
             e.printStackTrace();
         }
+
+        addLineCodes(path, lines);
+
         return lines;
+    }
+
+    private static void addLineCodes(String path, List<String> lineCodes) {
+        if (!lineCodesInUnit.containsKey(path)) {
+            lineCodesInUnit.put(path, lineCodes);
+        }
     }
 
     /**

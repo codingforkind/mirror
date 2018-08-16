@@ -14,6 +14,7 @@ import java.util.TreeSet;
 @Data
 public class Statement implements Serializable {
     private Integer lineNum;
+    private String file;
     private String content;
     private Set<Variable> varsInStat = new TreeSet<>();
 

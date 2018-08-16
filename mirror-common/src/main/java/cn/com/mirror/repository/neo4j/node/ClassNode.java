@@ -9,8 +9,6 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
-import java.io.Serializable;
-
 /**
  * @author Piggy
  * @description
@@ -18,7 +16,7 @@ import java.io.Serializable;
  */
 @Data
 @NodeEntity(label = "a class in target")
-public class ClassNode implements Serializable {
+public class ClassNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "package name")
@@ -26,9 +24,6 @@ public class ClassNode implements Serializable {
 
     @Property(name = "class name")
     private String className;
-
-    @Property(name = "class start line num")
-    private Integer classStartLineNum;
 
     @Property(name = "class end line num")
     private Integer classEndLineNum;
@@ -39,26 +34,27 @@ public class ClassNode implements Serializable {
     ClassNode() {
     }
 
-    ClassNode(String packageName,
+    ClassNode(Integer startLineNum,
+              String targetPath,
+              String packageName,
               String className,
-              Integer classStartLineNum,
               Integer classEndLineNum,
               ASTNode classContent) {
 
+        super(startLineNum, targetPath);
+
         this.packageName = packageName;
         this.className = className;
-        this.classStartLineNum = classStartLineNum;
         this.classEndLineNum = classEndLineNum;
         this.classContent = classContent.toString();
     }
 
-    public static ClassNode instance(Class cls,
-                                     Integer lineNum,
-                                     String targetPath) {
+    public static ClassNode instance(Class cls) {
 
-        return new ClassNode(cls.getPackageName(),
+        return new ClassNode(cls.getClsStartLineNum(),
+                cls.getFile(),
+                cls.getPackageName(),
                 cls.getName(),
-                cls.getClsStartLineNum(),
                 cls.getClsEndLineNum(),
                 cls.getTypeDeclaration());
     }

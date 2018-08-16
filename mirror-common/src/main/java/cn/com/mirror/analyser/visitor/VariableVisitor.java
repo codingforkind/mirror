@@ -6,6 +6,7 @@ import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.project.unit.element.VariableType.PRIME;
 import cn.com.mirror.project.unit.element.VariableType.TYPE;
 import cn.com.mirror.utils.AstUtils;
+import cn.com.mirror.utils.FileUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +74,8 @@ public class VariableVisitor extends ASTVisitor {
     private void addVariable(Integer lineNum, Variable variable) {
         if (!variableInFile.containsKey(lineNum)) {
             Statement statement = new Statement(lineNum);
+            statement.setFile(this.file);
+            statement.setContent(FileUtils.listCodeLines(this.file).get(lineNum - 1));
             statement.getVarsInStat().add(variable);
             variableInFile.put(lineNum, statement);
         } else {

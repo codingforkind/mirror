@@ -15,7 +15,6 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +25,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NodeEntity(label = "a line of code in target file")
-public class StatementNode implements Serializable {
+public class StatementNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "statements content")
@@ -36,22 +35,22 @@ public class StatementNode implements Serializable {
     @Relationship(type = EdgeType.EDGE_TYPE.STATEMENT_TO_METHOD_CTRL_EDGE)
     private MethodNode method;
 
-    private Set<Variable> variables = new HashSet<>();
+    private Set<Variable> variables;
 
-    StatementNode(ASTNode statementContent,
+    StatementNode(Integer startLineNum,
+                  String targetPath,
+                  String statementContent,
                   Set<Variable> variables) {
 
-        this.statementContent = statementContent.toString();
+        this.statementContent = statementContent;
         this.variables = variables;
     }
 
     public static StatementNode instance(Statement statement) {
-
-        Method mtd = statement.getInMethod();
-        Class cls = mtd.getInClass();
-
-//        TODO xyz isolated all nodes
-        return null;
+        return new StatementNode(statement.getLineNum(),
+                statement.getFile(),
+                statement.getContent(),
+                statement.getVarsInStat());
     }
 
 }

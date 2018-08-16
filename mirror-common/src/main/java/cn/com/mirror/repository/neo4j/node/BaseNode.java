@@ -18,8 +18,8 @@ public class BaseNode implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Property(name = "line num")
-    private Integer lineNum;
+    @Property(name = "start line num")
+    private Integer startLineNum;
 
     @Property(name = "target path")
     private String targetPath;
@@ -29,10 +29,10 @@ public class BaseNode implements Serializable {
 
     BaseNode(){}
 
-    public BaseNode(Integer lineNum,
+    public BaseNode(Integer startLineNum,
                     String targetPath) {
 
-        this.lineNum = lineNum;
+        this.startLineNum = startLineNum;
         this.targetPath = targetPath;
     }
 

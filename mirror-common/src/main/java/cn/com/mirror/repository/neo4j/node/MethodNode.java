@@ -12,8 +12,6 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.io.Serializable;
-
 /**
  * @author Piggy
  * @description
@@ -22,14 +20,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NodeEntity(label = "a method in target")
-public class MethodNode implements Serializable {
+public class MethodNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
     @Property(name = "method name")
     private String methodName;
-
-    @Property(name = "method start line num")
-    private Integer methodStartLineNum;
 
     @Property(name = "method end line num")
     private Integer methodEndLineNum;
@@ -44,20 +39,20 @@ public class MethodNode implements Serializable {
     MethodNode() {
     }
 
-    MethodNode(String methodName,
-               Integer methodStartLineNum,
+    MethodNode(Integer startLineNum,
+               String targetPath,
+               String methodName,
                Integer methodEndLineNum,
                ASTNode methodContent) {
 
         this.methodName = methodName;
-        this.methodStartLineNum = methodStartLineNum;
         this.methodEndLineNum = methodEndLineNum;
         this.methodContent = methodContent.toString();
     }
 
     private static MethodNode instance(Method method) {
-        return new MethodNode(method.getName(),
-                method.getStartLineNum(),
+        return new MethodNode(method.getStartLineNum(),
+                method.getName(),
                 method.getEndLineNum(),
                 method.getMethodDeclaration());
     }
