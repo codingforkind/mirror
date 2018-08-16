@@ -1,7 +1,7 @@
 package cn.com.mirror.project.unit.element;
 
+import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.Set;
 import java.util.TreeSet;

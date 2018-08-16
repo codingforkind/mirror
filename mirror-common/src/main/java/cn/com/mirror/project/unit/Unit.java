@@ -3,11 +3,10 @@ package cn.com.mirror.project.unit;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
-import cn.com.mirror.project.unit.element.Variable;
+import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.neo4j.driver.v1.summary.StatementType;
 
 import java.io.Serializable;
 import java.util.HashMap;

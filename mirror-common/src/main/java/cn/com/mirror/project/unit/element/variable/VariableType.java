@@ -1,4 +1,4 @@
-package cn.com.mirror.project.unit.element;
+package cn.com.mirror.project.unit.element.variable;
 
 import cn.com.mirror.exceptions.AnalysisException;
 import lombok.Data;
