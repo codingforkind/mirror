@@ -3,7 +3,6 @@ package cn.com.mirror.project.unit.element;
 import lombok.Data;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,33 +11,28 @@ import java.util.Objects;
  * @date 18-8-15
  */
 @Data
-public class Method implements Serializable {
+public class Method extends Base {
     private static final long serialVersionUID = 1L;
 
     private String name;
-    private String content;
-    private Integer startLineNum;
-    private Integer endLineNum;
     private MethodDeclaration methodDeclaration;
 
     private Class inClass;
 
-    Method() {
-    }
+    public Method(String targetPath,
+                  Integer startLineNum,
+                  Integer endLineNum,
+                  String content,
+                  String packageName,
+                  String name,
+                  MethodDeclaration methodDeclaration,
+                  Class inClass) {
 
-    Method(String name, String content, Integer startLineNum, Integer endLineNum) {
+        super(targetPath, startLineNum, endLineNum, content, packageName);
+
         this.name = name;
-        this.content = content;
-        this.startLineNum = startLineNum;
-        this.endLineNum = endLineNum;
-    }
-
-    public final static Method instance(String name,
-                                        String content,
-                                        Integer startLineNum,
-                                        Integer endLineNum) {
-
-        return new Method(name, content, startLineNum, endLineNum);
+        this.methodDeclaration = methodDeclaration;
+        this.inClass = inClass;
     }
 
     @Override
@@ -48,13 +42,13 @@ public class Method implements Serializable {
 
         Method method = (Method) o;
         return Objects.equals(name, method.name) &&
-                Objects.equals(content, method.content) &&
-                Objects.equals(startLineNum, method.startLineNum) &&
-                Objects.equals(endLineNum, method.endLineNum);
+                Objects.equals(this.getContent(), method.getContent()) &&
+                Objects.equals(this.getStartLineNum(), method.getStartLineNum()) &&
+                Objects.equals(this.getEndLineNum(), method.getEndLineNum());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, content, startLineNum, endLineNum);
+        return Objects.hash(name, this.getContent(), this.getStartLineNum(), this.getEndLineNum());
     }
 }

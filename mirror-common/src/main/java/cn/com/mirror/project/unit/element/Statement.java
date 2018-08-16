@@ -1,8 +1,8 @@
 package cn.com.mirror.project.unit.element;
 
 import lombok.Data;
+import lombok.Getter;
 
-import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,15 +12,21 @@ import java.util.TreeSet;
  * @date 18-8-15
  */
 @Data
-public class Statement implements Serializable {
-    private Integer lineNum;
-    private String file;
-    private String content;
-    private Set<Variable> varsInStat = new TreeSet<>();
+public class Statement extends Base {
+    private Set<Variable> varsInStat;
 
     private Method inMethod;
 
-    public Statement(Integer lineNum) {
-        this.lineNum = lineNum;
+    public Statement(String targetPath,
+                     Integer startLineNum,
+                     Integer endLineNum,
+                     String content,
+                     String packageName) {
+
+        super(targetPath, startLineNum, endLineNum, content, packageName);
+
+        this.varsInStat = new TreeSet<>();
     }
+
+
 }

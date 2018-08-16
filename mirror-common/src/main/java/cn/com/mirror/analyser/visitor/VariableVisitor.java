@@ -73,9 +73,12 @@ public class VariableVisitor extends ASTVisitor {
     // private methods
     private void addVariable(Integer lineNum, Variable variable) {
         if (!variableInFile.containsKey(lineNum)) {
-            Statement statement = new Statement(lineNum);
-            statement.setFile(this.file);
-            statement.setContent(FileUtils.listCodeLines(this.file).get(lineNum - 1));
+            Statement statement = new Statement(this.file,
+                    lineNum,
+                    lineNum,
+                    FileUtils.listCodeLines(this.file).get(lineNum - 1),
+                    this.packageName);
+
             statement.getVarsInStat().add(variable);
             variableInFile.put(lineNum, statement);
         } else {

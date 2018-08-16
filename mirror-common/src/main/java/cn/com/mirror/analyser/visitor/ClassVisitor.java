@@ -43,14 +43,15 @@ public class ClassVisitor extends ASTVisitor {
         ITypeBinding typeBinding = node.resolveBinding();
         if (null != typeBinding) {
             // log.info("class name: {}", typeBinding.getQualifiedName());
-            Class mirrorClass = new Class();
-            mirrorClass.setFile(this.file);
+            Class mirrorClass = new Class(this.file,
+                    AstUtils.getEndLine(node.getName()),
+                    AstUtils.getEndLine(node),
+                    node.toString(),
+                    this.packageName,
+                    node.getName().getIdentifier(),
+                    typeBinding.getQualifiedName(),
+                    node);
             mirrorClass.setInterface(node.isInterface());
-            mirrorClass.setName(node.getName().getIdentifier());
-            mirrorClass.setTypeDeclaration(node);
-            mirrorClass.setQualifiedName(typeBinding.getQualifiedName());
-            mirrorClass.setClsStartLineNum(AstUtils.getEndLine(node));
-            mirrorClass.setClsEndLineNum(AstUtils.getEndLine(node.getName()));
 
             if (null != typeBinding.getPackage()) {
                 if (!StringUtils.isEmpty(typeBinding.getPackage().getName())) {
@@ -63,12 +64,14 @@ public class ClassVisitor extends ASTVisitor {
             this.clsSet.add(mirrorClass);
 
             Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
-                Method method = Method.instance(methodDeclaration.getName().getIdentifier(),
-                        methodDeclaration.toString(),
+                Method method = new Method(this.file,
                         AstUtils.getEndLine(methodDeclaration.getName()),
-                        AstUtils.getEndLine(methodDeclaration));
-                method.setMethodDeclaration(methodDeclaration);
-                method.setInClass(mirrorClass);
+                        AstUtils.getEndLine(methodDeclaration),
+                        methodDeclaration.toString(),
+                        this.packageName,
+                        methodDeclaration.getName().getIdentifier(),
+                        methodDeclaration,
+                        mirrorClass);
                 methodSet.add(method);
             });
         } else {
