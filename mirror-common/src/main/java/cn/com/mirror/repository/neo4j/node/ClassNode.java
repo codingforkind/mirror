@@ -3,6 +3,7 @@
  */
 package cn.com.mirror.repository.neo4j.node;
 
+import cn.com.mirror.project.unit.element.Class;
 import lombok.Getter;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
@@ -35,5 +36,15 @@ public class ClassNode extends BaseNode {
 
         this.name = name;
         this.qualifiedName = qualifiedName;
+    }
+
+    public static final ClassNode instance(Class cls) {
+        return new ClassNode(cls.getStartLineNum(),
+                cls.getTargetPath(),
+                cls.getEndLineNum(),
+                cls.getContent(),
+                cls.getPackageName(),
+                cls.getName(),
+                cls.getQualifiedName());
     }
 }

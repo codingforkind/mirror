@@ -4,6 +4,7 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.project.unit.element.Statement;
 import lombok.Getter;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
@@ -33,5 +34,14 @@ public class StatementNode extends BaseNode {
         super(startLineNum, targetPath, endLineNum, content, packageName);
 
         this.method = method;
+    }
+
+    public static final StatementNode instance(Statement statement) {
+        return new StatementNode(statement.getStartLineNum(),
+                statement.getTargetPath(),
+                statement.getEndLineNum(),
+                statement.getContent(),
+                statement.getPackageName(),
+                MethodNode.instance(statement.getInMethod()));
     }
 }

@@ -4,6 +4,7 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.project.unit.element.Method;
 import lombok.Getter;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
@@ -38,5 +39,15 @@ public class MethodNode extends BaseNode {
 
         this.name = name;
         this.cls = cls;
+    }
+
+    public static final MethodNode instance(Method method) {
+        return new MethodNode(method.getStartLineNum(),
+                method.getTargetPath(),
+                method.getEndLineNum(),
+                method.getContent(),
+                method.getPackageName(),
+                method.getName(),
+                ClassNode.instance(method.getInClass()));
     }
 }

@@ -1,6 +1,7 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.project.unit.element.Base;
 import lombok.Getter;
 import org.neo4j.ogm.annotation.*;
 
@@ -48,6 +49,14 @@ public class BaseNode implements Serializable {
         this.endLineNum = endLineNum;
         this.content = content;
         this.packageName = packageName;
+    }
+
+    public static final BaseNode instance(Base base) {
+        return new BaseNode(base.getStartLineNum(),
+                base.getTargetPath(),
+                base.getEndLineNum(),
+                base.getContent(),
+                base.getPackageName());
     }
 
     public Long getId() {
