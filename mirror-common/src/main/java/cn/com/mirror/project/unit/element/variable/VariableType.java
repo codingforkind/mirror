@@ -9,7 +9,7 @@ import java.util.Objects;
 @Data
 public class VariableType {
 
-	public static enum TYPE {
+	public enum TYPE {
 		PRIME, CLASS, INTERFACE, ARRAY, ENUM, OTHER;
 		public static TYPE judgeType(ITypeBinding typeBinding) {
 			if (typeBinding.isPrimitive())
@@ -74,7 +74,7 @@ public class VariableType {
 				Objects.equals(qualifiedName, that.getQualifiedName());
 	}
 
-	public static enum PRIME {
+	public enum PRIME {
 		INT("int"), 
 		CHAR("char"), 
 		DOUBLE("double"), 
@@ -86,7 +86,7 @@ public class VariableType {
 
 		private String code;
 
-		private PRIME(String code) {
+		PRIME(String code) {
 			this.code = code;
 		}
 
