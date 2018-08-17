@@ -24,7 +24,6 @@ public class MethodNode extends BaseNode {
     @Property(name = "method name")
     private String name;
 
-    @Property(name = "current method belongs to this class")
     @Relationship(type = EdgeType.EDGE_TYPE.METHOD_TO_CLASS_CTRL_EDGE)
     private ClassNode cls;
 

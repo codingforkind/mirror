@@ -20,7 +20,6 @@ import org.neo4j.ogm.annotation.Relationship;
 public class StatementNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
-    @Property(name = "current statements belongs to this method")
     @Relationship(type = EdgeType.EDGE_TYPE.STATEMENT_TO_METHOD_CTRL_EDGE)
     private MethodNode method;
 
