@@ -58,7 +58,7 @@ public class UnitAnalysorTests {
                     System.out.println(var.getLineNum() + " "
                             + var.getName() + " "
                             + var.getVariableType() + " "
-                            + var.isField());
+                            + var.isFieldFlag());
                 });
             }
             break;

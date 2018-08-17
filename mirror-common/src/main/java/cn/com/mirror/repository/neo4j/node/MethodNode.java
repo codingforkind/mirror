@@ -6,6 +6,7 @@ package cn.com.mirror.repository.neo4j.node;
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.project.unit.element.Method;
 import lombok.Getter;
+import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
@@ -42,6 +43,8 @@ public class MethodNode extends BaseNode {
     }
 
     public static final MethodNode instance(Method method) {
+        Asserts.notNull(method, "Method element can not be null.");
+
         return new MethodNode(method.getStartLineNum(),
                 method.getTargetPath(),
                 method.getEndLineNum(),

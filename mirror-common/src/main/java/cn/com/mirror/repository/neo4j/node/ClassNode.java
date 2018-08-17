@@ -5,6 +5,7 @@ package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.project.unit.element.Class;
 import lombok.Getter;
+import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
@@ -39,6 +40,8 @@ public class ClassNode extends BaseNode {
     }
 
     public static final ClassNode instance(Class cls) {
+        Asserts.notNull(cls, "Class element can not be null.");
+
         return new ClassNode(cls.getStartLineNum(),
                 cls.getTargetPath(),
                 cls.getEndLineNum(),

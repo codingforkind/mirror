@@ -22,6 +22,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
+        <neo4j.version>3.4.5</neo4j.version>
         <neo4j.ogm.core.version>3.1.0</neo4j.ogm.core.version>
         <neo4j.java.driver.version>1.6.1</neo4j.java.driver.version>
 
@@ -31,19 +32,23 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j</artifactId>
+            <version>${neo4j.version}</version>
+        </dependency>
+
         <!--neo4j ogm-->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-core</artifactId>
             <version>${neo4j.ogm.core.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-bolt-driver</artifactId>
             <version>${neo4j.ogm.core.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- Only add if you're using the HTTP driver -->
@@ -51,7 +56,6 @@
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-http-driver</artifactId>
             <version>${neo4j.ogm.core.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- Only add if you're using the Embedded driver -->
@@ -59,7 +63,6 @@
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-embedded-driver</artifactId>
             <version>${neo4j.ogm.core.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
 
@@ -180,5 +183,13 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/resources</directory>
+            </resource>
+        </resources>
     </build>
+
 </project>

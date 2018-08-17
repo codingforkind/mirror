@@ -3,6 +3,7 @@ package cn.com.mirror.repository.neo4j.node;
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.project.unit.element.Base;
 import lombok.Getter;
+import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.*;
 
 import java.io.Serializable;
@@ -52,6 +53,8 @@ public class BaseNode implements Serializable {
     }
 
     public static final BaseNode instance(Base base) {
+        Asserts.notNull(base, "Base element can not be null.");
+
         return new BaseNode(base.getStartLineNum(),
                 base.getTargetPath(),
                 base.getEndLineNum(),

@@ -6,9 +6,12 @@ import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Phony;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.repository.neo4j.node.StatementNode;
+import cn.com.mirror.repository.neo4j.storage.GraphEngine;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +22,7 @@ import java.util.Set;
  * @date 18-8-10
  */
 @Data
+@Slf4j
 public class EdgeConstructor {
 
     private Unit unit;
@@ -42,6 +46,8 @@ public class EdgeConstructor {
         Map<String, Set<Method>> mappedMethods = unit.getMethods();
         Map<String, Map<Integer, Statement>> mappedStatements = unit.getStatements();
 
+
+        GraphEngine graphEngine = new GraphEngine();
         entrySet.stream().forEach(entry -> {
             String targetPath = entry.getKey();
             // all element in the unit
@@ -58,12 +64,18 @@ public class EdgeConstructor {
                 Statement headStat = varsInTarget.get(ctrlKey);
                 Statement tailStat = varsInTarget.get(ctrlVal);
 
-                StatementNode headNode = StatementNode.instance(headStat);
-                StatementNode tailNode = StatementNode.instance(tailStat);
+                if (null != tailStat && !(tailStat.getInMethod() instanceof Phony)) {
+                    // field control dependence on type
+                    log.debug("HEAD statement: {}", headStat);
+                    StatementNode headNode = StatementNode.instance(headStat);
 
+                    log.debug("TAIL statement: {}", tailStat);
+                    StatementNode tailNode = StatementNode.instance(tailStat);
+                    headNode.setCtrlDepNode(tailNode);
+                    graphEngine.write(headNode);
+                }
 
             });
-
 
             Map<Integer, Statement> integerSetMap = mappedStatements.get(targetPath);
 

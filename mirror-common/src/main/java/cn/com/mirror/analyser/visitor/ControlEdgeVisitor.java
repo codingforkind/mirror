@@ -122,6 +122,10 @@ public class ControlEdgeVisitor extends ASTVisitor {
      * check the control type node in a method
      */
     private boolean isControlType(ASTNode astNode) {
+        // is astNode in a control type node, this method will return directly
+        // if (x && y){}, x and y are in the control type of if node, this method
+        // will re turn directly and cant find x and y's direct control edge
+        // TODO xyz FIX BUG control edge
 
         if (astNode instanceof MethodDeclaration) return true;
 

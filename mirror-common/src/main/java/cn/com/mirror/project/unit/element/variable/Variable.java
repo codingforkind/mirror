@@ -15,14 +15,15 @@ public class Variable implements Comparable<Variable> {
     private String name;
     private VariableType variableType;
 
-    private boolean isField;
+    private boolean fieldFlag;
+    private boolean paramFlag;
     private String file;
     private int lineNum;
     private ASTNode astNode;
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, variableType, isField, file);
+        return Objects.hash(name, variableType, fieldFlag, file);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class Variable implements Comparable<Variable> {
             return false;
 
         Variable that = (Variable) obj;
-        return isField == that.isField() &&
+        return fieldFlag == that.isFieldFlag() &&
                 Objects.equals(name, that.getName()) &&
                 Objects.equals(variableType, that.getVariableType()) &&
                 Objects.equals(file, that.getFile());

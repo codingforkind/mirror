@@ -32,7 +32,7 @@ public class VariableVisitor extends ASTVisitor {
     /**
      * all classes defined in the project
      */
-    private final Map<String, Set<Class>> prjClasses;
+    private final Map<String, Set<Class>> unitClasses;
     private final Set<Method> targetMethods;
 
     private Set<Variable> variableSet = new HashSet<>(); // all element defined in this project file
@@ -40,12 +40,12 @@ public class VariableVisitor extends ASTVisitor {
 
     public VariableVisitor(String file,
                            String packageName,
-                           Map<String, Set<Class>> prjClasses,
+                           Map<String, Set<Class>> unitClasses,
                            Set<Method> methods) {
 
         this.file = file;
         this.packageName = packageName;
-        this.prjClasses = prjClasses;
+        this.unitClasses = unitClasses;
         this.targetMethods = methods;
     }
 
@@ -59,12 +59,13 @@ public class VariableVisitor extends ASTVisitor {
             variable.setFile(file);
             variable.setLineNum(AstUtils.getEndLine(node));
             variable.setName(varTypeBinding.getName());
-            variable.setField(varTypeBinding.isField());
+            variable.setFieldFlag(varTypeBinding.isField());
+            variable.setParamFlag(varTypeBinding.isParameter());
 
             // Variable type handle AND TYPE ONLY
             variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
 
-            addVariable(AstUtils.getEndLine(node), variable);
+            addVariable(AstUtils.getEndLine(node), variable, node);
 
             variableSet.add(variable);
         }
@@ -73,7 +74,14 @@ public class VariableVisitor extends ASTVisitor {
 
 
     // private methods
-    private void addVariable(Integer lineNum, Variable variable) {
+    private void addVariable(Integer lineNum,
+                             Variable variable,
+                             SimpleName node) {
+        if (variable.isParamFlag()) {
+            // parameter variable is belongs to a method not a statement
+            return;
+        }
+
         if (!variableInFile.containsKey(lineNum)) {
             Statement statement = new Statement(this.file,
                     lineNum,
@@ -84,8 +92,24 @@ public class VariableVisitor extends ASTVisitor {
             statement.getVarsInStat().add(variable);
             variableInFile.put(lineNum, statement);
         } else {
-
             variableInFile.get(lineNum).getVarsInStat().add(variable);
+        }
+
+        if (variable.isFieldFlag()) {
+            unitClasses.get(this.file).stream().forEach(cls -> {
+                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getEndLineNum()) {
+                    // current statement is a field node which is not in a method
+                    variableInFile.get(lineNum).setInMethod(new Phony(this.file,
+                            lineNum,
+                            lineNum,
+                            node.getIdentifier(),
+                            this.packageName,
+                            node.getIdentifier(),
+                            null,
+                            cls));
+                    return;
+                }
+            });
         }
 
         targetMethods.stream().forEach(method -> {
@@ -112,7 +136,7 @@ public class VariableVisitor extends ASTVisitor {
             case CLASS:
                 String clsTypeQualifiedName = typeBinding.getQualifiedName();
 
-                if (classDefinedInProject(prjClasses, clsTypeQualifiedName)) {
+                if (classDefinedInProject(unitClasses, clsTypeQualifiedName)) {
                     varType = new VariableType(TYPE.CLASS, clsTypeQualifiedName);
                 } else {
                     varType = new VariableType(TYPE.OTHER, clsTypeQualifiedName);
@@ -131,7 +155,7 @@ public class VariableVisitor extends ASTVisitor {
                 String tmType = builder.substring(0, builder.lastIndexOf("["));
 
                 VariableType eleType = new VariableType(TYPE.OTHER);
-                if (classDefinedInProject(prjClasses, tmType)) {
+                if (classDefinedInProject(unitClasses, tmType)) {
                     eleType = new VariableType(TYPE.CLASS, tmType);
                 } else if (PRIME.isPRIME(tmType)) {
                     eleType = new VariableType(TYPE.PRIME, PRIME.prime(tmType));
