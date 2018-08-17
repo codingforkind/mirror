@@ -22,6 +22,7 @@ public class GraphEngine {
 
     public boolean write(BaseNode baseNode) {
         if (null != baseNode) {
+//            session.loadAll(BaseNode.class);
             session.save(baseNode);
         }
         return true;
