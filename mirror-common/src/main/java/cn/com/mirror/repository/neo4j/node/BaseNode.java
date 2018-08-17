@@ -2,7 +2,7 @@ package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.project.unit.element.Base;
-import lombok.Getter;
+import lombok.Data;
 import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.*;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @description
  * @date 18-8-9
  */
-@Getter
+@Data
 @NodeEntity(label = "a node in target which contains some basic information")
 public class BaseNode implements Serializable {
 
@@ -62,19 +62,4 @@ public class BaseNode implements Serializable {
                 base.getPackageName());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public BaseNode getCtrlDepNode() {
-        return ctrlDepNode;
-    }
-
-    public void setCtrlDepNode(BaseNode ctrlDepNode) {
-        this.ctrlDepNode = ctrlDepNode;
-    }
 }

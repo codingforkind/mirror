@@ -4,9 +4,6 @@ import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
-import cn.com.mirror.project.unit.element.Class;
-import cn.com.mirror.project.unit.element.Method;
-import cn.com.mirror.project.unit.element.Phony;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.repository.neo4j.node.StatementNode;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
@@ -39,32 +36,29 @@ public class EdgeConstructor {
 
     public void construct() {
         // construct
-        Set<Map.Entry<String, Map<Integer, Integer>>> entrySet =
-                pair.getDirectCtrlEdges().entrySet();
-
-        Map<String, Set<Class>> mappedClasses = unit.getClasses();
-        Map<String, Set<Method>> mappedMethods = unit.getMethods();
+        Set<Map.Entry<String, Map<Integer, Integer>>> entrySet = pair.getDirectCtrlEdges().entrySet();
         Map<String, Map<Integer, Statement>> mappedStatements = unit.getStatements();
-
 
         GraphEngine graphEngine = new GraphEngine();
         entrySet.stream().forEach(entry -> {
             String targetPath = entry.getKey();
+            log.debug("TARGET: {}", targetPath);
             // all element in the unit
-            Set<Class> classesInTarget = mappedClasses.get(targetPath);
-            Set<Method> methodsInTarget = mappedMethods.get(targetPath);
             Map<Integer, Statement> varsInTarget = mappedStatements.get(targetPath);
 
 
             // basic control edges in the target file
             Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
             directCtrlEdgeMap.forEach((ctrlKey, ctrlVal) -> {
+
                 // create ctrlKey node and ctrlVal node as a statements and build up they relationships
-                //TODO xyz create node and build relationships
+                // TODO xyz create node and build relationships
                 Statement headStat = varsInTarget.get(ctrlKey);
                 Statement tailStat = varsInTarget.get(ctrlVal);
 
-                if (null != tailStat && !(tailStat.getInMethod() instanceof Phony)) {
+                if (null != headStat && null != tailStat
+                        && null != headStat.getInMethod() && null != tailStat.getInMethod()) {
+                    // TODO xyz use !(tailStat.getInMethod() instanceof Phony) instead
                     // field control dependence on type
                     log.debug("HEAD statement: {}", headStat);
                     StatementNode headNode = StatementNode.instance(headStat);
@@ -73,11 +67,12 @@ public class EdgeConstructor {
                     StatementNode tailNode = StatementNode.instance(tailStat);
                     headNode.setCtrlDepNode(tailNode);
                     graphEngine.write(headNode);
+                    return;
+                } else {
+                    log.warn("HEAD: {} -> TAIL: {}", ctrlKey, ctrlVal);
                 }
 
             });
-
-            Map<Integer, Statement> integerSetMap = mappedStatements.get(targetPath);
 
         });
 
