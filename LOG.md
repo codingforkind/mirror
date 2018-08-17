@@ -1,5 +1,10 @@
-#1 - QualifiedName，第三方类的全路径名如何获取，扫描pom文件中引用的jar包中的类？（待解决）
-如果是使用的第三方类，则不会得到第三方类的全部路径名，需要证实如何获取，或者不能获取，
-或者使用import进行比对，如比对不成功则丢弃，表示无法得到第三方类的全路径名
+#1 - QualifiedName
+Extract QualifiedName from a third jar packages during the running time of the original program, which means that one project must import the package(mirror provided).
 
-#2 - 泛型类没解决
+
+#2 - Generic
+not solved.
+
+#3 - Bug
+ - line num extract
+ - control dependence extract accurately  
