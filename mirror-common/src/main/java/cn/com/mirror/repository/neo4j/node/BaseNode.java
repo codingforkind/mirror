@@ -22,13 +22,13 @@ public class BaseNode implements Serializable {
     private Long id;
 
     @Property(name = "start line num")
-    private Integer startLineNum;
+    private Integer fromLineNum;
+
+    @Property(name = "end line num")
+    private Integer toLineNum;
 
     @Property(name = "target path")
     private String targetPath;
-
-    @Property(name = "end line num")
-    private Integer endLineNum;
 
     @Property(name = "details in this line")
     private String content;
@@ -39,15 +39,15 @@ public class BaseNode implements Serializable {
     @Relationship(type = EdgeType.EDGE_TYPE.NODE_TO_NODE_CTRL_EDGE)
     private BaseNode ctrlDepNode;
 
-    public BaseNode(Integer startLineNum,
+    public BaseNode(Integer fromLineNum,
                     String targetPath,
-                    Integer endLineNum,
+                    Integer toLineNum,
                     String content,
                     String packageName) {
 
-        this.startLineNum = startLineNum;
+        this.fromLineNum = fromLineNum;
         this.targetPath = targetPath;
-        this.endLineNum = endLineNum;
+        this.toLineNum = toLineNum;
         this.content = content;
         this.packageName = packageName;
     }
