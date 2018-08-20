@@ -37,13 +37,6 @@ public class ControlEdgeVisitor extends ASTVisitor {
     }
 
     private int getStartLineNum(ASTNode astNode) {
-        // handle the control nodes' start line num, eg. try-catch-finally, for, enhanced for, etc.
-        // TODO need to be completed, be aware multi lines
-        /**
-         * the control dependence might have some edges points to the other direction,
-         * like try and do type, which are might have some dependence point at 'catch-finally'
-         * and 'while' part
-         */
 
         if (astNode instanceof TypeDeclaration) {
             TypeDeclaration typeDeclaration = (TypeDeclaration) astNode;
@@ -64,41 +57,31 @@ public class ControlEdgeVisitor extends ASTVisitor {
 
         if (astNode instanceof SwitchCase) {
             SwitchCase switchCase = (SwitchCase) astNode;
-            // be aware multi lines
             return AstUtils.getEndLine(switchCase.getExpression());
         }
 
         if (astNode instanceof SwitchStatement) {
             SwitchStatement switchStatement = (SwitchStatement) astNode;
-            // be aware multi lines
             return AstUtils.getEndLine(switchStatement.getExpression());
         }
 
         if (astNode instanceof TryStatement) {
             TryStatement tryStatement = (TryStatement) astNode;
-            // TODO special treatment for this type of control node, the dependence of the nodes can also have some
-            // edges heading for catch part.
-            if (null != tryStatement.getBody()) {
-                List<Statement> statements = tryStatement.getBody().statements();
-            }
             return AstUtils.getEndLine(tryStatement);
         }
 
         if (astNode instanceof WhileStatement) {
             WhileStatement whileStatement = (WhileStatement) astNode;
-            // be aware multi lines
             return AstUtils.getEndLine(whileStatement.getExpression());
         }
 
         if (astNode instanceof EnhancedForStatement) {
             EnhancedForStatement enhancedForStatement = (EnhancedForStatement) astNode;
-            // be aware multi lines
             return AstUtils.getEndLine(enhancedForStatement.getExpression());
         }
 
         if (astNode instanceof ForStatement) {
             ForStatement forStatement = (ForStatement) astNode;
-            // be aware multi lines
             return AstUtils.getEndLine(forStatement.getExpression());
         }
 
@@ -109,8 +92,6 @@ public class ControlEdgeVisitor extends ASTVisitor {
 
         if (astNode instanceof DoStatement) {
             DoStatement doStatement = (DoStatement) astNode;
-            // TODO like the try type control node, the dependence of nodes might have some edges heading for
-            // while part.
             return AstUtils.getEndLine(doStatement);
         }
 
