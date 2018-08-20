@@ -14,8 +14,11 @@ public class AstUtils {
     public static int getEndLine(ASTNode node) {
         if (null == node) return -1;
 
-        return ((CompilationUnit) node.getRoot()).getLineNumber(
-                node.getStartPosition() + node.getLength() - 1);
+        return ((CompilationUnit) node.getRoot()).getLineNumber(node.getStartPosition() + 1);
+
+//        OLD Deprecated
+//        return ((CompilationUnit) node.getRoot()).getLineNumber(
+//                node.getStartPosition() + node.getLength() - 1);
     }
 
     public static final CompilationUnit getCompUnitResolveBinding(String javaFile) {
