@@ -4,6 +4,7 @@ import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.element.Phony;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.repository.neo4j.node.StatementNode;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
@@ -56,8 +57,7 @@ public class EdgeConstructor {
                 Statement headStat = varsInTarget.get(ctrlKey);
                 Statement tailStat = varsInTarget.get(ctrlVal);
 
-                if (null != headStat && null != tailStat
-                        && null != headStat.getInMethod() && null != tailStat.getInMethod()) {
+                if (!(tailStat.getInMethod() instanceof Phony)) {
                     // TODO xyz use !(tailStat.getInMethod() instanceof Phony) instead
                     // field control dependence on type
                     log.debug("HEAD statement: {}", headStat);
