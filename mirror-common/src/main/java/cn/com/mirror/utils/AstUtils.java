@@ -14,9 +14,10 @@ public class AstUtils {
     public static int getEndLine(ASTNode node) {
         if (null == node) return -1;
 
+//        Using the first two character to calculate the line number
         return ((CompilationUnit) node.getRoot()).getLineNumber(node.getStartPosition() + 1);
 
-//        OLD Deprecated
+//        OLD Deprecated >> Using the last character to calculate the line number
 //        return ((CompilationUnit) node.getRoot()).getLineNumber(
 //                node.getStartPosition() + node.getLength() - 1);
     }
