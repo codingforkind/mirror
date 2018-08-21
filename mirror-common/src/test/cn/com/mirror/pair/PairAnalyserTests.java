@@ -15,6 +15,10 @@ import java.util.Set;
  */
 @Slf4j
 public class PairAnalyserTests {
+
+    private final String TEST_FILE =
+            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java";
+
     @Test
     public void test1() {
         PairAnalyser pairAnalyser = new PairAnalyser();
@@ -22,8 +26,11 @@ public class PairAnalyserTests {
         Set<Map.Entry<String, Map<Integer, Integer>>> entries =
                 pair.getDirectCtrlEdges().entrySet();
         entries.stream().forEach(entry -> {
-            log.info("Target: {}", entry.getKey());
-            log.info("Pair: {}", entry.getValue());
+            if(TEST_FILE.equals(entry.getKey())){
+                log.info("Target: {}", entry.getKey());
+                log.info("Pair: {}", entry.getValue());
+                return;
+            }
         });
     }
 }
