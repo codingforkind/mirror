@@ -113,8 +113,8 @@ public class VariableVisitor extends ASTVisitor {
         }
 
         targetMethods.stream().forEach(method -> {
-            if (lineNum <= method.getStartLineNum()
-                    && lineNum >= method.getStartLineNum()) {
+            if (method.getStartLineNum() <= lineNum
+                    && lineNum <= method.getEndLineNum()) {
                 // looking for what method the statement belongs
                 variableInFile.get(lineNum).setInMethod(method);
                 return;

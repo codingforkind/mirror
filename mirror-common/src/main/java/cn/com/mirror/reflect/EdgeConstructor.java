@@ -51,6 +51,7 @@ public class EdgeConstructor {
             // basic control edges in the target file
             Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
             directCtrlEdgeMap.forEach((ctrlKey, ctrlVal) -> {
+                log.debug("FROM: {} -> TO: {}", ctrlKey, ctrlVal);
 
                 // create ctrlKey node and ctrlVal node as a statements and build up they relationships
                 Statement headStat = varsInTarget.get(ctrlKey);
