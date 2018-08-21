@@ -53,12 +53,10 @@ public class EdgeConstructor {
             directCtrlEdgeMap.forEach((ctrlKey, ctrlVal) -> {
 
                 // create ctrlKey node and ctrlVal node as a statements and build up they relationships
-                // TODO xyz create node and build relationships
                 Statement headStat = varsInTarget.get(ctrlKey);
                 Statement tailStat = varsInTarget.get(ctrlVal);
 
                 if (!(tailStat.getInMethod() instanceof Phony)) {
-                    // TODO xyz use !(tailStat.getInMethod() instanceof Phony) instead
                     // field control dependence on type
                     log.debug("HEAD statement: {}", headStat);
                     StatementNode headNode = StatementNode.instance(headStat);
