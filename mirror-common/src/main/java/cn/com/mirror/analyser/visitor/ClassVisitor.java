@@ -66,7 +66,7 @@ public class ClassVisitor extends ASTVisitor {
             Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
                 Method method = new Method(this.file,
                         AstUtils.getStartLine(methodDeclaration.getName()),
-                        AstUtils.getStartLine(methodDeclaration),
+                        AstUtils.getEndLine(methodDeclaration),
                         methodDeclaration.toString(),
                         this.packageName,
                         methodDeclaration.getName().getIdentifier(),

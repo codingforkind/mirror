@@ -2,12 +2,14 @@ package cn.com.mirror.analyser;
 
 import cn.com.mirror.analyser.visitor.ControlEdgeVisitor;
 import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author piggy
@@ -15,7 +17,7 @@ import java.util.Map;
  * @date 18-7-26
  */
 @Slf4j
-public class UnitAnalysorTests {
+public class UnitAnalyserTests {
     private Unit archive;
     private UnitAnalyser archiveAnalysor;
 
@@ -38,27 +40,30 @@ public class UnitAnalysorTests {
     }
 
     @Test
+    public void testClasses() {
+        init();
+
+        for (Map.Entry<String, Set<Method>> entry : archive.getMethods().entrySet()) {
+            log.debug("Target path: {}", entry.getKey());
+
+            entry.getValue().stream().forEach(mtd -> {
+                log.debug("Start: {}, end: {}", mtd.getStartLineNum(), mtd.getEndLineNum());
+            });
+        }
+    }
+
+    @Test
     public void testVariables() {
         init();
-//        log.info("{}", archive.getPackages());
-//        log.info("{}", archive.getClasses());
-//        log.info("{}", archive.getTargets());
-
-//        for (Map.Entry<String, Set<Variable>> entry : archive.getVariables().entrySet()) {
-//            log.info("Target path: {}", entry.getKey());
-//            log.info("Variables: {}", entry.getValue());
-//        }
 
         for (Map.Entry<String, Map<Integer, Statement>> entry : archive.getStatements().entrySet()) {
             log.info("Target path: {}", entry.getKey());
 
             for (Map.Entry<Integer, Statement> tm : entry.getValue().entrySet()) {
-                log.info("BaseNode: {}", tm.getKey());
+                log.debug("IN METHOD: {}", tm.getValue().getInMethod());
                 tm.getValue().getVarsInStat().stream().forEach(var -> {
-                    System.out.println(var.getLineNum() + " "
-                            + var.getName() + " "
-                            + var.getVariableType() + " "
-                            + var.isFieldFlag());
+                    log.debug("LineNum: {}, Name: {}, VarType: {}, isField: {}",
+                            var.getLineNum(), var.getName(), var.getVariableType(), var.isFieldFlag());
                 });
             }
             break;
