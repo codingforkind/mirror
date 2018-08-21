@@ -57,7 +57,7 @@ public class VariableVisitor extends ASTVisitor {
             Variable variable = new Variable();
             variable.setAstNode(node);
             variable.setFile(file);
-            variable.setLineNum(AstUtils.getEndLine(node));
+            variable.setLineNum(AstUtils.getStartLine(node));
             variable.setName(varTypeBinding.getName());
             variable.setFieldFlag(varTypeBinding.isField());
             variable.setParamFlag(varTypeBinding.isParameter());
@@ -65,7 +65,7 @@ public class VariableVisitor extends ASTVisitor {
             // Variable type handle AND TYPE ONLY
             variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
 
-            addVariable(AstUtils.getEndLine(node), variable, node);
+            addVariable(AstUtils.getStartLine(node), variable, node);
 
             variableSet.add(variable);
         }
@@ -97,7 +97,7 @@ public class VariableVisitor extends ASTVisitor {
 
         if (variable.isFieldFlag()) {
             unitClasses.get(this.file).stream().forEach(cls -> {
-                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getEndLineNum()) {
+                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getStartLineNum()) {
                     // current statement is a field node which is not in a method
                     variableInFile.get(lineNum).setInMethod(new Phony(this.file,
                             lineNum,
@@ -114,7 +114,7 @@ public class VariableVisitor extends ASTVisitor {
 
         targetMethods.stream().forEach(method -> {
             if (lineNum <= method.getStartLineNum()
-                    && lineNum >= method.getEndLineNum()) {
+                    && lineNum >= method.getStartLineNum()) {
                 // looking for what method the statement belongs
                 variableInFile.get(lineNum).setInMethod(method);
                 return;

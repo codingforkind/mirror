@@ -44,8 +44,8 @@ public class ClassVisitor extends ASTVisitor {
         if (null != typeBinding) {
             // log.info("class name: {}", typeBinding.getQualifiedName());
             Class mirrorClass = new Class(this.file,
-                    AstUtils.getEndLine(node.getName()),
-                    AstUtils.getEndLine(node),
+                    AstUtils.getStartLine(node.getName()),
+                    AstUtils.getStartLine(node),
                     node.toString(),
                     this.packageName,
                     node.getName().getIdentifier(),
@@ -65,8 +65,8 @@ public class ClassVisitor extends ASTVisitor {
 
             Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
                 Method method = new Method(this.file,
-                        AstUtils.getEndLine(methodDeclaration.getName()),
-                        AstUtils.getEndLine(methodDeclaration),
+                        AstUtils.getStartLine(methodDeclaration.getName()),
+                        AstUtils.getStartLine(methodDeclaration),
                         methodDeclaration.toString(),
                         this.packageName,
                         methodDeclaration.getName().getIdentifier(),

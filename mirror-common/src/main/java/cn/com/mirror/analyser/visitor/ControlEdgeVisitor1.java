@@ -8,7 +8,6 @@ import org.eclipse.jdt.core.dom.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,7 +17,7 @@ import java.util.Map;
  */
 @Slf4j
 @Getter
-public class ControlEdgeVisitor extends ASTVisitor {
+public class ControlEdgeVisitor1 extends ASTVisitor {
     private Map<Integer, Integer> controlEdges = new HashMap<>();
 
     private ASTNode searchDirectParentControlNode(ASTNode astNode) {
@@ -36,8 +35,6 @@ public class ControlEdgeVisitor extends ASTVisitor {
         markEdges(currentLine, directParentStartLine);
         return parent;
     }
-
-
 
     /**
      * check the control type node in a method

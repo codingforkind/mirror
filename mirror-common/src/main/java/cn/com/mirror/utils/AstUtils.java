@@ -1,9 +1,6 @@
 package cn.com.mirror.utils;
 
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.*;
 
 /**
  * @author Piggy
@@ -11,15 +8,18 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  */
 public class AstUtils {
 
-    public static int getEndLine(ASTNode node) {
+    public static int getStartLine(ASTNode node) {
         if (null == node) return -1;
 
 //        Using the first two character to calculate the line number
         return ((CompilationUnit) node.getRoot()).getLineNumber(node.getStartPosition() + 1);
+    }
 
-//        OLD Deprecated >> Using the last character to calculate the line number
-//        return ((CompilationUnit) node.getRoot()).getLineNumber(
-//                node.getStartPosition() + node.getLength() - 1);
+
+    public static int getEndLine(ASTNode node) {
+        if (null == node) return -1;
+        return ((CompilationUnit) node.getRoot()).getLineNumber(
+                node.getStartPosition() + node.getLength() - 1);
     }
 
     public static final CompilationUnit getCompUnitResolveBinding(String javaFile) {
@@ -33,6 +33,73 @@ public class AstUtils {
 
         CompilationUnit result = (CompilationUnit) (astParser.createAST(null));
         return result;
+    }
+
+
+    /**
+     * Get specific statement (or TypeDeclaration, MethodDeclaration) start line number
+     * @param astNode Statement, TypeDeclaration, MethodDeclaration
+     */
+    public static final int getSpecificStartLine(ASTNode astNode) {
+
+        if (astNode instanceof TypeDeclaration) {
+            TypeDeclaration typeDeclaration = (TypeDeclaration) astNode;
+            return getStartLine(typeDeclaration.getName());
+        }
+
+        if (astNode instanceof MethodDeclaration) {
+            MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
+
+            int methodStartLine = getStartLine(methodDeclaration.getName());
+            return methodStartLine;
+        }
+
+        if (astNode instanceof IfStatement) {
+            IfStatement ifStatement = (IfStatement) astNode;
+            return getStartLine(ifStatement.getExpression());
+        }
+
+        if (astNode instanceof SwitchCase) {
+            SwitchCase switchCase = (SwitchCase) astNode;
+            return getStartLine(switchCase.getExpression());
+        }
+
+        if (astNode instanceof SwitchStatement) {
+            SwitchStatement switchStatement = (SwitchStatement) astNode;
+            return getStartLine(switchStatement.getExpression());
+        }
+
+        if (astNode instanceof TryStatement) {
+            TryStatement tryStatement = (TryStatement) astNode;
+            return getStartLine(tryStatement);
+        }
+
+        if (astNode instanceof WhileStatement) {
+            WhileStatement whileStatement = (WhileStatement) astNode;
+            return getStartLine(whileStatement.getExpression());
+        }
+
+        if (astNode instanceof EnhancedForStatement) {
+            EnhancedForStatement enhancedForStatement = (EnhancedForStatement) astNode;
+            return getStartLine(enhancedForStatement.getExpression());
+        }
+
+        if (astNode instanceof ForStatement) {
+            ForStatement forStatement = (ForStatement) astNode;
+            return getStartLine(forStatement.getExpression());
+        }
+
+        if (astNode instanceof LabeledStatement) {
+            LabeledStatement labeledStatement = (LabeledStatement) astNode;
+            return getStartLine(labeledStatement.getLabel());
+        }
+
+        if (astNode instanceof DoStatement) {
+            DoStatement doStatement = (DoStatement) astNode;
+            return getStartLine(doStatement);
+        }
+
+        return getStartLine(astNode);
     }
 
 
