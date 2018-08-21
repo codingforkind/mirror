@@ -60,7 +60,13 @@ public class UnitAnalyserTests {
             log.info("Target path: {}", entry.getKey());
 
             for (Map.Entry<Integer, Statement> tm : entry.getValue().entrySet()) {
-                log.debug("IN METHOD: {}", tm.getValue().getInMethod());
+                Method mtd = tm.getValue().getInMethod();
+                if (null != mtd) {
+                    log.debug("IN METHOD start: {}, end: {}, name: {}", mtd.getStartLineNum(),
+                            mtd.getEndLineNum(), mtd.getName());
+                } else {
+                    log.debug("NULL METHOD");
+                }
                 tm.getValue().getVarsInStat().stream().forEach(var -> {
                     log.debug("LineNum: {}, Name: {}, VarType: {}, isField: {}",
                             var.getLineNum(), var.getName(), var.getVariableType(), var.isFieldFlag());

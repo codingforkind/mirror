@@ -97,7 +97,7 @@ public class VariableVisitor extends ASTVisitor {
 
         if (variable.isFieldFlag()) {
             unitClasses.get(this.file).stream().forEach(cls -> {
-                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getStartLineNum()) {
+                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getEndLineNum()) {
                     // current statement is a field node which is not in a method
                     variableInFile.get(lineNum).setInMethod(new Phony(this.file,
                             lineNum,
