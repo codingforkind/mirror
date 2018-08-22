@@ -87,8 +87,7 @@ public class VariableVisitor extends ASTVisitor {
                     lineNum,
                     lineNum,
                     FileUtils.listCodeLines(this.file).get(lineNum - 1),
-                    this.packageName,
-                    variable.isParamFlag());
+                    this.packageName);
 
             statement.getVarsInStat().add(variable);
             variableInFile.put(lineNum, statement);
