@@ -43,7 +43,6 @@ public class EdgeConstructor {
         GraphEngine graphEngine = new GraphEngine();
         entrySet.stream().forEach(entry -> {
             String targetPath = entry.getKey();
-            log.debug("TARGET: {}", targetPath);
             // all element in the unit
             Map<Integer, Statement> varsInTarget = mappedStatements.get(targetPath);
 
@@ -51,11 +50,12 @@ public class EdgeConstructor {
             // basic control edges in the target file
             Map<Integer, Integer> directCtrlEdgeMap = entry.getValue();
             directCtrlEdgeMap.forEach((ctrlKey, ctrlVal) -> {
-                log.debug("FROM: {} -> TO: {}", ctrlKey, ctrlVal);
 
                 // create ctrlKey node and ctrlVal node as a statements and build up they relationships
                 Statement headStat = varsInTarget.get(ctrlKey);
                 Statement tailStat = varsInTarget.get(ctrlVal);
+                log.debug("TARGET: {}", targetPath);
+                log.debug("FROM: {} -> TO: {}", ctrlKey, ctrlVal);
 
                 if (!(tailStat.getInMethod() instanceof Phony)) {
                     // field control dependence on type

@@ -77,18 +77,18 @@ public class VariableVisitor extends ASTVisitor {
     private void addVariable(Integer lineNum,
                              Variable variable,
                              SimpleName node) {
-        if (variable.isParamFlag()) {
-            // TODO xyz control dependence on the statement which is a method declaration, how to handle this.
-            // parameter variable is belongs to a method not a statement
-            return;
-        }
+//        if (variable.isParamFlag()) {
+//            // variable is in a method declaration
+//            return;
+//        }
 
         if (!variableInFile.containsKey(lineNum)) {
             Statement statement = new Statement(this.file,
                     lineNum,
                     lineNum,
                     FileUtils.listCodeLines(this.file).get(lineNum - 1),
-                    this.packageName);
+                    this.packageName,
+                    variable.isParamFlag());
 
             statement.getVarsInStat().add(variable);
             variableInFile.put(lineNum, statement);
@@ -97,6 +97,7 @@ public class VariableVisitor extends ASTVisitor {
         }
 
         if (variable.isFieldFlag()) {
+            // field variable belongs to class Phony
             unitClasses.get(this.file).stream().forEach(cls -> {
                 if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getEndLineNum()) {
                     // current statement is a field node which is not in a method
@@ -114,6 +115,7 @@ public class VariableVisitor extends ASTVisitor {
         }
 
         targetMethods.stream().forEach(method -> {
+            // other variables are defined in method
             if (method.getStartLineNum() <= lineNum
                     && lineNum <= method.getEndLineNum()) {
                 // looking for what method the statement belongs

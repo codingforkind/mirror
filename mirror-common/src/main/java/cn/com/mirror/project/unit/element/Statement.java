@@ -15,17 +15,20 @@ import java.util.TreeSet;
 public class Statement extends Base {
     private Set<Variable> varsInStat;
 
+    private boolean mtdDecFlag;
     private Method inMethod;
 
     public Statement(String targetPath,
                      Integer startLineNum,
                      Integer endLineNum,
                      String content,
-                     String packageName) {
+                     String packageName,
+                     boolean mtdDecFlag) {
 
         super(targetPath, startLineNum, endLineNum, content, packageName);
 
         this.varsInStat = new TreeSet<>();
+        this.mtdDecFlag = mtdDecFlag;
     }
 
 
