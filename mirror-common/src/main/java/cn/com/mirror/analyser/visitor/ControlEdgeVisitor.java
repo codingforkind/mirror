@@ -56,6 +56,11 @@ public class ControlEdgeVisitor extends ASTVisitor {
                 case IF:
                 case SWITCH_CASE:
                 case SWITCH:
+                    /**
+                     * the blocks in if and switch case statement's block are
+                     * control dependence on the condition expression which is
+                     * well conveyed in a way like if(expression) and switch(expression).
+                     */
                 case TRY:
                 case WHILE:
                 case ENHANCED_FOR:
