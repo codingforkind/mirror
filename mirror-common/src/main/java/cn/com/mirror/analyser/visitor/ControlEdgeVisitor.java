@@ -11,9 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO xyz what the conception of control dependence is?
- * return statement control dependence on the start line of the method or the the statement direct above itself.
- * break statement control dependence on the start of the block or the the statement direct above itself.
+ * conception of control dependence
+ * one basic block post-dominator to the other, not between the statements
  *
  * @author piggy
  * @description

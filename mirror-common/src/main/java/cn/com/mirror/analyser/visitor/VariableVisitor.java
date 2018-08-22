@@ -78,6 +78,7 @@ public class VariableVisitor extends ASTVisitor {
                              Variable variable,
                              SimpleName node) {
         if (variable.isParamFlag()) {
+            // TODO xyz control dependence on the statement which is a method declaration, how to handle this.
             // parameter variable is belongs to a method not a statement
             return;
         }
