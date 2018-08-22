@@ -53,8 +53,8 @@ public class ControlEdgeVisitor extends ASTVisitor {
             Statement statement = (Statement) astNode;
 
             switch (ControlNodeTypeEnum.getControlNodeType(statement)) {
-                case IF: // TODO xyz ERROR the statements in else block control dependence on if
-                case SWITCH_CASE: // TODO xyz expressionStatement is not switch_case statement's child, fix this
+                case IF:
+                case SWITCH_CASE:
                 case SWITCH:
                 case TRY:
                 case WHILE:
