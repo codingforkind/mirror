@@ -5,7 +5,7 @@ package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.project.unit.element.Method;
-import lombok.Getter;
+import lombok.Data;
 import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
@@ -16,7 +16,7 @@ import org.neo4j.ogm.annotation.Relationship;
  * @description
  * @since 2018年4月19日
  */
-@Getter
+@Data
 @NodeEntity(label = "a method in target")
 public class MethodNode extends BaseNode {
     private static final long serialVersionUID = 1L;
@@ -32,13 +32,11 @@ public class MethodNode extends BaseNode {
                       Integer endLineNum,
                       String content,
                       String packageName,
-                      String name,
-                      ClassNode cls) {
+                      String name) {
 
         super(startLineNum, targetPath, endLineNum, content, packageName);
 
         this.name = name;
-        this.cls = cls;
     }
 
     public static final MethodNode instance(Method method) {
@@ -49,7 +47,6 @@ public class MethodNode extends BaseNode {
                 method.getEndLineNum(),
                 method.getContent(),
                 method.getPackageName(),
-                method.getName(),
-                ClassNode.instance(method.getInClass()));
+                method.getName());
     }
 }

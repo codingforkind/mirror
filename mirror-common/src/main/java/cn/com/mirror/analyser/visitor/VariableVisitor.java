@@ -107,10 +107,10 @@ public class VariableVisitor extends ASTVisitor {
                     FileUtils.listCodeLines(this.file).get(lineNum - 1),
                     this.packageName);
 
-            statement.getVarsInStat().add(variable);
+            statement.getVariables().add(variable);
             variableInFile.put(lineNum, statement);
         } else {
-            variableInFile.get(lineNum).getVarsInStat().add(variable);
+            variableInFile.get(lineNum).getVariables().add(variable);
         }
 
         targetMethods.stream().forEach(method -> {

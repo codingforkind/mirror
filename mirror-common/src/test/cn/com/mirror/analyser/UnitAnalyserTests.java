@@ -67,7 +67,7 @@ public class UnitAnalyserTests {
                 } else {
                     log.debug("NULL METHOD");
                 }
-                tm.getValue().getVarsInStat().stream().forEach(var -> {
+                tm.getValue().getVariables().stream().forEach(var -> {
                     log.debug("LineNum: {}, Name: {}, VarType: {}, isField: {}",
                             var.getLineNum(), var.getName(), var.getVariableType(), var.isFieldFlag());
                 });

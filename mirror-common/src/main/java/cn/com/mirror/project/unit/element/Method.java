@@ -1,9 +1,13 @@
 package cn.com.mirror.project.unit.element;
 
+import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
+import org.apache.http.util.Asserts;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author piggy
@@ -17,7 +21,7 @@ public class Method extends Base {
     private String name;
     private MethodDeclaration methodDeclaration;
 
-    private Class inClass;
+    private Set<Variable> params;
 
     public Method(String targetPath,
                   Integer startLineNum,
@@ -25,14 +29,19 @@ public class Method extends Base {
                   String content,
                   String packageName,
                   String name,
-                  MethodDeclaration methodDeclaration,
-                  Class inClass) {
+                  MethodDeclaration methodDeclaration) {
 
         super(targetPath, startLineNum, endLineNum, content, packageName);
 
         this.name = name;
         this.methodDeclaration = methodDeclaration;
-        this.inClass = inClass;
+
+        this.params = new HashSet<>();
+    }
+
+    public void addParam(Variable param){
+        Asserts.notNull(param, "Parameter variable can not be null.");
+        this.params.add(param);
     }
 
     @Override

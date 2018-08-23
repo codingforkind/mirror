@@ -70,8 +70,7 @@ public class ClassVisitor extends ASTVisitor {
                         methodDeclaration.toString(),
                         this.packageName,
                         methodDeclaration.getName().getIdentifier(),
-                        methodDeclaration,
-                        mirrorClass);
+                        methodDeclaration);
                 methodSet.add(method);
             });
         } else {

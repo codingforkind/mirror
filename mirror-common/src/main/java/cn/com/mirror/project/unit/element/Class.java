@@ -1,10 +1,14 @@
 package cn.com.mirror.project.unit.element;
 
+import cn.com.mirror.project.unit.element.variable.Variable;
 import cn.com.mirror.utils.BeanUtils;
 import lombok.Data;
+import org.apache.http.util.Asserts;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 public class Class extends Base {
@@ -18,6 +22,8 @@ public class Class extends Base {
     private boolean isPrivate;
     private boolean isDefault;
     private boolean isFinal;
+
+    private Set<Variable> fields;
 
     public Class(String targetPath,
                  Integer startLineNum,
@@ -33,6 +39,13 @@ public class Class extends Base {
         this.name = name;
         this.qualifiedName = qualifiedName;
         this.typeDeclaration = typeDeclaration;
+
+        this.fields = new HashSet<>();
+    }
+
+    public void addField(Variable field){
+        Asserts.notNull(field, "Field variable can not be null.");
+        this.fields.add(field);
     }
 
     @Override
