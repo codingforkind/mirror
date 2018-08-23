@@ -8,7 +8,6 @@ import cn.com.mirror.project.unit.element.Statement;
 import lombok.Getter;
 import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 /**
@@ -20,7 +19,7 @@ import org.neo4j.ogm.annotation.Relationship;
 public class StatementNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
-    @Relationship(type = EdgeType.EDGE_TYPE.STATEMENT_TO_METHOD_CTRL_EDGE)
+    @Relationship(type = EdgeType.TYPE.STAT_TO_MTD)
     private MethodNode method;
 
 

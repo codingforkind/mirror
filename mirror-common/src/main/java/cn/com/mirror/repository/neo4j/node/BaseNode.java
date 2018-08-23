@@ -36,7 +36,7 @@ public class BaseNode implements Serializable {
     @Property(name = "package name")
     private String packageName;
 
-    @Relationship(type = EdgeType.EDGE_TYPE.NODE_TO_NODE_CTRL_EDGE)
+    @Relationship(type = EdgeType.TYPE.CTRL_EDGE)
     private BaseNode ctrlDepNode;
 
     public BaseNode(Integer fromLineNum,

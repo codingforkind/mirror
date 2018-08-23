@@ -24,7 +24,7 @@ public class MethodNode extends BaseNode {
     @Property(name = "method name")
     private String name;
 
-    @Relationship(type = EdgeType.EDGE_TYPE.METHOD_TO_CLASS_CTRL_EDGE)
+    @Relationship(type = EdgeType.TYPE.MTD_TO_CLS)
     private ClassNode cls;
 
     public MethodNode(Integer startLineNum,

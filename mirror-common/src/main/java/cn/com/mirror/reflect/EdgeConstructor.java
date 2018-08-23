@@ -5,7 +5,6 @@ import cn.com.mirror.analyser.UnitAnalyser;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.element.Statement;
-import cn.com.mirror.repository.neo4j.node.StatementNode;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

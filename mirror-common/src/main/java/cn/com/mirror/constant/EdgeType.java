@@ -9,10 +9,10 @@ import lombok.Getter;
  */
 @Getter
 public enum EdgeType {
-    CONTROL_EDGE("1", "control dependence"),
-    STATEMENT_TO_METHOD_CTRL_EDGE("2", "statements to method control edge"),
-    METHOD_TO_CLASS_CTRL_EDGE("3", "method to class control edge"),
-    SIMPLE_DATA_EDGE("99", "simple date dependence");
+    CTRL_EDGE("1", "control dependence"),
+    STAT_TO_MTD("2", "statements to method control edge"),
+    MTD_TO_CLS("3", "method to class control edge"),
+    DATA_EDGE("99", "simple date dependence");
 
     private String key;
     private String desc;
@@ -22,10 +22,10 @@ public enum EdgeType {
         this.desc = desc;
     }
 
-    public interface EDGE_TYPE {
-        String NODE_TO_NODE_CTRL_EDGE = "NODE_TO_NODE_CTRL_EDGE";
-        String STATEMENT_TO_METHOD_CTRL_EDGE = "STATEMENT_TO_METHOD_CTRL_EDGE";
-        String METHOD_TO_CLASS_CTRL_EDGE = "METHOD_TO_CLASS_CTRL_EDGE";
-        String SIMPLE_DATA_EDGE = "SIMPLE_DATA_EDGE";
+    public interface TYPE {
+        String CTRL_EDGE = "CTRL_EDGE";
+        String STAT_TO_MTD = "STAT_TO_MTD";
+        String MTD_TO_CLS = "MTD_TO_CLS";
+        String DATA_EDGE = "DATA_EDGE";
     }
 }
