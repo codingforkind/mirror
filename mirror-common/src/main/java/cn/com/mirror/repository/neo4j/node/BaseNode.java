@@ -30,7 +30,7 @@ public class BaseNode implements Serializable {
     @Property(name = "target path")
     private String targetPath;
 
-    @Property(name = "details in this line")
+    //    @Property(name = "details in this line")
     private String content;
 
     @Property(name = "package name")

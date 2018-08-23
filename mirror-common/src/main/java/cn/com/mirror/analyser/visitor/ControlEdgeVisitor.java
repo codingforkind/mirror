@@ -1,8 +1,8 @@
 package cn.com.mirror.analyser.visitor;
 
 import cn.com.mirror.constant.ControlNodeTypeEnum;
-import cn.com.mirror.project.pair.Vertex;
 import cn.com.mirror.constant.VertexTypeEnum;
+import cn.com.mirror.project.pair.Vertex;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -94,6 +94,7 @@ public class ControlEdgeVisitor extends ASTVisitor {
             return false;
         }
 
+        // TODO xyz vertex might not need to create all the time, use a cache and generate from it
         Vertex head = new Vertex(this.targetPath, curLine, checkVertexType(astNode), null, -1);
         Vertex tail = new Vertex(this.targetPath, parentLine, checkVertexType(parent), null, -1);
         ctrlEdges.put(head, tail);

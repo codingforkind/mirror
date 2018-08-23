@@ -55,14 +55,14 @@ public class EdgeConstructor {
 
             // basic control edges in the target file
             ctrlEdge.forEach((ctrlKey, ctrlVal) -> {
-                // TODO xyz generate nodes and construct control edges based on the work before
                 log.debug("TARGET: {}", targetPath);
                 log.debug("FROM: {}:{} \t->\t TO: {}:{}", ctrlKey.getLineNum(),
                         ctrlKey.getVertexType(), ctrlVal.getLineNum(), ctrlVal.getVertexType());
 
-                Base headB = genBase(ctrlKey);
-                Base tailB = genBase(ctrlVal);
+                Base headB = getBaseElement(ctrlKey);
+                Base tailB = getBaseElement(ctrlVal);
 
+                // TODO xyz generate start and end node for this target and write it into the graph db.
                 BaseNode newGraphNodeTail = touch(headB, tailB);
                 graphEngine.write(newGraphNodeTail);
 
@@ -104,7 +104,7 @@ public class EdgeConstructor {
         return headNode;
     }
 
-    private Base genBase(Vertex vertex) {
+    private Base getBaseElement(Vertex vertex) {
         switch (vertex.getVertexType()) {
             case CLASS: {
                 Set<Class> classes = unit.getClasses().get(vertex.getTargetPath());
