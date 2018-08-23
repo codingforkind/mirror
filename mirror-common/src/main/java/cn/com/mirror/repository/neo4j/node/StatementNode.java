@@ -28,12 +28,9 @@ public class StatementNode extends BaseNode {
                          String targetPath,
                          Integer endLineNum,
                          String content,
-                         String packageName,
-                         MethodNode method) {
+                         String packageName) {
 
         super(startLineNum, targetPath, endLineNum, content, packageName);
-
-        this.method = method;
     }
 
     public static final StatementNode instance(Statement statement) {
@@ -43,7 +40,6 @@ public class StatementNode extends BaseNode {
                 statement.getTargetPath(),
                 statement.getEndLineNum(),
                 statement.getContent(),
-                statement.getPackageName(),
-                MethodNode.instance(statement.getInMethod()));
+                statement.getPackageName());
     }
 }

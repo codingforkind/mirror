@@ -1,7 +1,7 @@
 package cn.com.mirror.analyser.visitor;
 
-import cn.com.mirror.project.unit.element.*;
 import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import cn.com.mirror.project.unit.element.variable.VariableType;
@@ -50,21 +50,57 @@ public class VariableVisitor extends ASTVisitor {
     }
 
     @Override
+    public boolean visit(TypeDeclaration node) {
+        unitClasses.get(this.file).stream().forEach(cls -> {
+            if (null != cls.getCls(node)) {
+                // found cls
+                Arrays.stream(node.getFields()).forEach(fieldDeclaration -> {
+                    fieldDeclaration.fragments().stream().forEach(varDec -> {
+                        if (varDec instanceof VariableDeclarationFragment) {
+                            VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDec;
+                            SimpleName name = fragment.getName();
+                            IBinding iBinding = name.resolveBinding();
+                            if (iBinding instanceof IVariableBinding) {
+                                IVariableBinding iVariableBinding = (IVariableBinding) iBinding;
+                                Variable field = genVariable(name, iVariableBinding);
+                                cls.addField(field);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(MethodDeclaration node) {
+        targetMethods.stream().forEach(mtd -> {
+            if (null != mtd.getMtd(node)) {
+                node.parameters().stream().forEach(param -> {
+                    if (param instanceof SingleVariableDeclaration) {
+                        SingleVariableDeclaration single = (SingleVariableDeclaration) param;
+                        SimpleName name = single.getName();
+                        IBinding iBinding = name.resolveBinding();
+                        if (iBinding instanceof IVariableBinding) {
+                            IVariableBinding iVariableBinding = (IVariableBinding) iBinding;
+                            Variable paramVar = genVariable(name, iVariableBinding);
+                            mtd.addParam(paramVar);
+                        }
+                    }
+                });
+            }
+        });
+        return super.visit(node);
+    }
+
+    @Override
     public boolean visit(SimpleName node) {
         IBinding binding = node.resolveBinding();
         if (binding instanceof IVariableBinding) {
-            IVariableBinding varTypeBinding = (IVariableBinding) binding;
-            Variable variable = new Variable();
-            variable.setAstNode(node);
-            variable.setFile(file);
-            variable.setLineNum(AstUtils.getStartLine(node));
-            variable.setName(varTypeBinding.getName());
-            variable.setFieldFlag(varTypeBinding.isField());
-            variable.setParamFlag(varTypeBinding.isParameter());
-
-            // Variable type handle AND TYPE ONLY
-            variable.setVariableType(analysisVariableType(varTypeBinding.getType()));
-
+            IVariableBinding iVariableBinding = (IVariableBinding) binding;
+            Variable variable = genVariable(node, iVariableBinding);
             addVariable(AstUtils.getStartLine(node), variable, node);
 
             variableSet.add(variable);
@@ -77,28 +113,6 @@ public class VariableVisitor extends ASTVisitor {
     private void addVariable(Integer lineNum,
                              Variable variable,
                              SimpleName node) {
-//        if (variable.isParamFlag()) {
-//            // variable is in a method declaration
-//            return;
-//        }
-
-//        if (variable.isFieldFlag()) {
-//            // field variable belongs to class Phony
-//            unitClasses.get(this.file).stream().forEach(cls -> {
-//                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getEndLineNum()) {
-//                    // current statement is a field node which is not in a method
-//                    variableInFile.get(lineNum).setInMethod(new Phony(this.file,
-//                            lineNum,
-//                            lineNum,
-//                            node.getIdentifier(),
-//                            this.packageName,
-//                            node.getIdentifier(),
-//                            null,
-//                            cls));
-//                    return;
-//                }
-//            });
-//        }
 
         if (!variableInFile.containsKey(lineNum)) {
             Statement statement = new Statement(this.file,
@@ -113,15 +127,31 @@ public class VariableVisitor extends ASTVisitor {
             variableInFile.get(lineNum).addVariable(variable);
         }
 
-        targetMethods.stream().forEach(method -> {
-            // other variables are defined in method
-            if (method.getStartLineNum() <= lineNum
-                    && lineNum <= method.getEndLineNum()) {
-                // looking for what method the statement belongs
-                variableInFile.get(lineNum).setInMethod(method);
-                return;
-            }
-        });
+//        targetMethods.stream().forEach(method -> {
+//            // other variables are defined in method
+//            if (method.getStartLineNum() <= lineNum
+//                    && lineNum <= method.getEndLineNum()) {
+//                // looking for what method the statement belongs
+//                variableInFile.get(lineNum).setInMethod(method);
+//                return;
+//            }
+//        });
+    }
+
+
+    private Variable genVariable(SimpleName node, IVariableBinding iVariableBinding) {
+        Variable variable = new Variable();
+        variable.setAstNode(node);
+        variable.setFile(file);
+        variable.setLineNum(AstUtils.getStartLine(node));
+        variable.setName(iVariableBinding.getName());
+        variable.setFieldFlag(iVariableBinding.isField());
+        variable.setParamFlag(iVariableBinding.isParameter());
+
+        // Variable type handle AND TYPE ONLY
+        variable.setVariableType(analysisVariableType(iVariableBinding.getType()));
+
+        return variable;
     }
 
     /**

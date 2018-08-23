@@ -16,8 +16,6 @@ import java.util.TreeSet;
 public class Statement extends Base {
     private Set<Variable> variables;
 
-    private Method inMethod;
-
     public Statement(String targetPath,
                      Integer startLineNum,
                      Integer endLineNum,

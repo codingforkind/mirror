@@ -39,9 +39,16 @@ public class Method extends Base {
         this.params = new HashSet<>();
     }
 
-    public void addParam(Variable param){
+    public void addParam(Variable param) {
         Asserts.notNull(param, "Parameter variable can not be null.");
         this.params.add(param);
+    }
+
+    public Method getMtd(MethodDeclaration methodDeclaration) {
+        if (this.methodDeclaration.equals(methodDeclaration)) {
+            return this;
+        }
+        return null;
     }
 
     @Override

@@ -2,6 +2,7 @@ package cn.com.mirror.analyser;
 
 import cn.com.mirror.analyser.visitor.ControlEdgeVisitor;
 import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
 import lombok.extern.slf4j.Slf4j;
@@ -18,21 +19,21 @@ import java.util.Set;
  */
 @Slf4j
 public class UnitAnalyserTests {
-    private Unit archive;
-    private UnitAnalyser archiveAnalysor;
+    private Unit unit;
+    private UnitAnalyser unitAnalyser;
 
     public void init() {
-        this.archiveAnalysor = new UnitAnalyser();
-        this.archive = archiveAnalysor.analyze();
+        this.unitAnalyser = new UnitAnalyser();
+        this.unit = unitAnalyser.analyze();
     }
 
     @Test
     public void testControlDependenceVisitor() {
         init();
 
-        archive.getTargets().stream().forEach(targetPah -> {
+        unit.getTargets().stream().forEach(targetPah -> {
             ControlEdgeVisitor controlDependenceVisitor = new ControlEdgeVisitor();
-            CompilationUnit compilationUnit = archive.getCompilationUnits().get(targetPah);
+            CompilationUnit compilationUnit = unit.getCompilationUnits().get(targetPah);
             compilationUnit.accept(controlDependenceVisitor);
             log.info("Target path: {}", targetPah);
             log.info("Control edges: {}", controlDependenceVisitor.getControlEdges());
@@ -40,14 +41,37 @@ public class UnitAnalyserTests {
     }
 
     @Test
-    public void testClasses() {
+    public void testCls() {
         init();
 
-        for (Map.Entry<String, Set<Method>> entry : archive.getMethods().entrySet()) {
+        for (Map.Entry<String, Set<Class>> entry : unit.getClasses().entrySet()) {
+            log.debug("Target path: {}", entry.getKey());
+
+            entry.getValue().stream().forEach(cls -> {
+                log.debug("Name: {}, start: {}, end: {}",
+                        cls.getName(), cls.getStartLineNum(), cls.getEndLineNum());
+                cls.getFields().stream().forEach(field -> {
+                    log.debug("FIELD lineNum: {}, name: {}", field.getLineNum(), field.getName());
+                });
+            });
+
+        }
+
+    }
+
+    @Test
+    public void testMtd() {
+        init();
+
+        for (Map.Entry<String, Set<Method>> entry : unit.getMethods().entrySet()) {
             log.debug("Target path: {}", entry.getKey());
 
             entry.getValue().stream().forEach(mtd -> {
-                log.debug("Start: {}, end: {}", mtd.getStartLineNum(), mtd.getEndLineNum());
+                log.debug("Start: {}, end: {}",
+                        mtd.getStartLineNum(), mtd.getEndLineNum());
+                mtd.getParams().stream().forEach(param -> {
+                    log.debug(" PARAM lineNum: {}, name: {}", param.getLineNum(), param.getName());
+                });
             });
         }
     }
@@ -56,17 +80,10 @@ public class UnitAnalyserTests {
     public void testVariables() {
         init();
 
-        for (Map.Entry<String, Map<Integer, Statement>> entry : archive.getStatements().entrySet()) {
+        for (Map.Entry<String, Map<Integer, Statement>> entry : unit.getStatements().entrySet()) {
             log.info("Target path: {}", entry.getKey());
 
             for (Map.Entry<Integer, Statement> tm : entry.getValue().entrySet()) {
-                Method mtd = tm.getValue().getInMethod();
-                if (null != mtd) {
-                    log.debug("IN METHOD start: {}, end: {}, name: {}", mtd.getStartLineNum(),
-                            mtd.getEndLineNum(), mtd.getName());
-                } else {
-                    log.debug("NULL METHOD");
-                }
                 tm.getValue().getVariables().stream().forEach(var -> {
                     log.debug("LineNum: {}, Name: {}, VarType: {}, isField: {}",
                             var.getLineNum(), var.getName(), var.getVariableType(), var.isFieldFlag());

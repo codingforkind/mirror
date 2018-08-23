@@ -1,7 +1,6 @@
 package cn.com.mirror.project.unit.element;
 
 import cn.com.mirror.project.unit.element.variable.Variable;
-import cn.com.mirror.utils.BeanUtils;
 import lombok.Data;
 import org.apache.http.util.Asserts;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -43,9 +42,16 @@ public class Class extends Base {
         this.fields = new HashSet<>();
     }
 
-    public void addField(Variable field){
+    public void addField(Variable field) {
         Asserts.notNull(field, "Field variable can not be null.");
         this.fields.add(field);
+    }
+
+    public Class getCls(TypeDeclaration typeDeclaration) {
+        if (this.typeDeclaration.equals(typeDeclaration)) {
+            return this;
+        }
+        return null;
     }
 
     @Override
