@@ -7,7 +7,6 @@ import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.*;
-import org.neo4j.cypher.internal.compiler.v2_3.commands.AstNode;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +25,6 @@ import java.util.Map;
 public class ControlEdgeVisitor extends ASTVisitor {
     private String targetPath;
 
-    private Map<Integer, Integer> controlEdges = new HashMap<>();
     private Map<Vertex, Vertex> ctrlEdges = new HashMap<>();
 
     public ControlEdgeVisitor(String targetPath) {
@@ -44,8 +42,6 @@ public class ControlEdgeVisitor extends ASTVisitor {
         // mark the s between astNode and statements and return
         int currentLine = AstUtils.getSpecificStartLine(astNode);
         int directParentStartLine = AstUtils.getSpecificStartLine(parent);
-        markEdges(currentLine, directParentStartLine);
-
         markCtrlEdge(currentLine, astNode, directParentStartLine, parent);
         return parent;
     }
@@ -98,52 +94,29 @@ public class ControlEdgeVisitor extends ASTVisitor {
             return false;
         }
 
-        VertexTypeEnum headType = null;
-        if (astNode instanceof MethodDeclaration) {
-            headType = VertexTypeEnum.METHOD;
-        } else {
-            headType = VertexTypeEnum.STATEMENT;
-        }
-
-        Vertex head = new Vertex(this.targetPath, curLine, headType);
-
-        VertexTypeEnum tailType = null;
-        if (parent instanceof MethodDeclaration) {
-            tailType = VertexTypeEnum.METHOD;
-        } else {
-            tailType = VertexTypeEnum.STATEMENT;
-        }
-        Vertex tail = new Vertex(this.targetPath, parentLine, tailType);
+        Vertex head = new Vertex(this.targetPath, curLine, checkVertexType(astNode), null, -1);
+        Vertex tail = new Vertex(this.targetPath, parentLine, checkVertexType(parent), null, -1);
         ctrlEdges.put(head, tail);
 
         return true;
     }
 
-    private boolean markEdges(int curLine, int parentLine) {
-        if (-1 != parentLine &&
-                curLine != parentLine) {
-            controlEdges.put(curLine, parentLine);
-            return true;
-        }
-
-        return false;
+    private VertexTypeEnum checkVertexType(ASTNode node) {
+        if (node instanceof TypeDeclaration) return VertexTypeEnum.CLASS;
+        if (node instanceof MethodDeclaration) return VertexTypeEnum.METHOD;
+        if (node instanceof FieldDeclaration) return VertexTypeEnum.FIELD;
+        return VertexTypeEnum.STATEMENT;
     }
-
-//    @Override
-//    public boolean visit(SimpleName node) {
-//        searchDirectParentControlNode(node);
-//        return super.visit(node);
-//    }
 
     @Override
     public boolean visit(TypeDeclaration node) {
         int typeDecLine = AstUtils.getStartLine(node.getName());
         Arrays.stream(node.getFields()).forEach(fieldDeclaration -> {
-            markEdges(AstUtils.getSpecificStartLine(fieldDeclaration.getType()), typeDecLine);
+            markCtrlEdge(AstUtils.getSpecificStartLine(fieldDeclaration), fieldDeclaration, typeDecLine, node);
         });
 
         Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
-            markEdges(AstUtils.getSpecificStartLine(methodDeclaration.getName()), typeDecLine);
+            markCtrlEdge(AstUtils.getSpecificStartLine(methodDeclaration), methodDeclaration, typeDecLine, node);
         });
 
         return super.visit(node);

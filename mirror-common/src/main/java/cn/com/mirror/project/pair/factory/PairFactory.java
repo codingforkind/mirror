@@ -23,7 +23,6 @@ public class PairFactory {
             ControlEdgeVisitor controlEdgeVisitor = new ControlEdgeVisitor(targetPath);
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
             compilationUnit.accept(controlEdgeVisitor);
-            pair.addDirectCtrlEdges(targetPath, controlEdgeVisitor.getControlEdges());
             pair.addCtrlEdge(targetPath, controlEdgeVisitor.getCtrlEdges());
         });
 

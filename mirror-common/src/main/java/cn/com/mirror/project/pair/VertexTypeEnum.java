@@ -10,7 +10,9 @@ import lombok.Getter;
 @Getter
 public enum VertexTypeEnum {
     STATEMENT(1, "statement"),
-    METHOD(2, "method");
+    FIELD(2, "field"),
+    METHOD(3, "method"),
+    CLASS(4, "class");
 
     private Integer key;
     private String desc;

@@ -16,11 +16,20 @@ public class Vertex implements Serializable {
     private String targetPath;
     private int lineNum;
     private VertexTypeEnum vertexType;
+    private String host;
+    private int port;
 
-    public Vertex(String targetPath, int lineNum, VertexTypeEnum vertexType) {
+    public Vertex(String targetPath,
+                  int lineNum,
+                  VertexTypeEnum vertexType,
+                  String host,
+                  int port) {
+
         this.targetPath = targetPath;
         this.lineNum = lineNum;
         this.vertexType = vertexType;
+        this.host = host;
+        this.port = port;
     }
 
     @Override

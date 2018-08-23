@@ -1,12 +1,10 @@
 package cn.com.mirror.analyser;
 
-import cn.com.mirror.analyser.visitor.ControlEdgeVisitor;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.Test;
 
 import java.util.Map;
@@ -25,19 +23,6 @@ public class UnitAnalyserTests {
     public void init() {
         this.unitAnalyser = new UnitAnalyser();
         this.unit = unitAnalyser.analyze();
-    }
-
-    @Test
-    public void testControlDependenceVisitor() {
-        init();
-
-        unit.getTargets().stream().forEach(targetPah -> {
-            ControlEdgeVisitor controlDependenceVisitor = new ControlEdgeVisitor(targetPah);
-            CompilationUnit compilationUnit = unit.getCompilationUnits().get(targetPah);
-            compilationUnit.accept(controlDependenceVisitor);
-            log.info("Target path: {}", targetPah);
-            log.info("Control edges: {}", controlDependenceVisitor.getControlEdges());
-        });
     }
 
     @Test
