@@ -40,19 +40,17 @@ public class PairAnalyserTests {
         PairAnalyser pairAnalyser = new PairAnalyser();
         Pair pair = pairAnalyser.analyze();
         for (Map.Entry<String, Map<Vertex, Vertex>> entry : pair.getCtrlEdges().entrySet()) {
-            if (TEST_FILE.equals(entry.getKey())) {
-                log.debug("Target: {}", entry.getKey());
-
-                for (Map.Entry<Vertex, Vertex> ver : entry.getValue().entrySet()) {
-                    System.out.println("HEAD: " +
-                            ver.getKey().getLineNum() + " - " +
-                            ver.getKey().getVertexType() + "\t->\t" + "TAIL: " +
-                            ver.getValue().getLineNum() + ", " +
-                            ver.getValue().getVertexType());
-                }
-
-                return;
+//            if (TEST_FILE.equals(entry.getKey())) {
+            log.debug("Target: {}", entry.getKey());
+            for (Map.Entry<Vertex, Vertex> ver : entry.getValue().entrySet()) {
+                System.out.println("HEAD: " +
+                        ver.getKey().getLineNum() + " - " +
+                        ver.getKey().getVertexType() + "\t->\t" + "TAIL: " +
+                        ver.getValue().getLineNum() + ", " +
+                        ver.getValue().getVertexType());
             }
+//                return;
+//            }
         }
     }
 }
