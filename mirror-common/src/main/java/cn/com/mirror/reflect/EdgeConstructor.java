@@ -4,7 +4,6 @@ import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.unit.Unit;
-import cn.com.mirror.project.unit.element.Phony;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.repository.neo4j.node.StatementNode;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
@@ -57,19 +56,15 @@ public class EdgeConstructor {
                 log.debug("TARGET: {}", targetPath);
                 log.debug("FROM: {} -> TO: {}", ctrlKey, ctrlVal);
 
-                if (!(tailStat.getInMethod() instanceof Phony)) {
                     // field control dependence on type
-                    log.debug("HEAD statement: {}", headStat);
-                    StatementNode headNode = StatementNode.instance(headStat);
-
-                    log.debug("TAIL statement: {}", tailStat);
-                    StatementNode tailNode = StatementNode.instance(tailStat);
-                    headNode.setCtrlDepNode(tailNode);
-                    graphEngine.write(headNode);
-                    return;
-                } else {
-                    log.warn("HEAD: {} -> TAIL: {}", ctrlKey, ctrlVal);
-                }
+//                    log.debug("HEAD statement: {}", headStat);
+//                    StatementNode headNode = StatementNode.instance(headStat);
+//
+//                    log.debug("TAIL statement: {}", tailStat);
+//                    StatementNode tailNode = StatementNode.instance(tailStat);
+//                    headNode.setCtrlDepNode(tailNode);
+//                    graphEngine.write(headNode);
+//                    return;
 
             });
 

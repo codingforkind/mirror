@@ -82,6 +82,24 @@ public class VariableVisitor extends ASTVisitor {
 //            return;
 //        }
 
+//        if (variable.isFieldFlag()) {
+//            // field variable belongs to class Phony
+//            unitClasses.get(this.file).stream().forEach(cls -> {
+//                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getEndLineNum()) {
+//                    // current statement is a field node which is not in a method
+//                    variableInFile.get(lineNum).setInMethod(new Phony(this.file,
+//                            lineNum,
+//                            lineNum,
+//                            node.getIdentifier(),
+//                            this.packageName,
+//                            node.getIdentifier(),
+//                            null,
+//                            cls));
+//                    return;
+//                }
+//            });
+//        }
+
         if (!variableInFile.containsKey(lineNum)) {
             Statement statement = new Statement(this.file,
                     lineNum,
@@ -93,24 +111,6 @@ public class VariableVisitor extends ASTVisitor {
             variableInFile.put(lineNum, statement);
         } else {
             variableInFile.get(lineNum).getVarsInStat().add(variable);
-        }
-
-        if (variable.isFieldFlag()) {
-            // field variable belongs to class Phony
-            unitClasses.get(this.file).stream().forEach(cls -> {
-                if (cls.getStartLineNum() <= lineNum && lineNum <= cls.getEndLineNum()) {
-                    // current statement is a field node which is not in a method
-                    variableInFile.get(lineNum).setInMethod(new Phony(this.file,
-                            lineNum,
-                            lineNum,
-                            node.getIdentifier(),
-                            this.packageName,
-                            node.getIdentifier(),
-                            null,
-                            cls));
-                    return;
-                }
-            });
         }
 
         targetMethods.stream().forEach(method -> {
