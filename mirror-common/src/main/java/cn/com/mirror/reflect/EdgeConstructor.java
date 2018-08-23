@@ -56,6 +56,8 @@ public class EdgeConstructor {
                 log.debug("TARGET: {}", targetPath);
                 log.debug("FROM: {} -> TO: {}", ctrlKey, ctrlVal);
 
+                // TODO xyz generate nodes and construct control edges based on the work before
+
                     // field control dependence on type
 //                    log.debug("HEAD statement: {}", headStat);
 //                    StatementNode headNode = StatementNode.instance(headStat);
