@@ -2,6 +2,7 @@ package cn.com.mirror.pair;
 
 import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.project.pair.Pair;
+import cn.com.mirror.project.pair.Vertex;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
@@ -23,14 +24,35 @@ public class PairAnalyserTests {
     public void test1() {
         PairAnalyser pairAnalyser = new PairAnalyser();
         Pair pair = pairAnalyser.analyze();
-        Set<Map.Entry<String, Map<Integer, Integer>>> entries =
-                pair.getDirectCtrlEdges().entrySet();
+        Set<Map.Entry<String, Map<Integer, Integer>>> entries = pair.getDirectCtrlEdges().entrySet();
         entries.stream().forEach(entry -> {
-            if(TEST_FILE.equals(entry.getKey())){
+            if (TEST_FILE.equals(entry.getKey())) {
                 log.info("Target: {}", entry.getKey());
                 log.info("Pair: {}", entry.getValue());
                 return;
             }
         });
+    }
+
+
+    @Test
+    public void test2() {
+        PairAnalyser pairAnalyser = new PairAnalyser();
+        Pair pair = pairAnalyser.analyze();
+        for (Map.Entry<String, Map<Vertex, Vertex>> entry : pair.getCtrlEdges().entrySet()) {
+            if (TEST_FILE.equals(entry.getKey())) {
+                log.debug("Target: {}", entry.getKey());
+
+                for (Map.Entry<Vertex, Vertex> ver : entry.getValue().entrySet()) {
+                    log.debug("HEAD: {}, {} -> TAIL: {}, {}",
+                            ver.getKey().getLineNum(),
+                            ver.getKey().getVertexType(),
+                            ver.getValue().getLineNum(),
+                            ver.getValue().getVertexType());
+                }
+
+                return;
+            }
+        }
     }
 }

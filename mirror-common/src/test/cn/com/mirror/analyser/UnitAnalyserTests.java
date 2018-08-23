@@ -32,7 +32,7 @@ public class UnitAnalyserTests {
         init();
 
         unit.getTargets().stream().forEach(targetPah -> {
-            ControlEdgeVisitor controlDependenceVisitor = new ControlEdgeVisitor();
+            ControlEdgeVisitor controlDependenceVisitor = new ControlEdgeVisitor(targetPah);
             CompilationUnit compilationUnit = unit.getCompilationUnits().get(targetPah);
             compilationUnit.accept(controlDependenceVisitor);
             log.info("Target path: {}", targetPah);

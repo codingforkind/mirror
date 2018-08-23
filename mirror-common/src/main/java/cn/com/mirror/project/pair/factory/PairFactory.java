@@ -20,10 +20,11 @@ public class PairFactory {
 
         Set<String> targetFiles = FileUtils.extractTargetPath(repositoryUrl);
         targetFiles.stream().forEach(targetPath -> {
-            ControlEdgeVisitor controlEdgeVisitor = new ControlEdgeVisitor();
+            ControlEdgeVisitor controlEdgeVisitor = new ControlEdgeVisitor(targetPath);
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
             compilationUnit.accept(controlEdgeVisitor);
             pair.addDirectCtrlEdges(targetPath, controlEdgeVisitor.getControlEdges());
+            pair.addCtrlEdge(targetPath, controlEdgeVisitor.getCtrlEdges());
         });
 
         return pair;

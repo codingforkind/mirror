@@ -1,10 +1,13 @@
 package cn.com.mirror.analyser.visitor;
 
 import cn.com.mirror.constant.ControlNodeTypeEnum;
+import cn.com.mirror.project.pair.Vertex;
+import cn.com.mirror.project.pair.VertexTypeEnum;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.*;
+import org.neo4j.cypher.internal.compiler.v2_3.commands.AstNode;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,7 +24,14 @@ import java.util.Map;
 @Slf4j
 @Getter
 public class ControlEdgeVisitor extends ASTVisitor {
+    private String targetPath;
+
     private Map<Integer, Integer> controlEdges = new HashMap<>();
+    private Map<Vertex, Vertex> ctrlEdges = new HashMap<>();
+
+    public ControlEdgeVisitor(String targetPath) {
+        this.targetPath = targetPath;
+    }
 
     private ASTNode searchDirectParentControlNode(ASTNode astNode) {
         ASTNode parent = astNode.getParent();
@@ -35,6 +45,8 @@ public class ControlEdgeVisitor extends ASTVisitor {
         int currentLine = AstUtils.getSpecificStartLine(astNode);
         int directParentStartLine = AstUtils.getSpecificStartLine(parent);
         markEdges(currentLine, directParentStartLine);
+
+        markCtrlEdge(currentLine, astNode, directParentStartLine, parent);
         return parent;
     }
 
@@ -76,6 +88,35 @@ public class ControlEdgeVisitor extends ASTVisitor {
 
         return false;
 
+    }
+
+    private boolean markCtrlEdge(int curLine,
+                                 ASTNode astNode,
+                                 int parentLine,
+                                 ASTNode parent) {
+        if (-1 == parentLine || parentLine == curLine) {
+            return false;
+        }
+
+        VertexTypeEnum headType = null;
+        if (astNode instanceof MethodDeclaration) {
+            headType = VertexTypeEnum.METHOD;
+        } else {
+            headType = VertexTypeEnum.STATEMENT;
+        }
+
+        Vertex head = new Vertex(this.targetPath, curLine, headType);
+
+        VertexTypeEnum tailType = null;
+        if (parent instanceof MethodDeclaration) {
+            tailType = VertexTypeEnum.METHOD;
+        } else {
+            tailType = VertexTypeEnum.STATEMENT;
+        }
+        Vertex tail = new Vertex(this.targetPath, parentLine, tailType);
+        ctrlEdges.put(head, tail);
+
+        return true;
     }
 
     private boolean markEdges(int curLine, int parentLine) {
