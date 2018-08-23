@@ -44,10 +44,10 @@ public class PairAnalyserTests {
                 log.debug("Target: {}", entry.getKey());
 
                 for (Map.Entry<Vertex, Vertex> ver : entry.getValue().entrySet()) {
-                    log.debug("HEAD: {}, {} -> TAIL: {}, {}",
-                            ver.getKey().getLineNum(),
-                            ver.getKey().getVertexType(),
-                            ver.getValue().getLineNum(),
+                    System.out.println("HEAD: " +
+                            ver.getKey().getLineNum() + " - " +
+                            ver.getKey().getVertexType() + "\t->\t" + "TAIL: " +
+                            ver.getValue().getLineNum() + ", " +
                             ver.getValue().getVertexType());
                 }
 
