@@ -12,12 +12,7 @@ import java.util.Map;
  */
 @Getter
 public class Pair {
-    private Map<String, Map<Integer, Integer>> directCtrlEdges = new HashMap<>();
     private Map<String, Map<Vertex, Vertex>> ctrlEdges = new HashMap<>();
-
-    public void addDirectCtrlEdges(String targetPath, Map<Integer, Integer> ctrlEdges) {
-        this.directCtrlEdges.put(targetPath, ctrlEdges);
-    }
 
     public void addCtrlEdge(String targetPath, Map<Vertex, Vertex> ctrlEdges) {
         this.ctrlEdges.put(targetPath, ctrlEdges);

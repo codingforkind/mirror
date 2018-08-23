@@ -1,4 +1,4 @@
-package cn.com.mirror.project.pair;
+package cn.com.mirror.constant;
 
 import lombok.Getter;
 

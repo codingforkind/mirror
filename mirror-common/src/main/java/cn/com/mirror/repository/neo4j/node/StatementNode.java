@@ -5,7 +5,7 @@ package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.project.unit.element.Statement;
-import lombok.Getter;
+import lombok.Data;
 import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -14,13 +14,16 @@ import org.neo4j.ogm.annotation.Relationship;
  * @author Piggy
  * @description
  */
-@Getter
+@Data
 @NodeEntity(label = "a line of code in target file")
 public class StatementNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
     @Relationship(type = EdgeType.TYPE.STAT_TO_MTD)
-    private MethodNode method;
+    private MethodNode toMethod;
+
+    @Relationship(type = EdgeType.TYPE.FID_TO_CLS)
+    private ClassNode toClass;
 
 
     public StatementNode(Integer startLineNum,

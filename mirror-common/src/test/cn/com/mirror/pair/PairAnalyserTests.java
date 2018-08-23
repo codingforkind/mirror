@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author piggy
@@ -21,22 +20,7 @@ public class PairAnalyserTests {
             "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java";
 
     @Test
-    public void test1() {
-        PairAnalyser pairAnalyser = new PairAnalyser();
-        Pair pair = pairAnalyser.analyze();
-        Set<Map.Entry<String, Map<Integer, Integer>>> entries = pair.getDirectCtrlEdges().entrySet();
-        entries.stream().forEach(entry -> {
-            if (TEST_FILE.equals(entry.getKey())) {
-                log.info("Target: {}", entry.getKey());
-                log.info("Pair: {}", entry.getValue());
-                return;
-            }
-        });
-    }
-
-
-    @Test
-    public void test2() {
+    public void testDirectCtrlEdge() {
         PairAnalyser pairAnalyser = new PairAnalyser();
         Pair pair = pairAnalyser.analyze();
         for (Map.Entry<String, Map<Vertex, Vertex>> entry : pair.getCtrlEdges().entrySet()) {

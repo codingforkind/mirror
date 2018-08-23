@@ -2,7 +2,7 @@ package cn.com.mirror.analyser.visitor;
 
 import cn.com.mirror.constant.ControlNodeTypeEnum;
 import cn.com.mirror.project.pair.Vertex;
-import cn.com.mirror.project.pair.VertexTypeEnum;
+import cn.com.mirror.constant.VertexTypeEnum;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

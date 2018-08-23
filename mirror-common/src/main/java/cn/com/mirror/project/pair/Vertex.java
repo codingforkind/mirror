@@ -1,5 +1,6 @@
 package cn.com.mirror.project.pair;
 
+import cn.com.mirror.constant.VertexTypeEnum;
 import lombok.Getter;
 
 import java.io.Serializable;

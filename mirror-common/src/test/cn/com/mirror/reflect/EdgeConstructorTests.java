@@ -9,9 +9,8 @@ import org.junit.Test;
  */
 public class EdgeConstructorTests {
     @Test
-    public void test1() {
+    public void testConstructSimple() {
         EdgeConstructor edgeConstructor = new EdgeConstructor();
-        edgeConstructor.preConstruct();
         edgeConstructor.construct();
     }
 }

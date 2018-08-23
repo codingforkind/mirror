@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cn.com.mirror.constant;
 
@@ -8,30 +8,29 @@ import lombok.Getter;
 
 /**
  * @author Piggy
- *
  * @description
  * @date 2018年4月27日
  */
 @Getter
 public enum NodeTypeEnum {
-	PACKAGE("PACKAGE"), 
-	CLASS("CLASS"), 
-	METHOD("METHOD"), 
-	STATEMENT("STATEMENT");
+    PACKAGE("PACKAGE"),
+    CLASS("CLASS"),
+    METHOD("METHOD"),
+    STATEMENT("STATEMENT");
 
-	private NodeTypeEnum(String key) {
-		this.key = key;
-	}
+    private String key;
 
-	private String key;
+    private NodeTypeEnum(String key) {
+        this.key = key;
+    }
 
-	public static NodeTypeEnum getNodeTypeEnum(String key) {
-		for (NodeTypeEnum nodeTypeEnum : NodeTypeEnum.values()) {
-			if (nodeTypeEnum.getKey().equals(key)) {
-				return nodeTypeEnum;
-			}
-		}
-		throw new ConstantException("No node type match!");
-	}
+    public static NodeTypeEnum getNodeTypeEnum(String key) {
+        for (NodeTypeEnum nodeTypeEnum : NodeTypeEnum.values()) {
+            if (nodeTypeEnum.getKey().equals(key)) {
+                return nodeTypeEnum;
+            }
+        }
+        throw new ConstantException("No node type match!");
+    }
 
 }
