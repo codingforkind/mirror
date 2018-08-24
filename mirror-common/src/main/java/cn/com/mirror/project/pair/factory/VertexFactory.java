@@ -1,7 +1,7 @@
 package cn.com.mirror.project.pair.factory;
 
 import cn.com.mirror.constant.VertexTypeEnum;
-import cn.com.mirror.exceptions.GenerateVertexException;
+import cn.com.mirror.exceptions.VertexGenerateException;
 import cn.com.mirror.project.pair.Vertex;
 import lombok.Data;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -52,11 +52,11 @@ public class VertexFactory {
 
     public Vertex genVertex(String targetPath, int curLine, ASTNode node, String ip, int port) {
         if (null != ip && -1 == port) {
-            throw new GenerateVertexException("Port can not be -1.");
+            throw new VertexGenerateException("Port can not be -1.");
         }
 
         if (-1 != port && null == ip) {
-            throw new GenerateVertexException("IP address can not be null");
+            throw new VertexGenerateException("IP address can not be null");
         }
 
         String hostKey = getHostKey(ip, port, targetPath, curLine);

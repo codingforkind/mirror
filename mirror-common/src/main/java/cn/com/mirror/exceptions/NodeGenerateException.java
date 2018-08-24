@@ -5,14 +5,14 @@ package cn.com.mirror.exceptions;
  * @description
  * @date 18-8-23
  */
-public class GenerateNodeException extends RuntimeException {
+public class NodeGenerateException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public GenerateNodeException(String message) {
+    public NodeGenerateException(String message) {
         super(message);
     }
 
-    public GenerateNodeException(String message, Throwable cause) {
+    public NodeGenerateException(String message, Throwable cause) {
         super(message, cause);
     }
 }

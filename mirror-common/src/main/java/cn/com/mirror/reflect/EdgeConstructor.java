@@ -2,6 +2,7 @@ package cn.com.mirror.reflect;
 
 import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
+import cn.com.mirror.exceptions.EdgeTouchException;
 import cn.com.mirror.exceptions.ReflectException;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.Vertex;
@@ -55,12 +56,17 @@ public class EdgeConstructor {
 
             // basic control edges in the target file
             ctrlEdge.forEach((ctrlKey, ctrlVal) -> {
-                log.debug("TARGET: {}", targetPath);
-                log.debug("FROM: {}:{} \t->\t TO: {}:{}", ctrlKey.getLineNum(),
-                        ctrlKey.getVertexType(), ctrlVal.getLineNum(), ctrlVal.getVertexType());
-
                 Base headB = getBaseElement(ctrlKey);
                 Base tailB = getBaseElement(ctrlVal);
+
+                if (null == headB || null == tailB) {
+                    log.debug("TARGET: {}", targetPath);
+                    log.debug("HEAD: {}:{} \t->\t TAIL: {}:{}", ctrlKey.getLineNum(),
+                            ctrlKey.getVertexType(), ctrlVal.getLineNum(), ctrlVal.getVertexType());
+
+                    throw new EdgeTouchException("Head statement or tail statement is null! \tHEAD: {"
+                            + headB + "} -> TAIL: {" + tailB + "}");
+                }
 
                 // TODO xyz generate start and end node for this target and write it into the graph db.
                 BaseNode newGraphNodeTail = touch(headB, tailB);

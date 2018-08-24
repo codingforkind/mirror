@@ -5,14 +5,14 @@ package cn.com.mirror.exceptions;
  * @description
  * @date 18-8-24
  */
-public class GenerateVertexException extends RuntimeException {
+public class VertexGenerateException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public GenerateVertexException(String message) {
+    public VertexGenerateException(String message) {
         super(message);
     }
 
-    public GenerateVertexException(String message, Throwable cause) {
+    public VertexGenerateException(String message, Throwable cause) {
         super(message, cause);
     }
 }
