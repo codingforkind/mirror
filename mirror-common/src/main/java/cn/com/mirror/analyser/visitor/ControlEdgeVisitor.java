@@ -219,11 +219,15 @@ public class ControlEdgeVisitor extends ASTVisitor {
             // locate the direct parent control type node's position
             parent = parent.getParent();
         }
+        if (null == parent) {
+            return null;
+        }
 
         // mark the s between astNode and statements and return
         int currentLine = AstUtils.getSpecificStartLine(astNode);
         int directParentStartLine = AstUtils.getSpecificStartLine(parent);
         markCtrlEdge(currentLine, astNode, directParentStartLine, parent);
+
         return parent;
     }
 

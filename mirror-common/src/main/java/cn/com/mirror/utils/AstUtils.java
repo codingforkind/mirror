@@ -9,15 +9,12 @@ import org.eclipse.jdt.core.dom.*;
 public class AstUtils {
 
     public static int getStartLine(ASTNode node) {
-        if (null == node) return -1;
-
 //        Using the first two character to calculate the line number
         return ((CompilationUnit) node.getRoot()).getLineNumber(node.getStartPosition() + 1);
     }
 
 
     public static int getEndLine(ASTNode node) {
-        if (null == node) return -1;
         return ((CompilationUnit) node.getRoot()).getLineNumber(
                 node.getStartPosition() + node.getLength() - 1);
     }
@@ -38,6 +35,7 @@ public class AstUtils {
 
     /**
      * Get specific statement (or TypeDeclaration, MethodDeclaration) start line number
+     *
      * @param astNode Statement, TypeDeclaration, MethodDeclaration
      */
     public static final int getSpecificStartLine(ASTNode astNode) {
@@ -61,6 +59,11 @@ public class AstUtils {
 
         if (astNode instanceof SwitchCase) {
             SwitchCase switchCase = (SwitchCase) astNode;
+            // the expression of default case is null
+            if (null == switchCase.getExpression()) {
+                return getStartLine(switchCase);
+            }
+
             return getStartLine(switchCase.getExpression());
         }
 

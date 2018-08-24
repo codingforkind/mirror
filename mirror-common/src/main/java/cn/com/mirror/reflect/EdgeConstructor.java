@@ -16,6 +16,7 @@ import cn.com.mirror.repository.neo4j.node.ClassNode;
 import cn.com.mirror.repository.neo4j.node.MethodNode;
 import cn.com.mirror.repository.neo4j.node.StatementNode;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
+import cn.com.mirror.utils.FileUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -60,10 +61,6 @@ public class EdgeConstructor {
                 Base tailB = getBaseElement(ctrlVal);
 
                 if (null == headB || null == tailB) {
-                    // TODO xyz the statement of "return this;" and "return null" can not be visited,
-                    // directly result in that head statement can not be retrieve from the base elements.
-                    // do some spacial treatment for "return this;" and "return null".
-
                     log.debug("TARGET: {}", targetPath);
                     log.debug("HEAD: {}:{} \t->\t TAIL: {}:{}", ctrlKey.getLineNum(),
                             ctrlKey.getVertexType(), ctrlVal.getLineNum(), ctrlVal.getVertexType());
@@ -141,7 +138,22 @@ public class EdgeConstructor {
 
             case FIELD:
             case STATEMENT: {
-                return unit.getStatements().get(vertex.getTargetPath()).get(vertex.getLineNum());
+                Statement statement = unit.getStatements().get(vertex.getTargetPath()).get(vertex.getLineNum());
+                if (null != statement) {
+                    return statement;
+                }
+
+                log.warn("Statement: " + vertex.getLineNum()
+                        + "-" + vertex.getVertexType()
+                        + " for target: {" + vertex.getTargetPath() + "}"
+                        + " is not retrieved from the variable visitor.");
+
+                statement = new Statement(vertex.getTargetPath(),
+                        vertex.getLineNum(),
+                        vertex.getLineNum(),
+                        FileUtils.listCodeLines(vertex.getTargetPath()).get(vertex.getLineNum() - 1),
+                        unit.getPackages().get(vertex.getTargetPath()));
+                return statement;
             }
 
             default:

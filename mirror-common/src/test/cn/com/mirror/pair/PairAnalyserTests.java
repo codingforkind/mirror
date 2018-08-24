@@ -17,7 +17,7 @@ import java.util.Map;
 public class PairAnalyserTests {
 
     private static final String TEST_FILE =
-            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/project/unit/element/Method.java";
+            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java";
 
     @Test
     public void testDirectCtrlEdge() {
