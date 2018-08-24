@@ -97,9 +97,6 @@ public class VariableVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(SimpleName node) {
-        // TODO xyz the statement of "return this;" and "return null" can not be visited
-        // return statement directly control dependence on the method it belongs.
-
         IBinding binding = node.resolveBinding();
         if (binding instanceof IVariableBinding) {
             IVariableBinding iVariableBinding = (IVariableBinding) binding;
@@ -115,11 +112,6 @@ public class VariableVisitor extends ASTVisitor {
     // private methods
     private void addVariable(Integer lineNum,
                              Variable variable) {
-
-        if ("/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/project/unit/element/Method.java"
-                .equals(variable.getFile()) && (lineNum == 49 || lineNum == 51)) {
-            log.debug("a;lsjd;lfjsajdlfjalsjd;lf");
-        }
 
         if (!varStatMap.containsKey(lineNum)) {
             Statement statement = new Statement(this.file,

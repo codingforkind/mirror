@@ -60,6 +60,10 @@ public class EdgeConstructor {
                 Base tailB = getBaseElement(ctrlVal);
 
                 if (null == headB || null == tailB) {
+                    // TODO xyz the statement of "return this;" and "return null" can not be visited,
+                    // directly result in that head statement can not be retrieve from the base elements.
+                    // do some spacial treatment for "return this;" and "return null".
+
                     log.debug("TARGET: {}", targetPath);
                     log.debug("HEAD: {}:{} \t->\t TAIL: {}:{}", ctrlKey.getLineNum(),
                             ctrlKey.getVertexType(), ctrlVal.getLineNum(), ctrlVal.getVertexType());
