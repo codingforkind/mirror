@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 public class PairAnalyserTests {
 
-    private final String TEST_FILE =
+    private static final String TEST_FILE =
             "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/project/unit/element/Method.java";
 
     @Test

@@ -35,7 +35,7 @@ public class UnitFactory {
                     unit.getPackages().get(targetPath), unit.getClasses(), unit.getMethods().get(targetPath));
             compilationUnit.accept(variableVisitor);
             unit.addVariables(targetPath, variableVisitor.getVariableSet());
-            unit.addMappedVars(targetPath, variableVisitor.getVariableInFile());
+            unit.addMappedVars(targetPath, variableVisitor.getVarStatMap());
         }
 
         return unit;

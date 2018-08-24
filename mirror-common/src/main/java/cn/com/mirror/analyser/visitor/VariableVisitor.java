@@ -36,7 +36,7 @@ public class VariableVisitor extends ASTVisitor {
     private final Set<Method> targetMethods;
 
     private Set<Variable> variableSet = new HashSet<>(); // all element defined in this project file
-    private Map<Integer, Statement> variableInFile = new TreeMap<>();
+    private Map<Integer, Statement> varStatMap = new TreeMap<>();
 
     public VariableVisitor(String file,
                            String packageName,
@@ -97,11 +97,14 @@ public class VariableVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(SimpleName node) {
+        // TODO xyz the statement of "return this;" and "return null" can not be visited
+        // return statement directly control dependence on the method it belongs.
+
         IBinding binding = node.resolveBinding();
         if (binding instanceof IVariableBinding) {
             IVariableBinding iVariableBinding = (IVariableBinding) binding;
             Variable variable = genVariable(node, iVariableBinding);
-            addVariable(AstUtils.getStartLine(node), variable, node);
+            addVariable(AstUtils.getStartLine(node), variable);
 
             variableSet.add(variable);
         }
@@ -111,10 +114,14 @@ public class VariableVisitor extends ASTVisitor {
 
     // private methods
     private void addVariable(Integer lineNum,
-                             Variable variable,
-                             SimpleName node) {
+                             Variable variable) {
 
-        if (!variableInFile.containsKey(lineNum)) {
+        if ("/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/project/unit/element/Method.java"
+                .equals(variable.getFile()) && (lineNum == 49 || lineNum == 51)) {
+            log.debug("a;lsjd;lfjsajdlfjalsjd;lf");
+        }
+
+        if (!varStatMap.containsKey(lineNum)) {
             Statement statement = new Statement(this.file,
                     lineNum,
                     lineNum,
@@ -122,9 +129,9 @@ public class VariableVisitor extends ASTVisitor {
                     this.packageName);
 
             statement.addVariable(variable);
-            variableInFile.put(lineNum, statement);
+            varStatMap.put(lineNum, statement);
         } else {
-            variableInFile.get(lineNum).addVariable(variable);
+            varStatMap.get(lineNum).addVariable(variable);
         }
     }
 
