@@ -29,9 +29,14 @@ public class PairAnalyserTests {
             for (Map.Entry<Vertex, Vertex> ver : entry.getValue().entrySet()) {
                 System.out.println("HEAD: " +
                         ver.getKey().getLineNum() + " - " +
-                        ver.getKey().getVertexType() + "\t->\t" + "TAIL: " +
+                        ver.getKey().getVertexType() + " - " +
+                        ver.getKey().hashCode() +
+                        "\t->\t" +
+                        "TAIL: " +
                         ver.getValue().getLineNum() + ", " +
-                        ver.getValue().getVertexType());
+                        ver.getValue().getVertexType() + " - " +
+                        ver.getValue().hashCode()
+                );
             }
 //                return;
 //            }

@@ -1,8 +1,8 @@
 package cn.com.mirror.analyser.visitor;
 
 import cn.com.mirror.constant.ControlNodeTypeEnum;
-import cn.com.mirror.constant.VertexTypeEnum;
 import cn.com.mirror.project.pair.Vertex;
+import cn.com.mirror.project.pair.factory.VertexFactory;
 import cn.com.mirror.utils.AstUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -29,84 +29,6 @@ public class ControlEdgeVisitor extends ASTVisitor {
 
     public ControlEdgeVisitor(String targetPath) {
         this.targetPath = targetPath;
-    }
-
-    private ASTNode searchDirectParentControlNode(ASTNode astNode) {
-        ASTNode parent = astNode.getParent();
-        while (null != parent &&
-                !isControlType(parent)) {
-            // locate the direct parent control type node's position
-            parent = parent.getParent();
-        }
-
-        // mark the s between astNode and statements and return
-        int currentLine = AstUtils.getSpecificStartLine(astNode);
-        int directParentStartLine = AstUtils.getSpecificStartLine(parent);
-        markCtrlEdge(currentLine, astNode, directParentStartLine, parent);
-        return parent;
-    }
-
-
-    /**
-     * check the control type node in a method
-     */
-    private boolean isControlType(ASTNode astNode) {
-        // is astNode in a control type node, this method will return directly
-        // if (x && y){}, x and y are in the control type of if node, this method
-        // will re turn directly and cant find x and y's direct control edge
-
-        if (astNode instanceof MethodDeclaration) return true;
-
-        if (astNode instanceof Statement) {
-            Statement statement = (Statement) astNode;
-
-            switch (ControlNodeTypeEnum.getControlNodeType(statement)) {
-                case IF:
-                case SWITCH_CASE:
-                case SWITCH:
-                    /**
-                     * the blocks in if and switch case statement's block are
-                     * control dependence on the condition expression which is
-                     * well conveyed in a way like if(expression) and switch(expression).
-                     */
-                case TRY:
-                case WHILE:
-                case ENHANCED_FOR:
-                case FOR:
-                case LABELED:
-                case DO:
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
-
-        return false;
-
-    }
-
-    private boolean markCtrlEdge(int curLine,
-                                 ASTNode astNode,
-                                 int parentLine,
-                                 ASTNode parent) {
-        if (-1 == parentLine || parentLine == curLine) {
-            return false;
-        }
-
-        // TODO xyz vertex might not need to create all the time, use a cache and generate from it
-        Vertex head = new Vertex(this.targetPath, curLine, checkVertexType(astNode), null, -1);
-        Vertex tail = new Vertex(this.targetPath, parentLine, checkVertexType(parent), null, -1);
-        ctrlEdges.put(head, tail);
-
-        return true;
-    }
-
-    private VertexTypeEnum checkVertexType(ASTNode node) {
-        if (node instanceof TypeDeclaration) return VertexTypeEnum.CLASS;
-        if (node instanceof MethodDeclaration) return VertexTypeEnum.METHOD;
-        if (node instanceof FieldDeclaration) return VertexTypeEnum.FIELD;
-        return VertexTypeEnum.STATEMENT;
     }
 
     @Override
@@ -169,14 +91,6 @@ public class ControlEdgeVisitor extends ASTVisitor {
         searchDirectParentControlNode(node);
         return super.visit(node);
     }
-
-
-    //    EmptyStatement
-//    @Override
-//    public boolean visit(EmptyStatement node) {
-//        return super.visit(node);
-//    }
-
 
     //    ExpressionStatement
     @Override
@@ -295,4 +209,77 @@ public class ControlEdgeVisitor extends ASTVisitor {
         searchDirectParentControlNode(node);
         return super.visit(node);
     }
+
+
+    // private methods
+    private ASTNode searchDirectParentControlNode(ASTNode astNode) {
+        ASTNode parent = astNode.getParent();
+        while (null != parent &&
+                !isControlType(parent)) {
+            // locate the direct parent control type node's position
+            parent = parent.getParent();
+        }
+
+        // mark the s between astNode and statements and return
+        int currentLine = AstUtils.getSpecificStartLine(astNode);
+        int directParentStartLine = AstUtils.getSpecificStartLine(parent);
+        markCtrlEdge(currentLine, astNode, directParentStartLine, parent);
+        return parent;
+    }
+
+    /**
+     * check the control type node in a method
+     */
+    private boolean isControlType(ASTNode astNode) {
+        // is astNode in a control type node, this method will return directly
+        // if (x && y){}, x and y are in the control type of if node, this method
+        // will re turn directly and cant find x and y's direct control edge
+
+        if (astNode instanceof MethodDeclaration) return true;
+
+        if (astNode instanceof Statement) {
+            Statement statement = (Statement) astNode;
+
+            switch (ControlNodeTypeEnum.getControlNodeType(statement)) {
+                case IF:
+                case SWITCH_CASE:
+                case SWITCH:
+                    /**
+                     * the blocks in if and switch case statement's block are
+                     * control dependence on the condition expression which is
+                     * well conveyed in a way like if(expression) and switch(expression).
+                     */
+                case TRY:
+                case WHILE:
+                case ENHANCED_FOR:
+                case FOR:
+                case LABELED:
+                case DO:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        return false;
+
+    }
+
+    private boolean markCtrlEdge(int curLine,
+                                 ASTNode astNode,
+                                 int parentLine,
+                                 ASTNode parent) {
+        if (-1 == parentLine || parentLine == curLine) {
+            return false;
+        }
+
+        VertexFactory vertexFactory = new VertexFactory();
+        Vertex head = vertexFactory.genVertex(this.targetPath, curLine, astNode);
+        Vertex tail = vertexFactory.genVertex(this.targetPath, parentLine, parent);
+        ctrlEdges.put(head, tail);
+        return true;
+    }
+
+
 }
