@@ -50,6 +50,7 @@ public class EdgeConstructor {
 
         for (Map.Entry<String, Map<Vertex, Vertex>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             String targetPath = ctrlEdgeEntry.getKey();
+            // TODO xyz one root node for each target
             Map<Vertex, Vertex> ctrlEdge = ctrlEdgeEntry.getValue();
 
             // all element in the unit

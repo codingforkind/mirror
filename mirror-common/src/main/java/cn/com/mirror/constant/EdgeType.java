@@ -13,6 +13,7 @@ public enum EdgeType {
     STAT_TO_MTD(2, "statements to method control edge"),
     FID_TO_CLS(3, "field variable to class control edge"),
     MTD_TO_CLS(4, "method to class control edge"),
+    CLS_TO_CLS(5, "a inner class to outter class control edge"),
     DATA_EDGE(99, "simple date dependence");
 
     private Integer key;
@@ -28,6 +29,7 @@ public enum EdgeType {
         String STAT_TO_MTD = "STAT_TO_MTD";
         String FID_TO_CLS = "FID_TO_CLS";
         String MTD_TO_CLS = "MTD_TO_CLS";
+        String CLS_TO_CLS = "CLS_TO_CLS";
         String DATA_EDGE = "DATA_EDGE";
     }
 }

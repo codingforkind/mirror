@@ -15,7 +15,7 @@ import org.neo4j.ogm.annotation.Property;
  * @since 2018年4月19日
  */
 @Getter
-@NodeEntity(label = "a class in target")
+@NodeEntity(label = "class")
 public class ClassNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 

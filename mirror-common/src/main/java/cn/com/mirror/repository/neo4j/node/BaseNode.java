@@ -4,7 +4,10 @@ import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.project.unit.element.Base;
 import lombok.Data;
 import org.apache.http.util.Asserts;
-import org.neo4j.ogm.annotation.*;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.io.Serializable;
 
@@ -14,7 +17,6 @@ import java.io.Serializable;
  * @date 18-8-9
  */
 @Data
-@NodeEntity(label = "a node in target which contains some basic information")
 public class BaseNode implements Serializable {
 
     @Id

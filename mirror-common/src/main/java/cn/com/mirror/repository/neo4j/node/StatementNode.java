@@ -15,7 +15,7 @@ import org.neo4j.ogm.annotation.Relationship;
  * @description
  */
 @Data
-@NodeEntity(label = "a line of code in target file")
+@NodeEntity(label = "statement")
 public class StatementNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 

@@ -17,7 +17,7 @@ import org.neo4j.ogm.annotation.Relationship;
  * @since 2018年4月19日
  */
 @Data
-@NodeEntity(label = "a method in target")
+@NodeEntity(label = "method")
 public class MethodNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
