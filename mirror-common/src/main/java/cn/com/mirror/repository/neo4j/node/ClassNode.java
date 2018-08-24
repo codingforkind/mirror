@@ -3,18 +3,20 @@
  */
 package cn.com.mirror.repository.neo4j.node;
 
+import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.project.unit.element.Class;
-import lombok.Getter;
+import lombok.Data;
 import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
 
 /**
  * @author Piggy
  * @description
  * @since 2018年4月19日
  */
-@Getter
+@Data
 @NodeEntity(label = "class")
 public class ClassNode extends BaseNode {
     private static final long serialVersionUID = 1L;
@@ -24,6 +26,9 @@ public class ClassNode extends BaseNode {
 
     @Property(name = "class qualified name")
     private String qualifiedName;
+
+    @Relationship(type = EdgeType.TYPE.CLS_TO_CLS)
+    private ClassNode toClass;
 
     public ClassNode(Integer startLineNum,
                      String targetPath,

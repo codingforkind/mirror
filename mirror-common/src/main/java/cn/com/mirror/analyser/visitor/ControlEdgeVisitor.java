@@ -42,6 +42,12 @@ public class ControlEdgeVisitor extends ASTVisitor {
             markCtrlEdge(AstUtils.getSpecificStartLine(methodDeclaration), methodDeclaration, typeDecLine, node);
         });
 
+
+        Arrays.stream(node.getTypes()).forEach(typeDeclaration -> {
+            // TODO xyz be aware of anonymous class, it might have a edge of class_to_statement
+            markCtrlEdge(AstUtils.getSpecificStartLine(typeDeclaration), typeDeclaration, typeDecLine, node);
+        });
+
         return super.visit(node);
     }
 

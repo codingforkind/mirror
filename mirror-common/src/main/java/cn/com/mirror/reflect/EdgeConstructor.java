@@ -86,6 +86,15 @@ public class EdgeConstructor {
      * @return
      */
     public BaseNode touch(Base headB, Base tailB) {
+        if (headB instanceof Class && tailB instanceof Class) {
+            // class to class
+            ClassNode headNode = ClassNode.instance((Class) headB);
+            ClassNode tailNode = ClassNode.instance((Class) tailB);
+
+            headNode.setToClass(tailNode);
+            return headNode;
+        }
+
         if (headB instanceof Statement) {
             StatementNode headNode = StatementNode.instance((Statement) headB);
             if (tailB instanceof Class) {
@@ -93,7 +102,7 @@ public class EdgeConstructor {
                 ClassNode tailNode = ClassNode.instance((Class) tailB);
                 headNode.setToClass(tailNode);
             } else if (tailB instanceof Method) {
-                // statement to statement
+                // method to class
                 MethodNode tailNode = MethodNode.instance((Method) tailB);
                 headNode.setToMethod(tailNode);
             } else {
