@@ -17,14 +17,18 @@ import java.util.Map;
 public class PairAnalyserTests {
 
     private final String TEST_FILE =
-            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java";
+            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/project/unit/element/Method.java";
 
     @Test
     public void testDirectCtrlEdge() {
         PairAnalyser pairAnalyser = new PairAnalyser();
         Pair pair = pairAnalyser.analyze();
         for (Map.Entry<String, Map<Vertex, Vertex>> entry : pair.getCtrlEdges().entrySet()) {
-//            if (TEST_FILE.equals(entry.getKey())) {
+            if (!TEST_FILE.equals(entry.getKey())) {
+                // testing specific target
+                continue;
+            }
+
             log.debug("Target: {}", entry.getKey());
             for (Map.Entry<Vertex, Vertex> ver : entry.getValue().entrySet()) {
                 System.out.println("HEAD: " +
@@ -38,8 +42,7 @@ public class PairAnalyserTests {
                         ver.getValue().hashCode()
                 );
             }
-//                return;
-//            }
+
         }
     }
 }
