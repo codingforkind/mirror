@@ -1,6 +1,6 @@
 package cn.com.mirror.utils;
 
-import cn.com.mirror.exceptions.ProjectException;
+import cn.com.mirror.exceptions.UnitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +86,7 @@ public class FileUtils {
     public static final Set<String> extractTargetPath(String prjPath) {
         File file = new File(prjPath);
         if (!file.exists() || !file.isDirectory()) {
-            throw new ProjectException(prjPath + " is not a directory or even not exists!");
+            throw new UnitException(prjPath + " is not a directory or even not exists!");
         }
 
         return initjavaFiles(file, new HashSet<>());

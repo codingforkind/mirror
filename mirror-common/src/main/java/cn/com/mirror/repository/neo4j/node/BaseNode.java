@@ -1,15 +1,15 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
-import cn.com.mirror.project.unit.element.Base;
+import cn.com.mirror.constant.NodeTypeEnum;
 import lombok.Data;
-import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author piggy
@@ -38,30 +38,44 @@ public class BaseNode implements Serializable {
     @Property(name = "package name")
     private String packageName;
 
-    @Relationship(type = EdgeType.TYPE.CTRL_EDGE)
+    private NodeTypeEnum nodeType;
+
+    @Relationship(type = EdgeType.TYPE.CTRL_EDGE, direction = Relationship.INCOMING)
     private BaseNode ctrlDepNode;
 
     public BaseNode(Integer startLineNum,
                     String targetPath,
                     Integer endLineNum,
                     String content,
-                    String packageName) {
+                    String packageName,
+                    NodeTypeEnum nodeType) {
 
         this.startLineNum = startLineNum;
         this.targetPath = targetPath;
         this.endLineNum = endLineNum;
         this.content = content;
         this.packageName = packageName;
+        this.nodeType = nodeType;
     }
 
-    public static final BaseNode instance(Base base) {
-        Asserts.notNull(base, "Base element can not be null.");
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return new BaseNode(base.getStartLineNum(),
-                base.getTargetPath(),
-                base.getEndLineNum(),
-                base.getContent(),
-                base.getPackageName());
+        BaseNode baseNode = (BaseNode) o;
+        return Objects.equals(startLineNum, baseNode.startLineNum) &&
+                Objects.equals(endLineNum, baseNode.endLineNum) &&
+                Objects.equals(targetPath, baseNode.targetPath) &&
+                Objects.equals(content, baseNode.content) &&
+                Objects.equals(packageName, baseNode.packageName) &&
+                nodeType == baseNode.nodeType &&
+                Objects.equals(ctrlDepNode, baseNode.ctrlDepNode);
     }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(startLineNum, endLineNum, targetPath, content, packageName, nodeType, ctrlDepNode);
+    }
 }

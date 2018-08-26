@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 @Getter
 public enum NodeTypeEnum {
-    PACKAGE("PACKAGE"),
+    ROOT("ROOT"), // package
     CLASS("CLASS"),
     METHOD("METHOD"),
     STATEMENT("STATEMENT");

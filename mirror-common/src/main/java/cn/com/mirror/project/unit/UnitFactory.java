@@ -1,6 +1,7 @@
 package cn.com.mirror.project.unit;
 
 import cn.com.mirror.analyser.visitor.ClassVisitor;
+import cn.com.mirror.analyser.visitor.PackageVisitor;
 import cn.com.mirror.analyser.visitor.VariableVisitor;
 import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
@@ -22,6 +23,10 @@ public class UnitFactory {
         for (String targetPath : unit.getTargets()) {
             CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
             unit.addCompilationUnit(targetPath, compilationUnit);
+
+            PackageVisitor packageVisitor = new PackageVisitor(targetPath);
+            compilationUnit.accept(packageVisitor);
+            unit.addRoot(packageVisitor.getRoot());
 
             // packages/classes analysis
             ClassVisitor classDeclarationVisitor = new ClassVisitor(targetPath);

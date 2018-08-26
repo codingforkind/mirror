@@ -4,12 +4,17 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.constant.NodeTypeEnum;
 import cn.com.mirror.project.unit.element.Method;
 import lombok.Data;
 import org.apache.http.util.Asserts;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Piggy
@@ -24,8 +29,8 @@ public class MethodNode extends BaseNode {
     @Property(name = "method name")
     private String name;
 
-    @Relationship(type = EdgeType.TYPE.MTD_TO_CLS)
-    private ClassNode cls;
+    @Relationship(type = EdgeType.TYPE.STAT_TO_MTD, direction = Relationship.INCOMING)
+    private Set<StatementNode> statementNodes;
 
     public MethodNode(Integer startLineNum,
                       String targetPath,
@@ -34,9 +39,10 @@ public class MethodNode extends BaseNode {
                       String packageName,
                       String name) {
 
-        super(startLineNum, targetPath, endLineNum, content, packageName);
+        super(startLineNum, targetPath, endLineNum, content, packageName, NodeTypeEnum.METHOD);
 
         this.name = name;
+        this.statementNodes = new HashSet<>();
     }
 
     public static final MethodNode instance(Method method) {
@@ -48,5 +54,25 @@ public class MethodNode extends BaseNode {
                 method.getContent(),
                 method.getPackageName(),
                 method.getName());
+    }
+
+    public void touchStatementNode(StatementNode statementNode) {
+        this.statementNodes.add(statementNode);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        MethodNode that = (MethodNode) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), name);
     }
 }

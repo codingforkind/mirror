@@ -12,7 +12,8 @@ public enum VertexTypeEnum {
     STATEMENT(1, "statement"),
     FIELD(2, "field"),
     METHOD(3, "method"),
-    CLASS(4, "class");
+    CLASS(4, "class"),
+    PACKAGE(5, "package");
 
     private Integer key;
     private String desc;

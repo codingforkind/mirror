@@ -1,15 +1,19 @@
 package cn.com.mirror.project.unit;
 
+import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Root;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
+import org.apache.http.util.Asserts;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +34,7 @@ public class Unit implements Serializable {
     private Map<String, CompilationUnit> compilationUnits = new HashMap<>(); // all compilation units in the unit
 
     private Map<String, String> packages = new HashMap<>();
+    private Set<Root> roots = new HashSet<>();
     private Map<String, Set<Class>> classes = new HashMap<>();
     private Map<String, Set<Method>> methods = new HashMap<>();
     private Map<String, Map<Integer, Statement>> statements = new HashMap<>(); // all variables in a single code line
@@ -38,6 +43,10 @@ public class Unit implements Serializable {
     public void addCompilationUnit(String targetPath, CompilationUnit compilationUnit) {
         checkTargetPath(targetPath);
         this.compilationUnits.put(targetPath, compilationUnit);
+    }
+
+    public void addRoot(Root root) {
+        this.roots.add(root);
     }
 
     public void addClasses(String targetPath, Set<Class> clsSet) {
@@ -69,5 +78,15 @@ public class Unit implements Serializable {
 
     private void checkTargetPath(String targetPath) {
         Validate.notEmpty(targetPath, "Target's path can not be empty.");
+    }
+
+    public Root getRoot(String pkgName) {
+        Asserts.notEmpty(pkgName, "Package name can not be null.");
+        for (Root root : this.roots) {
+            if (pkgName.equals(root.getPackageName())) {
+                return root;
+            }
+        }
+        throw new UnitException("No root found in this unit.");
     }
 }

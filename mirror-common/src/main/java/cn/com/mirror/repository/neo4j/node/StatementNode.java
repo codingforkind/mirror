@@ -4,6 +4,7 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.constant.NodeTypeEnum;
 import cn.com.mirror.project.unit.element.Statement;
 import lombok.Data;
 import org.apache.http.util.Asserts;
@@ -11,6 +12,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 /**
+ * Statement nodes are the leafs in the graph
  * @author Piggy
  * @description
  */
@@ -19,20 +21,13 @@ import org.neo4j.ogm.annotation.Relationship;
 public class StatementNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
-    @Relationship(type = EdgeType.TYPE.STAT_TO_MTD)
-    private MethodNode toMethod;
-
-    @Relationship(type = EdgeType.TYPE.FID_TO_CLS)
-    private ClassNode toClass;
-
-
     public StatementNode(Integer startLineNum,
                          String targetPath,
                          Integer endLineNum,
                          String content,
                          String packageName) {
 
-        super(startLineNum, targetPath, endLineNum, content, packageName);
+        super(startLineNum, targetPath, endLineNum, content, packageName, NodeTypeEnum.STATEMENT);
     }
 
     public static final StatementNode instance(Statement statement) {
