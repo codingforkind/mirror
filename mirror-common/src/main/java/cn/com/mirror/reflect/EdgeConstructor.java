@@ -63,7 +63,6 @@ public class EdgeConstructor {
                             + headB + "} -> TAIL: {" + tailB + "}");
                 }
 
-                // TODO xyz generate start and end node for this target and write it into the graph db.
                 BaseNode newGraphNodeTail = touch(headB, tailB);
 
                 // TODO xyz add edge to rootNode
@@ -81,6 +80,7 @@ public class EdgeConstructor {
      */
     public BaseNode touch(Base headB, Base tailB) {
         // tail adds head into its properties
+        // TODO xyz tail factory to generate tailNodes (same tail has different head, find the common tail)
 
         if (tailB instanceof Class) {
             ClassNode tailNode = ClassNode.instance((Class) tailB);
