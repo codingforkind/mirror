@@ -32,16 +32,13 @@ public class PairAnalyserTests {
 
             log.debug("Target: {}", entry.getKey());
             for (Map.Entry<Vertex, Set<Vertex>> ver : entry.getValue().entrySet()) {
-                System.out.println("HEAD: " +
+                System.out.println("TAIL: " +
                         ver.getKey().getLineNum() + " - " +
                         ver.getKey().getVertexType() + " - " +
-                        ver.getKey().hashCode() +
-                        "\t->\t" +
-                        "TAIL: " +
-//                        ver.getValue().getLineNum() + ", " +
-//                        ver.getValue().getVertexType() + " - " +
-                        ver.getValue().hashCode()
-                );
+                        "\t <- \t");
+                for (Vertex vHead : ver.getValue()) {
+                    System.out.println("HEAD: {" + vHead.getLineNum() + " - " + vHead.getVertexType() + "}");
+                }
             }
 
         }

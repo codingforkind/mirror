@@ -109,8 +109,9 @@ public class EdgeConstructor {
                 throw new UnitException("No match type node found, can not touch edges.");
             }
         }
+
         nodeFactory.updateNode(tailBase, tailRoot);
-        nodeFactory.updateNode(headBase, headNode);
+//        nodeFactory.updateNode(headBase, headNode);
     }
 
     private Base getBaseElement(Vertex vertex) {
