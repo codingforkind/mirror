@@ -54,7 +54,8 @@ public class BaseNode implements Serializable {
         this.startLineNum = startLineNum;
         this.targetPath = targetPath;
         this.endLineNum = endLineNum;
-        this.content = content;
+//        this.content = content; // TODO xyz for test
+        this.content = null;
         this.packageName = packageName;
         this.nodeType = nodeType;
     }
