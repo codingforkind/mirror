@@ -42,7 +42,6 @@ public class EdgeConstructor {
         pair = pairAnalyser.analyze();
 
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
-            String targetPath = ctrlEdgeEntry.getKey();
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
 
             for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
@@ -73,8 +72,9 @@ public class EdgeConstructor {
 
     private void touchEdge(Base tailBase, Base headBase) {
 
-        BaseNode tailRoot = nodeFactory.updateNode(tailBase, null);
-        BaseNode headNode = nodeFactory.updateNode(headBase, null);
+        // TODO xyz fix bug
+        BaseNode tailRoot = nodeFactory.newNode(tailBase);
+        BaseNode headNode = nodeFactory.newNode(headBase);
 
         switch (tailRoot.getNodeType()) {
             case ROOT: {

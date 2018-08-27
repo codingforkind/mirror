@@ -54,9 +54,15 @@ public class NodeFactory {
 
 
     public BaseNode updateNode(Base base, BaseNode baseNode) {
-        if (null == baseNode) {
-            baseNode = newNode(base);
+        BaseNode cachedNode = this.nodeCache.get(base);
+        if (null == cachedNode) {
+            throw new UnitException("Base element's node has not cached before.");
         }
+
+        if (null == baseNode) {
+            throw new UnitException("BaseNode can not be null when trying to cache it.");
+        }
+
         this.nodeCache.put(base, baseNode);
         return baseNode;
     }
