@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author piggy
@@ -12,9 +13,9 @@ import java.util.Map;
  */
 @Getter
 public class Pair {
-    private Map<String, Map<Vertex, Vertex>> ctrlEdges = new HashMap<>();
+    private Map<String, Map<Vertex, Set<Vertex>>> ctrlEdges = new HashMap<>();
 
-    public void addCtrlEdge(String targetPath, Map<Vertex, Vertex> ctrlEdges) {
+    public void addCtrlEdge(String targetPath, Map<Vertex, Set<Vertex>> ctrlEdges) {
         this.ctrlEdges.put(targetPath, ctrlEdges);
     }
 }

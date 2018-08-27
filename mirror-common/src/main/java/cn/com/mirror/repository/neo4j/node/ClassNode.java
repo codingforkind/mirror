@@ -4,7 +4,7 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
-import cn.com.mirror.constant.NodeTypeEnum;
+import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.Class;
 import lombok.Data;
 import org.apache.http.util.Asserts;
@@ -46,7 +46,7 @@ public class ClassNode extends BaseNode {
                      String name,
                      String qualifiedName) {
 
-        super(startLineNum, targetPath, endLineNum, content, packageName, NodeTypeEnum.CLASS);
+        super(startLineNum, targetPath, endLineNum, content, packageName, ElementTypeEnum.CLASS);
 
         this.name = name;
         this.qualifiedName = qualifiedName;

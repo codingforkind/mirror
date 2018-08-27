@@ -1,5 +1,6 @@
 package cn.com.mirror.project.unit.element;
 
+import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
 import org.apache.http.util.Asserts;
@@ -31,7 +32,7 @@ public class Method extends Base {
                   String name,
                   MethodDeclaration methodDeclaration) {
 
-        super(targetPath, startLineNum, endLineNum, content, packageName);
+        super(targetPath, startLineNum, endLineNum, content, packageName, ElementTypeEnum.METHOD);
 
         this.name = name;
         this.methodDeclaration = methodDeclaration;

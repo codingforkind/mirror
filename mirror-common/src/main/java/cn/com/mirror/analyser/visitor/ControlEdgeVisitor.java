@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jdt.core.dom.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * conception of control dependence
@@ -25,7 +23,7 @@ import java.util.Map;
 public class ControlEdgeVisitor extends ASTVisitor {
     private String targetPath;
 
-    private Map<Vertex, Vertex> ctrlEdges = new HashMap<>();
+    private Map<Vertex, Set<Vertex>> ctrlEdges = new HashMap<>();
 
     public ControlEdgeVisitor(String targetPath) {
         this.targetPath = targetPath;
@@ -280,6 +278,7 @@ public class ControlEdgeVisitor extends ASTVisitor {
                                  ASTNode astNode,
                                  int parentLine,
                                  ASTNode parent) {
+
         if (-1 == parentLine || parentLine == curLine) {
             return false;
         }
@@ -287,7 +286,15 @@ public class ControlEdgeVisitor extends ASTVisitor {
         VertexFactory vertexFactory = new VertexFactory();
         Vertex head = vertexFactory.genVertex(this.targetPath, curLine, astNode);
         Vertex tail = vertexFactory.genVertex(this.targetPath, parentLine, parent);
-        ctrlEdges.put(head, tail);
+
+        Set<Vertex> tmpHeadSet = this.ctrlEdges.get(tail);
+        if (null == tmpHeadSet) {
+            tmpHeadSet = new HashSet<>();
+            tmpHeadSet.add(head);
+        } else {
+            tmpHeadSet.add(head);
+        }
+        this.ctrlEdges.put(tail, tmpHeadSet);
         return true;
     }
 

@@ -1,7 +1,8 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
-import cn.com.mirror.constant.NodeTypeEnum;
+import cn.com.mirror.constant.ElementTypeEnum;
+import cn.com.mirror.project.unit.element.Base;
 import lombok.Data;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
@@ -38,7 +39,7 @@ public class BaseNode implements Serializable {
     @Property(name = "package name")
     private String packageName;
 
-    private NodeTypeEnum nodeType;
+    private ElementTypeEnum nodeType;
 
     @Relationship(type = EdgeType.TYPE.CTRL_EDGE, direction = Relationship.INCOMING)
     private BaseNode ctrlDepNode;
@@ -48,7 +49,7 @@ public class BaseNode implements Serializable {
                     Integer endLineNum,
                     String content,
                     String packageName,
-                    NodeTypeEnum nodeType) {
+                    ElementTypeEnum nodeType) {
 
         this.startLineNum = startLineNum;
         this.targetPath = targetPath;
@@ -57,6 +58,17 @@ public class BaseNode implements Serializable {
         this.packageName = packageName;
         this.nodeType = nodeType;
     }
+
+    public static final BaseNode instance(Base base) {
+
+        return new BaseNode(base.getStartLineNum(),
+                base.getTargetPath(),
+                base.getEndLineNum(),
+                base.getContent(),
+                base.getPackageName(),
+                base.getElementTypeEnum());
+    }
+
 
     @Override
     public boolean equals(Object o) {

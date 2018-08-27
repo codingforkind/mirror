@@ -2,13 +2,15 @@ package cn.com.mirror.reflect;
 
 import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
-import cn.com.mirror.exceptions.EdgeTouchException;
 import cn.com.mirror.exceptions.ReflectException;
+import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.Vertex;
 import cn.com.mirror.project.unit.Unit;
-import cn.com.mirror.project.unit.element.*;
+import cn.com.mirror.project.unit.element.Base;
 import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.repository.neo4j.node.*;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
 import cn.com.mirror.utils.FileUtils;
@@ -29,6 +31,7 @@ public class EdgeConstructor {
 
     private Unit unit;
     private Pair pair;
+    private NodeFactory nodeFactory = new NodeFactory();
 
     public void construct() {
         // analyze the project
@@ -38,77 +41,76 @@ public class EdgeConstructor {
         unit = unitAnalyser.analyze();
         pair = pairAnalyser.analyze();
 
+        for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
+            String targetPath = ctrlEdgeEntry.getKey();
+            Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
+
+            for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
+                Vertex tailVtx = edges.getKey();
+                Base tailBase = getBaseElement(tailVtx);
+
+                Set<Vertex> headVtxSet = edges.getValue();
+                for (Vertex headVtx : headVtxSet) {
+                    Base headBase = getBaseElement(headVtx);
+                    touchEdge(tailBase, headBase);
+                }
+            }
+        }
+
+        testConstruct();
+    }
+
+    private void testConstruct() {
         // construct
         GraphEngine graphEngine = new GraphEngine();
-
-        for (Map.Entry<String, Map<Vertex, Vertex>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
-            String targetPath = ctrlEdgeEntry.getKey();
-
-            // package is the root node of the target
-            Root root = unit.getRoot(unit.getPackages().get(targetPath));
-            RootNode rootNode = RootNode.instance(root);
-
-            Map<Vertex, Vertex> ctrlEdge = ctrlEdgeEntry.getValue();
-
-            ctrlEdge.forEach((ctrlKey, ctrlVal) -> {
-                Base headB = getBaseElement(ctrlKey);
-                Base tailB = getBaseElement(ctrlVal);
-
-                if (null == headB || null == tailB) {
-                    log.debug("TARGET: {}", targetPath);
-                    log.debug("HEAD: {}:{} \t->\t TAIL: {}:{}", ctrlKey.getLineNum(),
-                            ctrlKey.getVertexType(), ctrlVal.getLineNum(), ctrlVal.getVertexType());
-
-                    throw new EdgeTouchException("Head statement or tail statement is null! \tHEAD: {"
-                            + headB + "} -> TAIL: {" + tailB + "}");
-                }
-
-                BaseNode newGraphNodeTail = touch(headB, tailB);
-
-                // TODO xyz add edge to rootNode
-            });
-            graphEngine.write(rootNode);
+        Map<Base, BaseNode> nodeCache = nodeFactory.getNodeCache();
+        for (BaseNode baseNode : nodeCache.values()) {
+            if (baseNode instanceof ClassNode) {
+                graphEngine.write(baseNode);
+            }
         }
     }
 
-    /**
-     * Convert elements to graph nodes and construct direct edge between them.
-     *
-     * @param headB head in the edge
-     * @param tailB tail in the edge
-     * @return The tail in the edge
-     */
-    public BaseNode touch(Base headB, Base tailB) {
-        // tail adds head into its properties
-        // TODO xyz tail factory to generate tailNodes (same tail has different head, find the common tail)
+    private void touchEdge(Base tailBase, Base headBase) {
 
-        if (tailB instanceof Class) {
-            ClassNode tailNode = ClassNode.instance((Class) tailB);
-            if (headB instanceof Class) {
-                // class to class
-                ClassNode headNode = ClassNode.instance((Class) headB);
-                tailNode.touchClassNode(headNode);
-            } else if (headB instanceof Method) {
-                // method to class
-                MethodNode headNode = MethodNode.instance((Method) headB);
-                tailNode.touchMethodNode(headNode);
+        BaseNode tailRoot = nodeFactory.updateNode(tailBase, null);
+        BaseNode headNode = nodeFactory.updateNode(headBase, null);
+
+        switch (tailRoot.getNodeType()) {
+            case ROOT: {
+                RootNode tmTail = (RootNode) tailRoot;
+                tmTail.setTargetNode((ClassNode) headNode);
+                break;
             }
-            return tailNode;
+            case CLASS: {
+                ClassNode tmTail = (ClassNode) tailRoot;
+                if (headNode instanceof ClassNode) {
+                    // class to class
+                    tmTail.touchClassNode((ClassNode) headNode);
+                } else if (headNode instanceof MethodNode) {
+                    // method to class
+                    tmTail.touchMethodNode((MethodNode) headNode);
+                } else {
+                    // field to class
+                    tmTail.setCtrlDepNode(headNode);
+                }
+                break;
+            }
+            case METHOD: {
+                MethodNode tmTail = (MethodNode) tailRoot;
+                tmTail.touchStatementNode((StatementNode) headNode);
+                break;
+            }
+            case STATEMENT: {
+                tailRoot.setCtrlDepNode(headNode);
+                break;
+            }
+            default: {
+                throw new UnitException("No match type node found, can not touch edges.");
+            }
         }
-
-        if (tailB instanceof Method) {
-            // statement to method
-            MethodNode tailNode = MethodNode.instance((Method) tailB);
-            StatementNode headNode = StatementNode.instance((Statement) headB);
-            tailNode.touchStatementNode(headNode);
-            return tailNode;
-        }
-
-        // statement to statement
-        StatementNode tailNode = StatementNode.instance((Statement) tailB);
-        StatementNode headNode = StatementNode.instance((Statement) headB);
-        tailNode.setCtrlDepNode(headNode);
-        return tailNode;
+        nodeFactory.updateNode(tailBase, tailRoot);
+        nodeFactory.updateNode(headBase, headNode);
     }
 
     private Base getBaseElement(Vertex vertex) {

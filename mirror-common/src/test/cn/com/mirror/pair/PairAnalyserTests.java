@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author piggy
@@ -23,22 +24,22 @@ public class PairAnalyserTests {
     public void testDirectCtrlEdge() {
         PairAnalyser pairAnalyser = new PairAnalyser();
         Pair pair = pairAnalyser.analyze();
-        for (Map.Entry<String, Map<Vertex, Vertex>> entry : pair.getCtrlEdges().entrySet()) {
+        for (Map.Entry<String, Map<Vertex, Set<Vertex>>> entry : pair.getCtrlEdges().entrySet()) {
             if (!TEST_FILE.equals(entry.getKey())) {
                 // testing specific target
                 continue;
             }
 
             log.debug("Target: {}", entry.getKey());
-            for (Map.Entry<Vertex, Vertex> ver : entry.getValue().entrySet()) {
+            for (Map.Entry<Vertex, Set<Vertex>> ver : entry.getValue().entrySet()) {
                 System.out.println("HEAD: " +
                         ver.getKey().getLineNum() + " - " +
                         ver.getKey().getVertexType() + " - " +
                         ver.getKey().hashCode() +
                         "\t->\t" +
                         "TAIL: " +
-                        ver.getValue().getLineNum() + ", " +
-                        ver.getValue().getVertexType() + " - " +
+//                        ver.getValue().getLineNum() + ", " +
+//                        ver.getValue().getVertexType() + " - " +
                         ver.getValue().hashCode()
                 );
             }

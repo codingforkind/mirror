@@ -1,7 +1,7 @@
 package cn.com.mirror.repository.neo4j.node;
 
 import cn.com.mirror.constant.EdgeType;
-import cn.com.mirror.constant.NodeTypeEnum;
+import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.Root;
 import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class RootNode extends BaseNode {
                     String packageName,
                     String rootName) {
 
-        super(startLineNum, targetPath, endLineNum, content, packageName, NodeTypeEnum.ROOT);
+        super(startLineNum, targetPath, endLineNum, content, packageName, ElementTypeEnum.ROOT);
         this.rootName = rootName;
     }
 

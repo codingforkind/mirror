@@ -1,5 +1,6 @@
 package cn.com.mirror.project.unit.element;
 
+import cn.com.mirror.constant.ElementTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,7 @@ public class Root extends Base {
                 String content,
                 String packageName) {
 
-        super(targetPath, startLineNum, endLineNum, content, packageName);
+        super(targetPath, startLineNum, endLineNum, content, packageName, ElementTypeEnum.ROOT);
     }
 
     @Override

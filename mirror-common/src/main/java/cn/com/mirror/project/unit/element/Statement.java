@@ -1,5 +1,6 @@
 package cn.com.mirror.project.unit.element;
 
+import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
 import org.apache.http.util.Asserts;
@@ -22,7 +23,7 @@ public class Statement extends Base {
                      String content,
                      String packageName) {
 
-        super(targetPath, startLineNum, endLineNum, content, packageName);
+        super(targetPath, startLineNum, endLineNum, content, packageName, ElementTypeEnum.STATEMENT);
 
         this.variables = new TreeSet<>();
     }

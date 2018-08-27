@@ -1,18 +1,64 @@
 package cn.com.mirror.reflect;
 
-import cn.com.mirror.repository.neo4j.node.StatementNode;
-import cn.com.mirror.repository.neo4j.node.BaseNode;
+import cn.com.mirror.exceptions.UnitException;
+import cn.com.mirror.project.unit.element.*;
+import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.repository.neo4j.node.*;
+import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author piggy
  * @description
- * @date 18-8-10
+ * @date 18-8-27
  */
+@Data
 public class NodeFactory {
-    // create neo4j nodes
-    public BaseNode nodeInstance(StatementNode statementNode) {
-        return null;
+
+    private Map<Base, BaseNode> nodeCache = new HashMap<>();
+
+    public final BaseNode newNode(Base base) {
+        BaseNode baseNode = this.nodeCache.get(base);
+        if (null != baseNode) {
+            return baseNode;
+        }
+
+        switch (base.getElementTypeEnum()) {
+            case ROOT: {
+                baseNode = RootNode.instance((Root) base);
+                break;
+            }
+            case CLASS: {
+                baseNode = ClassNode.instance((Class) base);
+                break;
+            }
+            case METHOD: {
+                baseNode = MethodNode.instance((Method) base);
+                break;
+            }
+            case STATEMENT: {
+                baseNode = StatementNode.instance((Statement) base);
+                break;
+            }
+        }
+
+        if (null == baseNode) {
+            throw new UnitException("Element type can not match.");
+        }
+
+        this.nodeCache.put(base, baseNode);
+        return baseNode;
     }
 
+
+    public BaseNode updateNode(Base base, BaseNode baseNode) {
+        if (null == baseNode) {
+            baseNode = newNode(base);
+        }
+        this.nodeCache.put(base, baseNode);
+        return baseNode;
+    }
 
 }
