@@ -109,7 +109,7 @@ public class EdgeConstructor {
             }
         }
 
-//        nodeFactory.updateNode(tailBase, tailRoot);
+        nodeFactory.updateNode(tailBase, tailNode);
 //        nodeFactory.updateNode(headBase, headNode);
     }
 

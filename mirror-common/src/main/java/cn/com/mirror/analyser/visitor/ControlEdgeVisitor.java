@@ -29,6 +29,7 @@ public class ControlEdgeVisitor extends ASTVisitor {
         this.targetPath = targetPath;
     }
 
+    //    TypeDeclaration
     @Override
     public boolean visit(TypeDeclaration node) {
         int typeDecLine = AstUtils.getStartLine(node.getName());
@@ -49,6 +50,15 @@ public class ControlEdgeVisitor extends ASTVisitor {
         return super.visit(node);
     }
 
+    //    EnumDeclaration
+    @Override
+    public boolean visit(EnumDeclaration node) {
+//        TODO xyz enum declaration need to be analyzed
+        List list = node.enumConstants();
+
+
+        return super.visit(node);
+    }
 
     //    AssertStatement
     @Override
