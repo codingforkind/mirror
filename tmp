@@ -1,0 +1,3088 @@
+package cn.com.mirror.utils;
+
+import cn.com.mirror.exceptions.UnitException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.util.*;
+
+/**
+ * @author Piggy
+ * @description
+ */
+public class FileUtils {
+    private static Logger log = LoggerFactory.getLogger(FileUtils.class);
+
+    private static Map<String, List<String>> lineCodesInUnit = new HashMap<>();
+
+
+    public static final String getFileContent(String javaFile) {
+        byte[] input = null;
+
+        try {
+            FileInputStream inputStream = new FileInputStream(javaFile);
+            input = new byte[inputStream.available()];
+            inputStream.read(input);
+            inputStream.close();
+        } catch (FileNotFoundException e) {
+            log.error("File not found: {}", javaFile);
+            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("File reading want wrong: {}", javaFile);
+            e.printStackTrace();
+        }
+        return new String(input);
+    }
+
+
+    public static final String getFileName(String javaFile) {
+        File file = new File(javaFile);
+        String fileName = file.getName();
+        return fileName.substring(0, fileName.lastIndexOf("."));
+    }
+
+    public static final List<String> listCodeLines(String path) {
+        if (lineCodesInUnit.containsKey(path)) {
+            return lineCodesInUnit.get(path);
+        }
+
+        RandomAccessFile accessFile = null;
+        try {
+            accessFile = new RandomAccessFile(new File(path), "r");
+        } catch (FileNotFoundException e) {
+            log.error("File: " + path + " is not found!");
+            e.printStackTrace();
+        }
+        List<String> lines = new ArrayList<>();
+        try {
+            if (accessFile != null) {
+                String line = accessFile.readLine();
+                lines.add(line);
+                while (line != null) {
+                    line = accessFile.readLine();
+                    lines.add(line);
+                }
+            }
+        } catch (IOException e) {
+            log.error("Read file: " + path);
+            e.printStackTrace();
+        }
+
+        addLineCodes(path, lines);
+
+        return lines;
+    }
+
+    private static void addLineCodes(String path, List<String> lineCodes) {
+        if (!lineCodesInUnit.containsKey(path)) {
+            lineCodesInUnit.put(path, lineCodes);
+        }
+    }
+
+    /**
+     * Extract all the target in the archive
+     */
+    public static final Set<String> extractTargetPath(String prjPath) {
+        File file = new File(prjPath);
+        if (!file.exists() || !file.isDirectory()) {
+            throw new UnitException(prjPath + " is not a directory or even not exists!");
+        }
+
+        return initjavaFiles(file, new HashSet<>());
+    }
+
+    private static Set<String> initjavaFiles(File dir, Set<String> prjJavaFiles) {
+        File[] fs = dir.listFiles();
+        String tmpPath = null;
+        for (int i = 0; i < fs.length; i++) {
+            if (fs[i].getAbsolutePath().endsWith(".java")) {
+                tmpPath = fs[i].getAbsolutePath();
+                prjJavaFiles.add(tmpPath);
+            }
+            if (fs[i].isDirectory()) {
+                prjJavaFiles = initjavaFiles(fs[i], prjJavaFiles);
+            } // end if
+        } // end for
+        return prjJavaFiles;
+    }
+
+}
+/**
+ * 
+ */
+package cn.com.mirror.utils;
+
+import java.util.UUID;
+
+/**
+ * @author Piggy
+ *
+ * @description 
+ */
+public class UUIDUtils {
+
+	public static String randomUUID() {
+		return UUID.randomUUID().toString();
+	}
+}
+package cn.com.mirror.utils;
+
+import org.eclipse.jdt.core.dom.*;
+
+/**
+ * @author Piggy
+ * @description
+ */
+public class AstUtils {
+
+    public static int getStartLine(ASTNode node) {
+//        Using the first two character to calculate the line number
+        return ((CompilationUnit) node.getRoot()).getLineNumber(node.getStartPosition() + 1);
+    }
+
+
+    public static int getEndLine(ASTNode node) {
+        return ((CompilationUnit) node.getRoot()).getLineNumber(
+                node.getStartPosition() + node.getLength() - 1);
+    }
+
+    public static final CompilationUnit getCompUnitResolveBinding(String javaFile) {
+        ASTParser astParser = ASTParser.newParser(AST.JLS8);
+        astParser.setEnvironment(null, null, null, true);
+        astParser.setUnitName(FileUtils.getFileName(javaFile));
+        astParser.setResolveBindings(true);
+        astParser.setBindingsRecovery(true);
+        String content = FileUtils.getFileContent(javaFile);
+        astParser.setSource(content.toCharArray());
+
+        CompilationUnit result = (CompilationUnit) (astParser.createAST(null));
+        return result;
+    }
+
+
+    /**
+     * Get specific statement (or TypeDeclaration, MethodDeclaration) start line number
+     *
+     * @param astNode Statement, TypeDeclaration, MethodDeclaration
+     */
+    public static final int getSpecificStartLine(ASTNode astNode) {
+
+        if (astNode instanceof TypeDeclaration) {
+            TypeDeclaration typeDeclaration = (TypeDeclaration) astNode;
+            return getStartLine(typeDeclaration.getName());
+        }
+
+        if (astNode instanceof MethodDeclaration) {
+            MethodDeclaration methodDeclaration = (MethodDeclaration) astNode;
+
+            int methodStartLine = getStartLine(methodDeclaration.getName());
+            return methodStartLine;
+        }
+
+        if (astNode instanceof IfStatement) {
+            IfStatement ifStatement = (IfStatement) astNode;
+            return getStartLine(ifStatement.getExpression());
+        }
+
+        if (astNode instanceof SwitchCase) {
+            SwitchCase switchCase = (SwitchCase) astNode;
+            // the expression of default case is null
+            if (null == switchCase.getExpression()) {
+                return getStartLine(switchCase);
+            }
+
+            return getStartLine(switchCase.getExpression());
+        }
+
+        if (astNode instanceof SwitchStatement) {
+            SwitchStatement switchStatement = (SwitchStatement) astNode;
+            return getStartLine(switchStatement.getExpression());
+        }
+
+        if (astNode instanceof TryStatement) {
+            TryStatement tryStatement = (TryStatement) astNode;
+            return getStartLine(tryStatement);
+        }
+
+        if (astNode instanceof WhileStatement) {
+            WhileStatement whileStatement = (WhileStatement) astNode;
+            return getStartLine(whileStatement.getExpression());
+        }
+
+        if (astNode instanceof EnhancedForStatement) {
+            EnhancedForStatement enhancedForStatement = (EnhancedForStatement) astNode;
+            return getStartLine(enhancedForStatement.getExpression());
+        }
+
+        if (astNode instanceof ForStatement) {
+            ForStatement forStatement = (ForStatement) astNode;
+            return getStartLine(forStatement.getExpression());
+        }
+
+        if (astNode instanceof LabeledStatement) {
+            LabeledStatement labeledStatement = (LabeledStatement) astNode;
+            return getStartLine(labeledStatement.getLabel());
+        }
+
+        if (astNode instanceof DoStatement) {
+            DoStatement doStatement = (DoStatement) astNode;
+            return getStartLine(doStatement);
+        }
+
+        return getStartLine(astNode);
+    }
+
+
+}
+/**
+ * 
+ */
+package cn.com.mirror.utils;
+
+import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
+
+/**
+ * @author Piggy
+ *
+ * @description
+ */
+public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
+
+	public static void copyProperties(Object dest, Object org) {
+		try {
+			BeanUtilsBean.getInstance().copyProperties(dest, org);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+}
+package cn.com.mirror.utils;
+
+import cn.com.mirror.annotation.Bind;
+
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.Properties;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-8
+ */
+public class PropertyUtils {
+
+
+    /**
+     * Fill the object with props
+     *
+     * @param props  properties which are load from a specific "properties" file
+     * @param object the object which needs to initialize the value of its property
+     * @throws IllegalAccessException
+     */
+    public final static void mappingProperties(Properties props,
+                                               Object object)
+            throws IllegalAccessException {
+
+        for (Field field : object.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(Bind.class)) {
+                Bind bind = field.getAnnotation(Bind.class);
+                String value = bind.value();
+                String propValue = props.getProperty(value);
+                field.setAccessible(true);
+                field.set(object, propValue);
+            }
+        }
+    }
+}
+package cn.com.mirror.repository.neo4j.config;
+
+import cn.com.mirror.annotation.Bind;
+import cn.com.mirror.utils.PropertyUtils;
+import lombok.Data;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-8
+ */
+@Data
+public class Neo4jProperty {
+
+    private static Neo4jProperty instance = null;
+
+    @Bind("neo4j.server")
+    private String servAddr;
+
+    @Bind("neo4j.username")
+    private String username;
+
+    @Bind("neo4j.password")
+    private String password;
+
+    /**
+     * Get a Neo4jProperty instance.
+     */
+    public final static Neo4jProperty newInstance() {
+
+        if (null == instance) {
+            synchronized (Neo4jProperty.class) {
+                if (null == instance) {
+                    Properties props = new Properties();
+                    InputStream stream = Neo4jProperty.class.getResourceAsStream("/neo4j.properties");
+                    try {
+                        props.load(stream);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    instance = new Neo4jProperty();
+                    try {
+                        PropertyUtils.mappingProperties(props, instance);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return instance;
+    }
+
+}
+package cn.com.mirror.repository.neo4j.config;
+
+import org.neo4j.ogm.config.ClasspathConfigurationSource;
+import org.neo4j.ogm.config.Configuration;
+import org.neo4j.ogm.config.ConfigurationSource;
+import org.neo4j.ogm.session.Session;
+import org.neo4j.ogm.session.SessionFactory;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-8
+ */
+public class Neo4jSessionFactory {
+
+    private SessionFactory sessionFactory;
+
+    public Neo4jSessionFactory() {
+
+        ConfigurationSource props = new ClasspathConfigurationSource("neo4j.properties");
+        Configuration configuration = new Configuration.Builder(props).build();
+
+        sessionFactory = new SessionFactory(configuration, "cn.com.mirror.repository.neo4j.node");
+    }
+
+    public Session newSession() {
+        return sessionFactory.openSession();
+    }
+
+}
+package cn.com.mirror.repository.neo4j.config;
+
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.neo4j.driver.v1.*;
+
+import static org.neo4j.driver.v1.Values.parameters;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-8
+ */
+@Slf4j
+@Data
+public class Neo4jDriver implements AutoCloseable {
+    private final Driver driver;
+
+    public Neo4jDriver() {
+        this(Neo4jProperty.newInstance());
+    }
+
+    public Neo4jDriver(Neo4jProperty neo4jProperty) {
+        driver = GraphDatabase.driver(neo4jProperty.getServAddr(),
+                AuthTokens.basic(neo4jProperty.getUsername(), neo4jProperty.getPassword()));
+    }
+
+    @Override
+    public void close() {
+        driver.close();
+    }
+
+    public void example(final String message) {
+
+        try (Session session = driver.session()) {
+            String greeting = session.writeTransaction(new TransactionWork<String>() {
+                @Override
+                public String execute(Transaction tx) {
+                    StatementResult result = tx.run(
+                            "CREATE (a:Greeting) " +
+                                    "SET a.message = $message " +
+                                    "RETURN a.message + ', from node ' + id(a)",
+                            parameters("message", message));
+                    return result.single().get(0).asString();
+                }
+            });
+
+            log.info(greeting);
+        }
+
+    }
+}
+package cn.com.mirror.repository.neo4j.storage;
+
+import cn.com.mirror.repository.neo4j.config.Neo4jSessionFactory;
+import cn.com.mirror.repository.neo4j.node.BaseNode;
+import org.neo4j.ogm.session.Session;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-16
+ */
+public class GraphEngine {
+    private Session session;
+
+    public GraphEngine() {
+        this(new Neo4jSessionFactory().newSession());
+    }
+
+    public GraphEngine(Session session) {
+        this.session = session;
+    }
+
+    public boolean write(BaseNode baseNode) {
+        if (null != baseNode) {
+//            session.loadAll(BaseNode.class);
+            session.save(baseNode);
+        }
+        return true;
+    }
+
+    public void read() {
+
+    }
+}
+/**
+ *
+ */
+package cn.com.mirror.repository.neo4j.node;
+
+import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.constant.ElementTypeEnum;
+import lombok.Getter;
+import lombok.Setter;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * @author Piggy
+ * @description
+ * @since 2018年4月19日
+ */
+@Getter
+@Setter
+@NodeEntity(label = "class")
+public class ClassNode extends BaseNode {
+    private static final long serialVersionUID = 1L;
+
+    @Relationship(type = EdgeType.TYPE.CLS_TO_CLS, direction = Relationship.INCOMING)
+    private Set<ClassNode> classNodes;
+
+    @Relationship(type = EdgeType.TYPE.MTD_TO_CLS, direction = Relationship.INCOMING)
+    private Set<MethodNode> methodNodes;
+
+    ClassNode(Integer startLineNum,
+              String targetPath,
+              Integer endLineNum,
+              String content,
+              String packageName,
+              ElementTypeEnum elementTypeEnum) {
+
+        super(startLineNum, targetPath, endLineNum, content, packageName, elementTypeEnum);
+
+        this.classNodes = new HashSet<>();
+        this.methodNodes = new HashSet<>();
+    }
+
+    public void addClassNode(ClassNode classNode) {
+        this.classNodes.add(classNode);
+    }
+
+    public void addMethodNode(MethodNode methodNode) {
+        this.methodNodes.add(methodNode);
+    }
+
+}
+/**
+ *
+ */
+package cn.com.mirror.repository.neo4j.node;
+
+import cn.com.mirror.constant.ElementTypeEnum;
+import org.neo4j.ogm.annotation.NodeEntity;
+
+/**
+ * Statement nodes are the leafs in the graph
+ *
+ * @author Piggy
+ * @description
+ */
+@NodeEntity(label = "statement")
+public class StatementNode extends BaseNode {
+    private static final long serialVersionUID = 1L;
+
+    StatementNode(Integer startLineNum,
+                  String targetPath,
+                  Integer endLineNum,
+                  String content,
+                  String packageName,
+                  ElementTypeEnum elementTypeEnum) {
+
+        super(startLineNum, targetPath, endLineNum, content, packageName, elementTypeEnum);
+    }
+}
+package cn.com.mirror.repository.neo4j.node;
+
+import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.constant.ElementTypeEnum;
+import cn.com.mirror.project.unit.element.Base;
+import lombok.Data;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-9
+ */
+@Data
+public class BaseNode implements Serializable {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Property(name = "start line num")
+    private Integer startLineNum;
+
+    @Property(name = "end line num")
+    private Integer endLineNum;
+
+    @Property(name = "target path")
+    private String targetPath;
+
+    @Property(name = "details")
+    private String content;
+
+    @Property(name = "name")
+    private String name;
+
+    @Property(name = "qualified name")
+    private String qualifiedName;
+
+    @Property(name = "package name")
+    private String packageName;
+
+    private ElementTypeEnum elementTypeEnum;
+
+    @Relationship(type = EdgeType.TYPE.CTRL_EDGE, direction = Relationship.INCOMING)
+    private BaseNode ctrlDepNode;
+
+    BaseNode(Integer startLineNum,
+             String targetPath,
+             Integer endLineNum,
+             String content,
+             String packageName,
+             ElementTypeEnum elementTypeEnum) {
+
+        this.startLineNum = startLineNum;
+        this.targetPath = targetPath;
+        this.endLineNum = endLineNum;
+//        this.content = content; // TODO xyz for test
+        this.content = null;
+        this.packageName = packageName;
+        this.elementTypeEnum = elementTypeEnum;
+    }
+
+    public static final BaseNode instance(Base base) {
+
+        switch (base.getElementTypeEnum()) {
+            case CLASS: {
+                return new ClassNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            case STATEMENT: {
+                return new StatementNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            case METHOD: {
+                return new MethodNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            case ROOT: {
+                return new RootNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            default: {
+                return new BaseNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+        }
+
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BaseNode baseNode = (BaseNode) o;
+        return Objects.equals(startLineNum, baseNode.startLineNum) &&
+                Objects.equals(endLineNum, baseNode.endLineNum) &&
+                Objects.equals(targetPath, baseNode.targetPath) &&
+                Objects.equals(content, baseNode.content) &&
+                Objects.equals(packageName, baseNode.packageName) &&
+                elementTypeEnum == baseNode.elementTypeEnum;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(startLineNum, endLineNum, targetPath, content, packageName, elementTypeEnum);
+    }
+}
+/**
+ *
+ */
+package cn.com.mirror.repository.neo4j.node;
+
+import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.constant.ElementTypeEnum;
+import lombok.Getter;
+import lombok.Setter;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * @author Piggy
+ * @description
+ * @since 2018年4月19日
+ */
+@Getter
+@Setter
+@NodeEntity(label = "method")
+public class MethodNode extends BaseNode {
+    private static final long serialVersionUID = 1L;
+
+    @Relationship(type = EdgeType.TYPE.STAT_TO_MTD, direction = Relationship.INCOMING)
+    private Set<StatementNode> statementNodes;
+
+    MethodNode(Integer startLineNum,
+               String targetPath,
+               Integer endLineNum,
+               String content,
+               String packageName,
+               ElementTypeEnum elementTypeEnum) {
+
+        super(startLineNum, targetPath, endLineNum, content, packageName, elementTypeEnum);
+
+        this.statementNodes = new HashSet<>();
+    }
+
+    public void addStatementNode(StatementNode statementNode) {
+        this.statementNodes.add(statementNode);
+    }
+}
+package cn.com.mirror.repository.neo4j.node;
+
+import cn.com.mirror.constant.EdgeType;
+import cn.com.mirror.constant.ElementTypeEnum;
+import lombok.Getter;
+import lombok.Setter;
+import org.neo4j.ogm.annotation.Relationship;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-24
+ */
+@Getter
+@Setter
+public class RootNode extends BaseNode {
+    @Relationship(type = EdgeType.TYPE.TARGET_ROOT, direction = Relationship.INCOMING)
+    private ClassNode targetNode;
+
+    RootNode(Integer startLineNum,
+             String targetPath,
+             Integer endLineNum,
+             String content,
+             String packageName,
+             ElementTypeEnum elementTypeEnum) {
+
+        super(startLineNum, targetPath, endLineNum, content, packageName, elementTypeEnum);
+    }
+}
+package cn.com.mirror.repository.code;
+
+import cn.com.mirror.project.config.ProjectProperty;
+import cn.com.mirror.utils.PropertyUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-10
+ */
+public class LocalLoader implements CodeLoader {
+
+    @Override
+    public String getRepositoryUrl() {
+        Properties props = new Properties();
+        InputStream stream = LocalLoader.class.getResourceAsStream("/project.properties");
+        try {
+            props.load(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ProjectProperty projectProperty = new ProjectProperty();
+        try {
+            PropertyUtils.mappingProperties(props, projectProperty);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return projectProperty.getUrl();
+    }
+}
+package cn.com.mirror.repository.code;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-10
+ */
+public class RemoteLoader implements CodeLoader {
+
+    @Override
+    public String getRepositoryUrl() {
+        return null;
+    }
+}
+package cn.com.mirror.repository.code;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-10
+ */
+public interface CodeLoader {
+    String getRepositoryUrl();
+}
+package cn.com.mirror.reflect;
+
+import cn.com.mirror.exceptions.UnitException;
+import cn.com.mirror.project.unit.element.Base;
+import cn.com.mirror.repository.neo4j.node.BaseNode;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-27
+ */
+@Data
+@Slf4j
+public class NodeFactory {
+
+    private Map<Base, BaseNode> nodeCache = new HashMap<>();
+
+    public final BaseNode newNode(Base base) {
+        BaseNode baseNode = this.nodeCache.get(base);
+        if (null != baseNode) {
+            if (!base.getTargetPath().equals(baseNode.getTargetPath())) {
+                // TODO xyz fix bug 更换key
+                log.debug("{}", base.getTargetPath());
+                log.debug("Ele type: {}, start: {}, end: {}", base.getElementTypeEnum(),
+                        base.getStartLineNum(), base.getEndLineNum());
+
+                log.debug("{}", baseNode.getTargetPath());
+                log.debug("Ele type: {}, start: {}, end: {}", base.getElementTypeEnum(),
+                        base.getStartLineNum(), base.getEndLineNum());
+                throw new UnitException("SHIT");
+            }
+            return baseNode;
+        }
+
+        baseNode = BaseNode.instance(base);
+        if (null == baseNode) {
+            throw new UnitException("Element type can not match.");
+        }
+
+        this.nodeCache.put(base, baseNode);
+        return baseNode;
+    }
+
+
+    public BaseNode updateNode(Base base, BaseNode baseNode) {
+        BaseNode cachedNode = this.nodeCache.get(base);
+        if (null == cachedNode) {
+            throw new UnitException("Base element's node has not cached before.");
+        }
+
+        if (null == baseNode) {
+            throw new UnitException("BaseNode can not be null when trying to cache it.");
+        }
+
+        this.nodeCache.put(base, baseNode);
+        return baseNode;
+    }
+
+}
+package cn.com.mirror.reflect;
+
+import cn.com.mirror.analyser.PairAnalyser;
+import cn.com.mirror.analyser.UnitAnalyser;
+import cn.com.mirror.exceptions.ReflectException;
+import cn.com.mirror.exceptions.UnitException;
+import cn.com.mirror.project.pair.Pair;
+import cn.com.mirror.project.pair.Vertex;
+import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.element.Base;
+import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Statement;
+import cn.com.mirror.repository.neo4j.node.*;
+import cn.com.mirror.repository.neo4j.storage.GraphEngine;
+import cn.com.mirror.utils.FileUtils;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-10
+ */
+@Data
+@Slf4j
+public class EdgeConstructor {
+
+    private Unit unit;
+    private Pair pair;
+    private NodeFactory nodeFactory = new NodeFactory();
+
+    public void construct() {
+        // analyze the project
+        PairAnalyser pairAnalyser = new PairAnalyser();
+        UnitAnalyser unitAnalyser = new UnitAnalyser();
+
+        unit = unitAnalyser.analyze();
+        pair = pairAnalyser.analyze();
+
+        for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
+            Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
+
+            for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
+                Vertex tailVtx = edges.getKey();
+                Base tailBase = getBaseElement(tailVtx);
+
+                Set<Vertex> headVtxSet = edges.getValue();
+                for (Vertex headVtx : headVtxSet) {
+                    Base headBase = getBaseElement(headVtx);
+                    touchEdge(tailBase, headBase);
+                }
+            }
+        }
+
+        testConstruct();
+    }
+
+    private void testConstruct() {
+        // construct
+        GraphEngine graphEngine = new GraphEngine();
+        Map<Base, BaseNode> nodeCache = nodeFactory.getNodeCache();
+        for (BaseNode baseNode : nodeCache.values()) {
+            if (baseNode instanceof ClassNode) {
+                graphEngine.write(baseNode);
+            }
+        }
+    }
+
+    private void touchEdge(Base tailBase, Base headBase) {
+
+        BaseNode tailNode = nodeFactory.newNode(tailBase);
+        BaseNode headNode = nodeFactory.newNode(headBase);
+
+        switch (tailNode.getNodeType()) {
+            case ROOT: {
+                RootNode tmTail = (RootNode) tailNode;
+                tmTail.setTargetNode((ClassNode) headNode);
+                break;
+            }
+            case CLASS: {
+                ClassNode tmTail = (ClassNode) tailNode;
+                if (headNode instanceof ClassNode) {
+                    // class to class
+                    tmTail.addClassNode((ClassNode) headNode);
+                } else if (headNode instanceof MethodNode) {
+                    // method to class
+                    tmTail.addMethodNode((MethodNode) headNode);
+                } else {
+                    // field to class
+                    tmTail.setCtrlDepNode(headNode);
+                }
+                break;
+            }
+            case METHOD: {
+                MethodNode tmTail = (MethodNode) tailNode;
+                tmTail.addStatementNode((StatementNode) headNode);
+                break;
+            }
+            case STATEMENT: {
+                tailNode.setCtrlDepNode(headNode);
+                break;
+            }
+            default: {
+                throw new UnitException("No match type node found, can not touch edges.");
+            }
+        }
+
+        nodeFactory.updateNode(tailBase, tailNode);
+//        nodeFactory.updateNode(headBase, headNode);
+    }
+
+    private Base getBaseElement(Vertex vertex) {
+        switch (vertex.getVertexType()) {
+            case CLASS: {
+                Set<Class> classes = unit.getClasses().get(vertex.getTargetPath());
+                for (Class cls : classes) {
+                    if (cls.getStartLineNum() <= vertex.getLineNum()
+                            && vertex.getLineNum() <= cls.getEndLineNum()) {
+                        return cls;
+                    }
+                }
+
+                break;
+            }
+
+            case METHOD: {
+                Set<Method> methods = unit.getMethods().get(vertex.getTargetPath());
+                for (Method mtd : methods) {
+                    if (mtd.getStartLineNum() <= vertex.getLineNum()
+                            && vertex.getLineNum() <= mtd.getEndLineNum()) {
+                        return mtd;
+                    }
+                }
+                break;
+            }
+
+            case FIELD:
+            case STATEMENT: {
+                Statement statement = unit.getStatements().get(vertex.getTargetPath()).get(vertex.getLineNum());
+                if (null != statement) {
+                    return statement;
+                }
+
+                log.warn("Statement: " + vertex.getLineNum()
+                        + "-" + vertex.getVertexType()
+                        + " for target: {" + vertex.getTargetPath() + "}"
+                        + " is not retrieved from the variable visitor.");
+
+                statement = new Statement(vertex.getTargetPath(),
+                        vertex.getLineNum(),
+                        vertex.getLineNum(),
+                        FileUtils.listCodeLines(vertex.getTargetPath()).get(vertex.getLineNum() - 1),
+                        unit.getPackages().get(vertex.getTargetPath()));
+                return statement;
+            }
+
+            default:
+                break;
+        }
+
+        throw new ReflectException("Can not generate base element.");
+    }
+}
+/**
+ *
+ */
+package cn.com.mirror.constant;
+
+import cn.com.mirror.exceptions.ConstantException;
+import cn.com.mirror.exceptions.UnitException;
+import lombok.Getter;
+
+/**
+ * @author Piggy
+ * @description
+ * @date 2018年4月27日
+ */
+@Getter
+public enum ElementTypeEnum {
+    ROOT("ROOT"), // package
+    CLASS("CLASS"),
+    METHOD("METHOD"),
+    STATEMENT("STATEMENT");
+
+    private String key;
+
+    ElementTypeEnum(String key) {
+        this.key = key;
+    }
+
+    public static ElementTypeEnum getNodeTypeEnum(String key) {
+        for (ElementTypeEnum elementTypeEnum : ElementTypeEnum.values()) {
+            if (elementTypeEnum.getKey().equals(key)) {
+                return elementTypeEnum;
+            }
+        }
+        throw new ConstantException("No node type match!");
+    }
+
+    public static final ElementTypeEnum vtxToNodeType(VertexTypeEnum vertexTypeEnum) {
+        switch (vertexTypeEnum) {
+            case METHOD: {
+                return METHOD;
+            }
+            case FIELD:
+            case STATEMENT: {
+                return STATEMENT;
+            }
+            case CLASS: {
+                return CLASS;
+            }
+            case PACKAGE: {
+                return ROOT;
+            }
+            default:
+                break;
+        }
+        throw new UnitException(vertexTypeEnum.getKey() + " vertex enum can mapping to node type.");
+    }
+
+}
+package cn.com.mirror.constant;
+
+import lombok.Getter;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-9
+ */
+@Getter
+public enum EdgeType {
+    CTRL_EDGE(1, "control dependence"),
+    STAT_TO_MTD(2, "statements to method control edge"),
+    FID_TO_CLS(3, "field variable to class control edge"),
+    MTD_TO_CLS(4, "method to class control edge"),
+    CLS_TO_CLS(5, "a inner class to outer class control edge"),
+    TARGET_ROOT(6, "a target to its root control edge"),
+    DATA_EDGE(99, "simple date dependence");
+
+    private Integer key;
+    private String desc;
+
+    EdgeType(Integer key, String desc) {
+        this.key = key;
+        this.desc = desc;
+    }
+
+    public interface TYPE {
+        String CTRL_EDGE = "CTRL_EDGE";
+        String STAT_TO_MTD = "STAT_TO_MTD";
+        String FID_TO_CLS = "FID_TO_CLS";
+        String MTD_TO_CLS = "MTD_TO_CLS";
+        String CLS_TO_CLS = "CLS_TO_CLS";
+        String TARGET_ROOT = "TARGET_ROOT";
+        String DATA_EDGE = "DATA_EDGE";
+    }
+}
+package cn.com.mirror.constant;
+
+import lombok.Getter;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-23
+ */
+@Getter
+public enum VertexTypeEnum {
+    STATEMENT(1, "statement"),
+    FIELD(2, "field"),
+    METHOD(3, "method"),
+    CLASS(4, "class"),
+    PACKAGE(5, "package");
+
+    private Integer key;
+    private String desc;
+
+    VertexTypeEnum(Integer key, String desc) {
+        this.key = key;
+        this.desc = desc;
+    }
+}
+package cn.com.mirror.constant;
+
+import org.eclipse.jdt.core.dom.*;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-1
+ */
+public enum ControlNodeTypeEnum {
+    ASSERT,
+//    BLOCK,    // front control type node
+    BREAK,
+    CONSTRUCTOR_INVOCATION,
+    CONTINUE,
+    DO,    // front control type node
+    EMPTY,
+    EXPRESSION,
+    FOR,    // front control type node
+    IF,    // front control type node
+    LABELED,    // front control type node
+    RETURN,
+    SUPER_CONSTRUCTOR_INVOCATION,
+    SWITCH_CASE,    // front control type node
+    SWITCH,    // front control type node
+    SYNCHRONIZED,   // ?
+    THROW,
+    TRY,    // front control type node
+    TYPE_DECLARATION,    // front control type node
+    VARIABLE_DECLARATION,
+    WHILE,    // front control type node
+    ENHANCED_FOR,    // front control type node
+
+    UNKNOWN_TYPE;
+
+    private ControlNodeTypeEnum() {
+
+    }
+
+    public final static ControlNodeTypeEnum getControlNodeType(Statement statement) {
+        if (statement instanceof AssertStatement) return ASSERT;
+//        if (statements instanceof org.eclipse.jdt.core.dom.Block) return BLOCK;
+        if (statement instanceof BreakStatement) return BREAK;
+        if (statement instanceof org.eclipse.jdt.core.dom.ConstructorInvocation) return CONSTRUCTOR_INVOCATION;
+        if (statement instanceof ContinueStatement) return CONTINUE;
+        if (statement instanceof DoStatement) return DO;
+        if (statement instanceof EmptyStatement) return EMPTY;
+        if (statement instanceof ExpressionStatement) return EXPRESSION;
+        if (statement instanceof ForStatement) return FOR;
+        if (statement instanceof IfStatement) return IF;
+        if (statement instanceof LabeledStatement) return LABELED;
+        if (statement instanceof ReturnStatement) return RETURN;
+        if (statement instanceof org.eclipse.jdt.core.dom.SuperConstructorInvocation)
+            return SUPER_CONSTRUCTOR_INVOCATION;
+        if (statement instanceof org.eclipse.jdt.core.dom.SwitchCase) return SWITCH_CASE;
+        if (statement instanceof SwitchStatement) return SWITCH;
+        if (statement instanceof SynchronizedStatement) return SYNCHRONIZED;
+        if (statement instanceof ThrowStatement) return THROW;
+        if (statement instanceof TryStatement) return TRY;
+        if (statement instanceof TypeDeclarationStatement) return TYPE_DECLARATION;
+        if (statement instanceof VariableDeclarationStatement) return VARIABLE_DECLARATION;
+        if (statement instanceof WhileStatement) return WHILE;
+        if (statement instanceof EnhancedForStatement) return ENHANCED_FOR;
+
+        return UNKNOWN_TYPE;
+    }
+
+
+}
+package cn.com.mirror.analyser.visitor;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.utils.AstUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import cn.com.mirror.project.unit.element.Class;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Slf4j
+public class ClassVisitor extends ASTVisitor {
+    private final String file;
+
+    private String packageName;
+    // the first element in this list is the outer class, others are inner class in the first class.
+    private Set<Class> clsSet = new HashSet<>();
+    private Set<Method> methodSet = new HashSet<>();
+
+    public ClassVisitor(String file) {
+        this.file = file;
+    }
+
+    @Override
+    public boolean visit(PackageDeclaration node) {
+        packageName = node.getName().getFullyQualifiedName();
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(TypeDeclaration node) {
+        ITypeBinding typeBinding = node.resolveBinding();
+        if (null != typeBinding) {
+            // log.info("class name: {}", typeBinding.getQualifiedName());
+            Class mirrorClass = new Class(this.file,
+                    AstUtils.getStartLine(node.getName()),
+                    AstUtils.getEndLine(node),
+                    node.toString(),
+                    this.packageName,
+                    node.getName().getIdentifier(),
+                    typeBinding.getQualifiedName(),
+                    node);
+            mirrorClass.setInterface(node.isInterface());
+
+            if (null != typeBinding.getPackage()) {
+                if (!StringUtils.isEmpty(typeBinding.getPackage().getName())) {
+                    mirrorClass.setPackageName(typeBinding.getPackage().getName());
+                } else {
+                    mirrorClass.setPackageName(null);
+                }
+            }
+
+            this.clsSet.add(mirrorClass);
+
+            Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
+                Method method = new Method(this.file,
+                        AstUtils.getStartLine(methodDeclaration.getName()),
+                        AstUtils.getEndLine(methodDeclaration),
+                        methodDeclaration.toString(),
+                        this.packageName,
+                        methodDeclaration.getName().getIdentifier(),
+                        methodDeclaration);
+                methodSet.add(method);
+            });
+        } else {
+            log.error("NULL resolve binding for node: ~{}~", typeBinding);
+        }
+
+        return super.visit(node);
+    }
+
+}
+package cn.com.mirror.analyser.visitor;
+
+import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Statement;
+import cn.com.mirror.project.unit.element.variable.Variable;
+import cn.com.mirror.project.unit.element.variable.VariableType;
+import cn.com.mirror.project.unit.element.variable.VariableType.PRIME;
+import cn.com.mirror.project.unit.element.variable.VariableType.TYPE;
+import cn.com.mirror.utils.AstUtils;
+import cn.com.mirror.utils.FileUtils;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+/**
+ * The type Variable visitor. visit all SimpleNodes and resolve its binding and
+ * extract the variables for each line of codes
+ * <p>
+ * Extract all the variables in the project file.
+ */
+@Getter
+@Setter
+@Slf4j
+public class VariableVisitor extends ASTVisitor {
+    private final String file;
+    private final String packageName;
+    /**
+     * all classes defined in the project
+     */
+    private final Map<String, Set<Class>> unitClasses;
+    private final Set<Method> targetMethods;
+
+    private Set<Variable> variableSet = new HashSet<>(); // all element defined in this project file
+    private Map<Integer, Statement> varStatMap = new TreeMap<>();
+
+    public VariableVisitor(String file,
+                           String packageName,
+                           Map<String, Set<Class>> unitClasses,
+                           Set<Method> methods) {
+
+        this.file = file;
+        this.packageName = packageName;
+        this.unitClasses = unitClasses;
+        this.targetMethods = methods;
+    }
+
+    @Override
+    public boolean visit(TypeDeclaration node) {
+        unitClasses.get(this.file).stream().forEach(cls -> {
+            if (null != cls.getCls(node)) {
+                // found cls
+                Arrays.stream(node.getFields()).forEach(fieldDeclaration -> {
+                    fieldDeclaration.fragments().stream().forEach(varDec -> {
+                        if (varDec instanceof VariableDeclarationFragment) {
+                            VariableDeclarationFragment fragment = (VariableDeclarationFragment) varDec;
+                            SimpleName name = fragment.getName();
+                            IBinding iBinding = name.resolveBinding();
+                            if (iBinding instanceof IVariableBinding) {
+                                IVariableBinding iVariableBinding = (IVariableBinding) iBinding;
+                                Variable field = genVariable(name, iVariableBinding);
+                                cls.addField(field);
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(MethodDeclaration node) {
+        targetMethods.stream().forEach(mtd -> {
+            if (null != mtd.getMtd(node)) {
+                node.parameters().stream().forEach(param -> {
+                    if (param instanceof SingleVariableDeclaration) {
+                        SingleVariableDeclaration single = (SingleVariableDeclaration) param;
+                        SimpleName name = single.getName();
+                        IBinding iBinding = name.resolveBinding();
+                        if (iBinding instanceof IVariableBinding) {
+                            IVariableBinding iVariableBinding = (IVariableBinding) iBinding;
+                            Variable paramVar = genVariable(name, iVariableBinding);
+                            mtd.addParam(paramVar);
+                        }
+                    }
+                });
+            }
+        });
+        return super.visit(node);
+    }
+
+    @Override
+    public boolean visit(SimpleName node) {
+        IBinding binding = node.resolveBinding();
+        if (binding instanceof IVariableBinding) {
+            IVariableBinding iVariableBinding = (IVariableBinding) binding;
+            Variable variable = genVariable(node, iVariableBinding);
+            addVariable(AstUtils.getStartLine(node), variable);
+
+            variableSet.add(variable);
+        }
+        return super.visit(node);
+    }
+
+
+    // private methods
+    private void addVariable(Integer lineNum,
+                             Variable variable) {
+
+        if (!varStatMap.containsKey(lineNum)) {
+            Statement statement = new Statement(this.file,
+                    lineNum,
+                    lineNum,
+                    FileUtils.listCodeLines(this.file).get(lineNum - 1),
+                    this.packageName);
+
+            statement.addVariable(variable);
+            varStatMap.put(lineNum, statement);
+        } else {
+            varStatMap.get(lineNum).addVariable(variable);
+        }
+    }
+
+
+    private Variable genVariable(SimpleName node, IVariableBinding iVariableBinding) {
+        Variable variable = new Variable();
+        variable.setAstNode(node);
+        variable.setFile(file);
+        variable.setLineNum(AstUtils.getStartLine(node));
+        variable.setName(iVariableBinding.getName());
+        variable.setFieldFlag(iVariableBinding.isField());
+        variable.setParamFlag(iVariableBinding.isParameter());
+
+        // Variable type handle AND TYPE ONLY
+        variable.setVariableType(analysisVariableType(iVariableBinding.getType()));
+
+        return variable;
+    }
+
+    /**
+     * check the qualified class name is included in this project, if not then skip
+     * it if so just initializing this class element type into the project object.
+     */
+    private VariableType analysisVariableType(ITypeBinding typeBinding) {
+        VariableType varType = null;
+        switch (VariableType.TYPE.judgeType(typeBinding)) {
+            case PRIME:
+                varType = new VariableType(TYPE.PRIME, PRIME.prime(typeBinding.getName()));
+                break;
+
+            case CLASS:
+                String clsTypeQualifiedName = typeBinding.getQualifiedName();
+
+                if (classDefinedInProject(unitClasses, clsTypeQualifiedName)) {
+                    varType = new VariableType(TYPE.CLASS, clsTypeQualifiedName);
+                } else {
+                    varType = new VariableType(TYPE.OTHER, clsTypeQualifiedName);
+                }
+                break;
+
+            case INTERFACE:
+                varType = new VariableType(TYPE.INTERFACE, typeBinding.getQualifiedName());
+                break;
+            case ENUM:
+                varType = new VariableType(TYPE.ENUM, typeBinding.getQualifiedName());
+                break;
+
+            case ARRAY:
+                StringBuilder builder = new StringBuilder(typeBinding.getQualifiedName());
+                String tmType = builder.substring(0, builder.lastIndexOf("["));
+
+                VariableType eleType = new VariableType(TYPE.OTHER);
+                if (classDefinedInProject(unitClasses, tmType)) {
+                    eleType = new VariableType(TYPE.CLASS, tmType);
+                } else if (PRIME.isPRIME(tmType)) {
+                    eleType = new VariableType(TYPE.PRIME, PRIME.prime(tmType));
+                }
+                varType = new VariableType(TYPE.ARRAY, eleType);
+                break;
+
+            case OTHER:
+                log.warn("VARIABLE OTHER TYPE: [{}]", typeBinding);
+                break;
+            default:
+                break;
+        }
+        return varType;
+    }
+
+    private boolean classDefinedInProject(Map<String, Set<Class>> prjClasses, String qualifiedClassName) {
+
+        Set<Entry<String, Set<Class>>> entrySet = prjClasses.entrySet();
+        Iterator<Entry<String, Set<Class>>> classIterator = entrySet.iterator();
+        while (classIterator.hasNext()) {
+            Entry<String, Set<Class>> nextClass = classIterator.next();
+            Set<Class> clsValSet = nextClass.getValue();
+            for (Class clsVal : clsValSet) {
+                if (clsVal.getQualifiedName().contains(qualifiedClassName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+package cn.com.mirror.analyser.visitor;
+
+import cn.com.mirror.constant.ControlNodeTypeEnum;
+import cn.com.mirror.project.pair.Vertex;
+import cn.com.mirror.project.pair.factory.VertexFactory;
+import cn.com.mirror.utils.AstUtils;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jdt.core.dom.*;
+
+import java.util.*;
+
+/**
+ * conception of control dependence
+ * one basic block post-dominator to the other, not between the statements
+ *
+ * @author piggy
+ * @description
+ * @date 18-8-2
+ */
+@Slf4j
+@Getter
+public class ControlEdgeVisitor extends ASTVisitor {
+    private String targetPath;
+
+    private Map<Vertex, Set<Vertex>> ctrlEdges = new HashMap<>();
+
+    public ControlEdgeVisitor(String targetPath) {
+        this.targetPath = targetPath;
+    }
+
+    //    TypeDeclaration
+    @Override
+    public boolean visit(TypeDeclaration node) {
+        int typeDecLine = AstUtils.getStartLine(node.getName());
+        Arrays.stream(node.getFields()).forEach(fieldDeclaration -> {
+            markCtrlEdge(AstUtils.getSpecificStartLine(fieldDeclaration), fieldDeclaration, typeDecLine, node);
+        });
+
+        Arrays.stream(node.getMethods()).forEach(methodDeclaration -> {
+            markCtrlEdge(AstUtils.getSpecificStartLine(methodDeclaration), methodDeclaration, typeDecLine, node);
+        });
+
+
+        Arrays.stream(node.getTypes()).forEach(typeDeclaration -> {
+            // TODO xyz be aware of anonymous class, it might have a edge of class_to_statement
+            markCtrlEdge(AstUtils.getSpecificStartLine(typeDeclaration), typeDeclaration, typeDecLine, node);
+        });
+
+        return super.visit(node);
+    }
+
+    //    EnumDeclaration
+    @Override
+    public boolean visit(EnumDeclaration node) {
+//        TODO xyz enum declaration need to be analyzed
+        List list = node.enumConstants();
+
+
+        return super.visit(node);
+    }
+
+    //    AssertStatement
+    @Override
+    public boolean visit(AssertStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+    //    Block
+    @Override
+    public boolean visit(Block node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    BreakStatement
+    @Override
+    public boolean visit(BreakStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    ConstructorInvocation
+    @Override
+    public boolean visit(ConstructorInvocation node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    ContinueStatement
+    @Override
+    public boolean visit(ContinueStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    DoStatement
+    @Override
+    public boolean visit(DoStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+    //    ExpressionStatement
+    @Override
+    public boolean visit(ExpressionStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    ForStatement
+    @Override
+    public boolean visit(ForStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    IfStatement
+    @Override
+    public boolean visit(IfStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    LabeledStatement
+    @Override
+    public boolean visit(LabeledStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    ReturnStatement
+    @Override
+    public boolean visit(ReturnStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    SuperConstructorInvocation
+    @Override
+    public boolean visit(SuperConstructorInvocation node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    SwitchCase
+    @Override
+    public boolean visit(SwitchCase node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    SwitchStatement
+    @Override
+    public boolean visit(SwitchStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    SynchronizedStatement
+    @Override
+    public boolean visit(SynchronizedStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    ThrowStatement
+    @Override
+    public boolean visit(ThrowStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    TryStatement
+    @Override
+    public boolean visit(TryStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    TypeDeclarationStatement
+    @Override
+    public boolean visit(TypeDeclarationStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    VariableDeclarationStatement
+    @Override
+    public boolean visit(VariableDeclarationStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    //    WhileStatement
+    @Override
+    public boolean visit(WhileStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+    //    EnhancedForStatement
+    @Override
+    public boolean visit(EnhancedForStatement node) {
+        searchDirectParentControlNode(node);
+        return super.visit(node);
+    }
+
+
+    // private methods
+    private ASTNode searchDirectParentControlNode(ASTNode astNode) {
+        ASTNode parent = astNode.getParent();
+        while (null != parent &&
+                !isControlType(parent)) {
+            // locate the direct parent control type node's position
+            parent = parent.getParent();
+        }
+        if (null == parent) {
+            return null;
+        }
+
+        // mark the s between astNode and statements and return
+        int currentLine = AstUtils.getSpecificStartLine(astNode);
+        int directParentStartLine = AstUtils.getSpecificStartLine(parent);
+        markCtrlEdge(currentLine, astNode, directParentStartLine, parent);
+
+        return parent;
+    }
+
+    /**
+     * check the control type node in a method
+     */
+    private boolean isControlType(ASTNode astNode) {
+        // is astNode in a control type node, this method will return directly
+        // if (x && y){}, x and y are in the control type of if node, this method
+        // will re turn directly and cant find x and y's direct control edge
+
+        if (astNode instanceof MethodDeclaration) return true;
+
+        if (astNode instanceof Statement) {
+            Statement statement = (Statement) astNode;
+
+            switch (ControlNodeTypeEnum.getControlNodeType(statement)) {
+                case IF:
+                case SWITCH_CASE:
+                case SWITCH:
+                    /**
+                     * the blocks in if and switch case statement's block are
+                     * control dependence on the condition expression which is
+                     * well conveyed in a way like if(expression) and switch(expression).
+                     */
+                case TRY:
+                case WHILE:
+                case ENHANCED_FOR:
+                case FOR:
+                case LABELED:
+                case DO:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        return false;
+
+    }
+
+    private boolean markCtrlEdge(int curLine,
+                                 ASTNode astNode,
+                                 int parentLine,
+                                 ASTNode parent) {
+
+        if (-1 == parentLine || parentLine == curLine) {
+            return false;
+        }
+
+        VertexFactory vertexFactory = new VertexFactory();
+        Vertex head = vertexFactory.genVertex(this.targetPath, curLine, astNode);
+        Vertex tail = vertexFactory.genVertex(this.targetPath, parentLine, parent);
+
+        Set<Vertex> tmpHeadSet = this.ctrlEdges.get(tail);
+        if (null == tmpHeadSet) {
+            tmpHeadSet = new HashSet<>();
+            tmpHeadSet.add(head);
+        } else {
+            tmpHeadSet.add(head);
+        }
+        this.ctrlEdges.put(tail, tmpHeadSet);
+        return true;
+    }
+
+
+}
+package cn.com.mirror.analyser.visitor;
+
+import cn.com.mirror.project.unit.element.Root;
+import lombok.Getter;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-26
+ */
+@Getter
+public class PackageVisitor extends ASTVisitor {
+    private String file;
+
+    private Root root;
+
+    public PackageVisitor(String file) {
+        this.file = file;
+    }
+
+    @Override
+    public boolean visit(PackageDeclaration node) {
+        this.root = new Root(this.file,
+                1,
+                1,
+                node.toString(),
+                node.getName().getFullyQualifiedName());
+
+        return super.visit(node);
+    }
+
+}
+package cn.com.mirror.analyser.handler;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-7-25
+ */
+public interface AnalyzeHandler extends Runnable{
+
+
+}
+package cn.com.mirror.analyser.handler.impl;
+
+import cn.com.mirror.analyser.handler.AnalyzeHandler;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-7-25
+ */
+@Slf4j
+public class DefaultAnalyzeHandler implements AnalyzeHandler {
+
+    @Override
+    public void run() {
+
+    }
+}
+package cn.com.mirror.analyser;
+
+import cn.com.mirror.project.pair.Pair;
+import cn.com.mirror.project.pair.factory.PairFactory;
+import cn.com.mirror.repository.code.CodeLoader;
+import cn.com.mirror.repository.code.LocalLoader;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-14
+ */
+public class PairAnalyser {
+    public Pair analyze() {
+        PairFactory pairFactory =  new PairFactory();
+        CodeLoader codeRepository = new LocalLoader();
+        return pairFactory.newPair(codeRepository.getRepositoryUrl());
+    }
+}
+package cn.com.mirror.analyser;
+
+import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.UnitFactory;
+import cn.com.mirror.repository.code.CodeLoader;
+import cn.com.mirror.repository.code.LocalLoader;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-7-25
+ */
+@Slf4j
+public class UnitAnalyser {
+
+
+    public Unit analyze() {
+        UnitFactory unitFactory = new UnitFactory();
+        CodeLoader codeRepository = new LocalLoader();
+        return unitFactory.newUnit(codeRepository.getRepositoryUrl());
+    }
+
+}
+package cn.com.mirror.annotation;
+
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-8
+ */
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Bind {
+    String value();
+}
+package cn.com.mirror.project.config;
+
+import cn.com.mirror.annotation.Bind;
+import lombok.Getter;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-10
+ */
+@Getter
+public class ProjectProperty {
+
+    @Bind(value = "project.url")
+    private String url;
+}
+package cn.com.mirror.project.pair.factory;
+
+import cn.com.mirror.constant.VertexTypeEnum;
+import cn.com.mirror.exceptions.VertexGenerateException;
+import cn.com.mirror.project.pair.Vertex;
+import lombok.Data;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-24
+ */
+@Data
+public class VertexFactory {
+    private Map<String, Vertex> distributedVertex = new HashMap<>();
+
+    private String getHostKey(String ip, int port, String targetPath, int lineNum) {
+        String hostKey = null;
+        if (null != ip && -1 != port) {
+            // vertex are distributed in the system
+            hostKey = ip + ":" + port + ":" + targetPath.hashCode() + ":" + lineNum;
+        } else {
+            // vertex are in the localhost
+            hostKey = "LOCALHOST:-1" + ":" + targetPath.hashCode() + ":" + lineNum;
+        }
+        hostKey.intern();
+        return hostKey;
+    }
+
+    private VertexTypeEnum checkVertexType(ASTNode node) {
+        if (node instanceof TypeDeclaration) return VertexTypeEnum.CLASS;
+        if (node instanceof MethodDeclaration) return VertexTypeEnum.METHOD;
+        if (node instanceof FieldDeclaration) return VertexTypeEnum.FIELD;
+        return VertexTypeEnum.STATEMENT;
+    }
+
+    public Vertex getVertex(String ip, int port, String targetPath, int lineNum) {
+        return this.distributedVertex.get(
+                getHostKey(ip, port, targetPath, lineNum));
+    }
+
+    public Vertex genVertex(String targetPath, int curLine, ASTNode node) {
+        return genVertex(targetPath, curLine, node, null, -1);
+    }
+
+    public Vertex genVertex(String targetPath, int curLine, ASTNode node, String ip, int port) {
+        if (null != ip && -1 == port) {
+            throw new VertexGenerateException("Port can not be -1.");
+        }
+
+        if (-1 != port && null == ip) {
+            throw new VertexGenerateException("IP address can not be null");
+        }
+
+        String hostKey = getHostKey(ip, port, targetPath, curLine);
+        Vertex vertex = this.distributedVertex.get(hostKey);
+        if (null == vertex) {
+            vertex = new Vertex(targetPath, curLine, checkVertexType(node), ip, port);
+            this.distributedVertex.put(hostKey, vertex);
+        }
+
+        return vertex;
+    }
+
+}
+package cn.com.mirror.project.pair.factory;
+
+import cn.com.mirror.analyser.visitor.ControlEdgeVisitor;
+import cn.com.mirror.project.pair.Pair;
+import cn.com.mirror.utils.AstUtils;
+import cn.com.mirror.utils.FileUtils;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
+import java.util.Set;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-14
+ */
+public class PairFactory {
+
+    public Pair newPair(String repositoryUrl) {
+        Pair pair = new Pair();
+
+        Set<String> targetFiles = FileUtils.extractTargetPath(repositoryUrl);
+        targetFiles.stream().forEach(targetPath -> {
+            ControlEdgeVisitor controlEdgeVisitor = new ControlEdgeVisitor(targetPath);
+            CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
+            compilationUnit.accept(controlEdgeVisitor);
+            pair.addCtrlEdge(targetPath, controlEdgeVisitor.getCtrlEdges());
+        });
+
+        return pair;
+    }
+}
+package cn.com.mirror.project.pair;
+
+import lombok.Getter;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-14
+ */
+@Getter
+public class Pair {
+    private Map<String, Map<Vertex, Set<Vertex>>> ctrlEdges = new HashMap<>();
+
+    public void addCtrlEdge(String targetPath, Map<Vertex, Set<Vertex>> ctrlEdges) {
+        this.ctrlEdges.put(targetPath, ctrlEdges);
+    }
+}
+package cn.com.mirror.project.pair;
+
+import cn.com.mirror.constant.VertexTypeEnum;
+import lombok.Getter;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-23
+ */
+@Getter
+public class Vertex implements Serializable {
+
+    private String targetPath;
+    private int lineNum;
+    private VertexTypeEnum vertexType;
+    private String ip;
+    private int port;
+
+    public Vertex(String targetPath,
+                  int lineNum,
+                  VertexTypeEnum vertexType,
+                  String ip,
+                  int port) {
+
+        this.targetPath = targetPath;
+        this.lineNum = lineNum;
+        this.vertexType = vertexType;
+        this.ip = ip;
+        this.port = port;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vertex vertex = (Vertex) o;
+        return lineNum == vertex.lineNum &&
+                port == vertex.port &&
+                Objects.equals(targetPath, vertex.targetPath) &&
+                vertexType == vertex.vertexType &&
+                Objects.equals(ip, vertex.ip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(targetPath, lineNum, vertexType, ip, port);
+    }
+}
+package cn.com.mirror.project.unit;
+
+import cn.com.mirror.analyser.visitor.ClassVisitor;
+import cn.com.mirror.analyser.visitor.PackageVisitor;
+import cn.com.mirror.analyser.visitor.VariableVisitor;
+import cn.com.mirror.utils.AstUtils;
+import cn.com.mirror.utils.FileUtils;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-10
+ */
+public class UnitFactory {
+
+    public Unit newUnit(String url) {
+        // nas -> archive -> unzip -> tmppath -> analyze
+        Unit unit = new Unit();
+        // extract all target files in s
+        unit.setTargets(FileUtils.extractTargetPath(url));
+
+        for (String targetPath : unit.getTargets()) {
+            CompilationUnit compilationUnit = AstUtils.getCompUnitResolveBinding(targetPath);
+            unit.addCompilationUnit(targetPath, compilationUnit);
+
+            PackageVisitor packageVisitor = new PackageVisitor(targetPath);
+            compilationUnit.accept(packageVisitor);
+            unit.addRoot(packageVisitor.getRoot());
+
+            // packages/classes analysis
+            ClassVisitor classDeclarationVisitor = new ClassVisitor(targetPath);
+            compilationUnit.accept(classDeclarationVisitor);
+            unit.addPackages(targetPath, classDeclarationVisitor.getPackageName());
+            unit.addClasses(targetPath, classDeclarationVisitor.getClsSet());
+            unit.addMethods(targetPath, classDeclarationVisitor.getMethodSet());
+
+            // element analysis
+            VariableVisitor variableVisitor = new VariableVisitor(targetPath,
+                    unit.getPackages().get(targetPath), unit.getClasses(), unit.getMethods().get(targetPath));
+            compilationUnit.accept(variableVisitor);
+            unit.addVariables(targetPath, variableVisitor.getVariableSet());
+            unit.addMappedVars(targetPath, variableVisitor.getVarStatMap());
+        }
+
+        return unit;
+    }
+}
+package cn.com.mirror.project.unit;
+
+import cn.com.mirror.exceptions.UnitException;
+import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Root;
+import cn.com.mirror.project.unit.element.Statement;
+import cn.com.mirror.project.unit.element.variable.Variable;
+import lombok.Data;
+import org.apache.commons.lang3.Validate;
+import org.apache.http.util.Asserts;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-7-25
+ */
+@Data
+public class Unit implements Serializable {
+    /**
+     * Unit is represent a project posted by a user.
+     */
+
+    private String path; // archive's location
+    private Set<String> targets; // target files in the archive, such as project file in a unit.
+
+    private Map<String, CompilationUnit> compilationUnits = new HashMap<>(); // all compilation units in the unit
+
+    private Map<String, String> packages = new HashMap<>();
+    private Set<Root> roots = new HashSet<>();
+    private Map<String, Set<Class>> classes = new HashMap<>();
+    private Map<String, Set<Method>> methods = new HashMap<>();
+    private Map<String, Map<Integer, Statement>> statements = new HashMap<>(); // all variables in a single code line
+    private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in the unit
+
+    public void addCompilationUnit(String targetPath, CompilationUnit compilationUnit) {
+        checkTargetPath(targetPath);
+        this.compilationUnits.put(targetPath, compilationUnit);
+    }
+
+    public void addRoot(Root root) {
+        this.roots.add(root);
+    }
+
+    public void addClasses(String targetPath, Set<Class> clsSet) {
+        checkTargetPath(targetPath);
+//        Validate.notEmpty(clsSet, "Target has none classes."); // enum
+        this.classes.put(targetPath, clsSet);
+    }
+
+    public void addMethods(String targetPath, Set<Method> methods) {
+        checkTargetPath(targetPath);
+        this.methods.put(targetPath, methods);
+    }
+
+    public void addPackages(String targetPath, String packageName) {
+        checkTargetPath(targetPath);
+        Validate.notEmpty(packageName, "Package name can not be empty.");
+        this.packages.put(targetPath, packageName);
+    }
+
+    public void addVariables(String targetPath, Set<Variable> variableSet) {
+        checkTargetPath(targetPath);
+        this.variables.put(targetPath, variableSet);
+    }
+
+    public void addMappedVars(String targetPath, Map<Integer, Statement> statements) {
+        checkTargetPath(targetPath);
+        this.statements.put(targetPath, statements);
+    }
+
+    private void checkTargetPath(String targetPath) {
+        Validate.notEmpty(targetPath, "Target's path can not be empty.");
+    }
+
+    public Root getRoot(String pkgName) {
+        Asserts.notEmpty(pkgName, "Package name can not be null.");
+        for (Root root : this.roots) {
+            if (pkgName.equals(root.getPackageName())) {
+                return root;
+            }
+        }
+        throw new UnitException("No root found in this unit.");
+    }
+}package cn.com.mirror.project.unit.element;
+
+import cn.com.mirror.constant.ElementTypeEnum;
+import cn.com.mirror.project.unit.element.variable.Variable;
+import lombok.Data;
+import org.apache.http.util.Asserts;
+
+import java.util.Set;
+import java.util.TreeSet;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-15
+ */
+@Data
+public class Statement extends Base {
+    private Set<Variable> variables;
+
+    public Statement(String targetPath,
+                     Integer startLineNum,
+                     Integer endLineNum,
+                     String content,
+                     String packageName) {
+
+        super(targetPath, startLineNum, endLineNum, content, packageName, ElementTypeEnum.STATEMENT);
+
+        this.variables = new TreeSet<>();
+    }
+
+    public void addVariable(Variable variable) {
+        Asserts.notNull(variable, "Variable can not be null.");
+        this.variables.add(variable);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+}
+package cn.com.mirror.project.unit.element;
+
+import cn.com.mirror.constant.ElementTypeEnum;
+import cn.com.mirror.project.unit.element.variable.Variable;
+import lombok.Data;
+import org.apache.http.util.Asserts;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-15
+ */
+@Data
+public class Method extends Base {
+    private static final long serialVersionUID = 1L;
+
+    private String name;
+    private MethodDeclaration methodDeclaration;
+
+    private Set<Variable> params;
+
+    public Method(String targetPath,
+                  Integer startLineNum,
+                  Integer endLineNum,
+                  String content,
+                  String packageName,
+                  String name,
+                  MethodDeclaration methodDeclaration) {
+
+        super(targetPath, startLineNum, endLineNum, content, packageName, ElementTypeEnum.METHOD);
+
+        this.name = name;
+        this.methodDeclaration = methodDeclaration;
+
+        this.params = new HashSet<>();
+    }
+
+    public void addParam(Variable param) {
+        Asserts.notNull(param, "Parameter variable can not be null.");
+        this.params.add(param);
+    }
+
+    public Method getMtd(MethodDeclaration methodDeclaration) {
+        if (this.methodDeclaration.equals(methodDeclaration)) {
+            return this;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Method method = (Method) o;
+        return Objects.equals(methodDeclaration, method.methodDeclaration);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), methodDeclaration);
+    }
+}
+package cn.com.mirror.project.unit.element;
+
+import cn.com.mirror.constant.ElementTypeEnum;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-16
+ */
+@Data
+public class Base implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+    private String targetPath;
+    private Integer startLineNum;
+    private Integer endLineNum;
+    private String content;
+    private String packageName;
+    private ElementTypeEnum elementTypeEnum;
+
+    public Base(String targetPath,
+                Integer startLineNum,
+                Integer endLineNum,
+                String content,
+                String packageName,
+                ElementTypeEnum elementTypeEnum) {
+
+        this.targetPath = targetPath;
+        this.startLineNum = startLineNum;
+        this.endLineNum = endLineNum;
+        this.content = content;
+        this.packageName = packageName;
+        this.elementTypeEnum = elementTypeEnum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Base base = (Base) o;
+        return Objects.equals(targetPath, base.targetPath) &&
+                Objects.equals(startLineNum, base.startLineNum) &&
+                Objects.equals(endLineNum, base.endLineNum) &&
+                Objects.equals(content, base.content) &&
+                Objects.equals(packageName, base.packageName) &&
+                elementTypeEnum == base.elementTypeEnum;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(targetPath, startLineNum, endLineNum, content, packageName, elementTypeEnum);
+    }
+}
+package cn.com.mirror.project.unit.element;
+
+import cn.com.mirror.constant.ElementTypeEnum;
+import cn.com.mirror.project.unit.element.variable.Variable;
+import lombok.Data;
+import org.apache.http.util.Asserts;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Data
+public class Class extends Base {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private String qualifiedName;
+    private TypeDeclaration typeDeclaration;
+    private boolean isInterface;
+    private boolean isPublic;
+    private boolean isProtected;
+    private boolean isPrivate;
+    private boolean isDefault;
+    private boolean isFinal;
+
+    private Set<Variable> fields;
+
+    public Class(String targetPath,
+                 Integer startLineNum,
+                 Integer endLineNum,
+                 String content,
+                 String packageName,
+                 String name,
+                 String qualifiedName,
+                 TypeDeclaration typeDeclaration) {
+
+        super(targetPath, startLineNum, endLineNum, content, packageName, ElementTypeEnum.CLASS);
+
+        this.name = name;
+        this.qualifiedName = qualifiedName;
+        this.typeDeclaration = typeDeclaration;
+
+        this.fields = new HashSet<>();
+    }
+
+    public void addField(Variable field) {
+        Asserts.notNull(field, "Field variable can not be null.");
+        this.fields.add(field);
+    }
+
+    public Class getCls(TypeDeclaration typeDeclaration) {
+        if (this.typeDeclaration.equals(typeDeclaration)) {
+            return this;
+        }
+        return null;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeDeclaration, this.getTargetPath());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Class that = (Class) obj;
+        return Objects.equals(typeDeclaration, that.getTypeDeclaration()) &&
+                Objects.equals(this.getTargetPath(), that.getTargetPath());
+    }
+
+}
+package cn.com.mirror.project.unit.element;
+
+import cn.com.mirror.constant.ElementTypeEnum;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Objects;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-24
+ */
+@Getter
+@Setter
+public class Root extends Base {
+
+    public Root(String targetPath,
+                Integer startLineNum,
+                Integer endLineNum,
+                String content,
+                String packageName) {
+
+        super(targetPath, startLineNum, endLineNum, content, packageName, ElementTypeEnum.ROOT);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Root root = (Root) o;
+        return Objects.equals(this.getPackageName(), root.getPackageName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getPackageName());
+    }
+}
+package cn.com.mirror.project.unit.element.variable;
+
+import java.util.Objects;
+
+import org.eclipse.jdt.core.dom.ASTNode;
+
+import lombok.Data;
+
+/**
+ * The type Variable. A element which defined and used in the project is
+ * unique.
+ */
+@Data
+public class Variable implements Comparable<Variable> {
+    private String name;
+    private VariableType variableType;
+
+    private boolean fieldFlag;
+    private boolean paramFlag;
+    private String file;
+    private int lineNum;
+    private ASTNode astNode;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, variableType, fieldFlag, file);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+
+        Variable that = (Variable) obj;
+        return fieldFlag == that.isFieldFlag() &&
+                Objects.equals(name, that.getName()) &&
+                Objects.equals(variableType, that.getVariableType()) &&
+                Objects.equals(file, that.getFile());
+    }
+
+    @Override
+    public int compareTo(Variable o) {
+        if (lineNum < o.getLineNum()) return -1;
+        if (lineNum > o.getLineNum()) return 1;
+        return 0;
+    }
+}
+package cn.com.mirror.project.unit.element.variable;
+
+import cn.com.mirror.exceptions.AnalysisException;
+import lombok.Data;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+
+import java.util.Objects;
+
+@Data
+public class VariableType {
+
+	public enum TYPE {
+		PRIME, CLASS, INTERFACE, ARRAY, ENUM, OTHER;
+		public static TYPE judgeType(ITypeBinding typeBinding) {
+			if (typeBinding.isPrimitive())
+				return TYPE.PRIME;
+			if (typeBinding.isEnum())
+				return TYPE.ENUM;
+			if (typeBinding.isClass())
+				return TYPE.CLASS;
+			if (typeBinding.isArray())
+				return TYPE.ARRAY;
+			if (typeBinding.isInterface())
+				return TYPE.INTERFACE;
+			return TYPE.OTHER;
+		}
+	}
+
+	private TYPE type;
+	private PRIME prime;
+	private String qualifiedName;
+	private VariableType arrayEleType;
+
+	public VariableType(TYPE type) {
+		this.type = type;
+	}
+
+	public VariableType(TYPE type, VariableType arrayEleType) {
+		this(type);
+		this.arrayEleType = arrayEleType;
+		this.qualifiedName = arrayEleType.getQualifiedName();
+	}
+
+	public VariableType(TYPE type, String qualifiedName) {
+		this(type);
+		this.qualifiedName = qualifiedName;
+	}
+
+	public VariableType(TYPE type, PRIME prime) {
+		this(type);
+		this.prime = prime;
+		this.qualifiedName = prime.getCode();
+	}
+
+	@Override
+	public int hashCode() {
+		if (null == qualifiedName) {
+			return Objects.hash(type, prime, arrayEleType, null);
+		}
+		return Objects.hash(type, prime, arrayEleType, qualifiedName.hashCode());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+
+		VariableType that = (VariableType) obj;
+		return Objects.equals(type, that.getType()) &&
+				Objects.equals(prime, that.getPrime()) &&
+				Objects.equals(arrayEleType, that.getArrayEleType()) &&
+				Objects.equals(qualifiedName, that.getQualifiedName());
+	}
+
+	public enum PRIME {
+		INT("int"), 
+		CHAR("char"), 
+		DOUBLE("double"), 
+		BOOLEAN("boolean"), 
+		FLOAT("float"), 
+		BYTE("byte"), 
+		SHORT("short"), 
+		LONG("long");
+
+		private String code;
+
+		PRIME(String code) {
+			this.code = code;
+		}
+
+		public final static PRIME prime(String code) {
+			for (PRIME p : PRIME.values()) {
+				if (code.equals(p.getCode())) {
+					return p;
+				}
+			}
+			throw new AnalysisException("No PRIME type found!");
+		}
+
+		public final static boolean isPRIME(String code) {
+			for (PRIME p : PRIME.values()) {
+				if (code.equals(p.getCode())) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public String getCode() {
+			return this.code;
+		}
+	}
+
+}
+package cn.com.mirror.exceptions;
+
+public class UnitException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public UnitException(String message) {
+        super(message);
+    }
+
+    public UnitException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+/**
+ *
+ */
+package cn.com.mirror.exceptions;
+
+/**
+ * @author Piggy
+ * @description
+ * @date 2018年4月27日
+ */
+public class ConstantException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public ConstantException(String message) {
+        super(message);
+    }
+
+    public ConstantException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+package cn.com.mirror.exceptions;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-23
+ */
+public class NodeGenerateException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public NodeGenerateException(String message) {
+        super(message);
+    }
+
+    public NodeGenerateException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+package cn.com.mirror.exceptions;
+
+public class AnalysisException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public AnalysisException(String message) {
+        super(message);
+    }
+
+    public AnalysisException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+package cn.com.mirror.exceptions;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-23
+ */
+public class ReflectException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public ReflectException(String message) {
+        super(message);
+    }
+
+    public ReflectException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+package cn.com.mirror.exceptions;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-24
+ */
+public class VertexGenerateException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public VertexGenerateException(String message) {
+        super(message);
+    }
+
+    public VertexGenerateException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+package cn.com.mirror.exceptions;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-24
+ */
+public class EdgeTouchException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+
+    public EdgeTouchException(String message) {
+        super(message);
+    }
+
+    public EdgeTouchException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+package cn.com.mirror.pair;
+
+import cn.com.mirror.analyser.PairAnalyser;
+import cn.com.mirror.exceptions.UnitException;
+import cn.com.mirror.project.pair.Pair;
+import cn.com.mirror.project.pair.Vertex;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-14
+ */
+@Slf4j
+public class PairAnalyserTests {
+
+    private static final String TEST_FILE =
+            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java";
+
+    @Test
+    public void testDirectCtrlEdge() {
+        PairAnalyser pairAnalyser = new PairAnalyser();
+        Pair pair = pairAnalyser.analyze();
+        for (Map.Entry<String, Map<Vertex, Set<Vertex>>> entry : pair.getCtrlEdges().entrySet()) {
+            if (!TEST_FILE.equals(entry.getKey())) {
+                // testing specific target
+                continue;
+            }
+
+            log.debug("Target: {}", entry.getKey());
+            for (Map.Entry<Vertex, Set<Vertex>> ver : entry.getValue().entrySet()) {
+                System.out.println("TAIL: " +
+                        ver.getKey().getLineNum() + " - " +
+                        ver.getKey().getVertexType() + " - " +
+                        "\t <- \t");
+                for (Vertex vHead : ver.getValue()) {
+                    if (!ver.getKey().getTargetPath().equals(vHead.getTargetPath())) {
+                        throw new UnitException("SHIT");
+                    }
+                    System.out.println("HEAD: {" + vHead.getLineNum() + " - " + vHead.getVertexType() + "}");
+                }
+            }
+
+        }
+    }
+}
+package cn.com.mirror.reflect;
+
+import org.junit.Test;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-16
+ */
+public class EdgeConstructorTests {
+    @Test
+    public void testConstructSimple() {
+        EdgeConstructor edgeConstructor = new EdgeConstructor();
+        edgeConstructor.construct();
+    }
+}
+package cn.com.mirror.analyser;
+
+import cn.com.mirror.project.unit.Unit;
+import cn.com.mirror.project.unit.element.Class;
+import cn.com.mirror.project.unit.element.Method;
+import cn.com.mirror.project.unit.element.Statement;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-7-26
+ */
+@Slf4j
+public class UnitAnalyserTests {
+    private Unit unit;
+    private UnitAnalyser unitAnalyser;
+
+    public void init() {
+        this.unitAnalyser = new UnitAnalyser();
+        this.unit = unitAnalyser.analyze();
+    }
+
+    @Test
+    public void testCls() {
+        init();
+
+        for (Map.Entry<String, Set<Class>> entry : unit.getClasses().entrySet()) {
+            log.debug("Target path: {}", entry.getKey());
+
+            entry.getValue().stream().forEach(cls -> {
+                log.debug("Name: {}, start: {}, end: {}",
+                        cls.getName(), cls.getStartLineNum(), cls.getEndLineNum());
+                cls.getFields().stream().forEach(field -> {
+                    log.debug("FIELD lineNum: {}, name: {}", field.getLineNum(), field.getName());
+                });
+            });
+
+        }
+
+    }
+
+    @Test
+    public void testMtd() {
+        init();
+
+        for (Map.Entry<String, Set<Method>> entry : unit.getMethods().entrySet()) {
+            log.debug("Target path: {}", entry.getKey());
+
+            entry.getValue().stream().forEach(mtd -> {
+                log.debug("Start: {}, end: {}",
+                        mtd.getStartLineNum(), mtd.getEndLineNum());
+                mtd.getParams().stream().forEach(param -> {
+                    log.debug(" PARAM lineNum: {}, name: {}", param.getLineNum(), param.getName());
+                });
+            });
+        }
+    }
+
+    @Test
+    public void testVariables() {
+        init();
+
+        for (Map.Entry<String, Map<Integer, Statement>> entry : unit.getStatements().entrySet()) {
+            log.info("Target path: {}", entry.getKey());
+
+            for (Map.Entry<Integer, Statement> tm : entry.getValue().entrySet()) {
+                tm.getValue().getVariables().stream().forEach(var -> {
+                    log.debug("LineNum: {}, Name: {}, VarType: {}, isField: {}",
+                            var.getLineNum(), var.getName(), var.getVariableType(), var.isFieldFlag());
+                });
+            }
+            break;
+        }
+
+    }
+}
+package cn.com.mirror.graph;
+
+import org.junit.Test;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-16
+ */
+public class Neo4jSessionFactoryTests {
+    @Test
+    public void testSession() {
+
+    }
+}
+package cn.com.mirror.graph;
+
+import cn.com.mirror.repository.neo4j.config.Neo4jDriver;
+import org.junit.Test;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-8
+ */
+public class Neo4jDriverTests {
+    @Test
+    public void testDriver() {
+        Neo4jDriver neo4jDriver = new Neo4jDriver();
+        neo4jDriver.example("hello");
+        neo4jDriver.close();
+    }
+}
+package cn.com.mirror.graph;
+
+import cn.com.mirror.repository.neo4j.config.Neo4jProperty;
+import cn.com.mirror.utils.PropertyUtils;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+/**
+ * @author piggy
+ * @description
+ * @date 18-8-8
+ */
+public class Neo4jTests {
+    @Test
+    public void testMappingAnnotation() throws IOException, IllegalAccessException {
+        Properties props = new Properties();
+        InputStream stream = Neo4jTests.class.getResourceAsStream("/neo4j.properties");
+        props.load(stream);
+        Neo4jProperty neo4jProperty = new Neo4jProperty();
+        PropertyUtils.mappingProperties(props, neo4jProperty);
+        System.out.println(neo4jProperty.getServAddr());
+    }
+
+}

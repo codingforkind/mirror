@@ -19,7 +19,7 @@ import java.util.Set;
 public class PairAnalyserTests {
 
     private static final String TEST_FILE =
-            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java";
+            "/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/ControlEdgeVisitor.java";
 
     @Test
     public void testDirectCtrlEdge() {

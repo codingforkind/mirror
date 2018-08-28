@@ -15,7 +15,6 @@ import java.util.Objects;
 public class Base implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
     private String targetPath;
     private Integer startLineNum;
     private Integer endLineNum;

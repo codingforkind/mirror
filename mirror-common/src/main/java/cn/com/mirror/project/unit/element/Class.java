@@ -56,19 +56,17 @@ public class Class extends Base {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(typeDeclaration, this.getTargetPath());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Class aClass = (Class) o;
+        return Objects.equals(typeDeclaration, aClass.typeDeclaration);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        Class that = (Class) obj;
-        return Objects.equals(typeDeclaration, that.getTypeDeclaration()) &&
-                Objects.equals(this.getTargetPath(), that.getTargetPath());
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), typeDeclaration);
     }
-
 }

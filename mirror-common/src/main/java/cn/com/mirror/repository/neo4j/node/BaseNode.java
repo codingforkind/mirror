@@ -45,7 +45,7 @@ public class BaseNode implements Serializable {
     @Property(name = "package name")
     private String packageName;
 
-    private ElementTypeEnum nodeType;
+    private ElementTypeEnum elementTypeEnum;
 
     @Relationship(type = EdgeType.TYPE.CTRL_EDGE, direction = Relationship.INCOMING)
     private BaseNode ctrlDepNode;
@@ -55,7 +55,7 @@ public class BaseNode implements Serializable {
              Integer endLineNum,
              String content,
              String packageName,
-             ElementTypeEnum nodeType) {
+             ElementTypeEnum elementTypeEnum) {
 
         this.startLineNum = startLineNum;
         this.targetPath = targetPath;
@@ -63,7 +63,7 @@ public class BaseNode implements Serializable {
 //        this.content = content; // TODO xyz for test
         this.content = null;
         this.packageName = packageName;
-        this.nodeType = nodeType;
+        this.elementTypeEnum = elementTypeEnum;
     }
 
     public static final BaseNode instance(Base base) {
@@ -128,12 +128,12 @@ public class BaseNode implements Serializable {
                 Objects.equals(targetPath, baseNode.targetPath) &&
                 Objects.equals(content, baseNode.content) &&
                 Objects.equals(packageName, baseNode.packageName) &&
-                nodeType == baseNode.nodeType;
+                elementTypeEnum == baseNode.elementTypeEnum;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(startLineNum, endLineNum, targetPath, content, packageName, nodeType);
+        return Objects.hash(startLineNum, endLineNum, targetPath, content, packageName, elementTypeEnum);
     }
 }

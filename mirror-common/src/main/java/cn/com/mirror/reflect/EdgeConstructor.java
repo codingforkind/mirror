@@ -43,6 +43,12 @@ public class EdgeConstructor {
 
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
+//            if (!("/home/piggy/work/mirror/mirror-common/src/main/java/" +
+//                    "cn/com/mirror/" +
+//                    "analyser/visitor/ControlEdgeVisitor.java").equals(ctrlEdgeEntry.getKey())) {
+//                // test specific file
+//                continue;
+//            }
 
             for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
                 Vertex tailVtx = edges.getKey();
@@ -75,7 +81,7 @@ public class EdgeConstructor {
         BaseNode tailNode = nodeFactory.newNode(tailBase);
         BaseNode headNode = nodeFactory.newNode(headBase);
 
-        switch (tailNode.getNodeType()) {
+        switch (tailNode.getElementTypeEnum()) {
             case ROOT: {
                 RootNode tmTail = (RootNode) tailNode;
                 tmTail.setTargetNode((ClassNode) headNode);
