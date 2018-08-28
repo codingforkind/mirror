@@ -65,6 +65,6 @@ public class Method extends Base {
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), methodDeclaration);
+        return Objects.hash(methodDeclaration);
     }
 }
