@@ -17,6 +17,7 @@ import cn.com.mirror.utils.FileUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class EdgeConstructor {
 
     private Unit unit;
     private Pair pair;
-    private NodeFactory nodeFactory = new NodeFactory();
+    private Map<String, NodeFactory> nodeFactoryMap;
 
     public void construct() {
         // analyze the project
@@ -41,19 +42,23 @@ public class EdgeConstructor {
         unit = unitAnalyser.analyze();
         pair = pairAnalyser.analyze();
 
+        this.nodeFactoryMap = new HashMap<>();
+
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
-//            if (!("/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java").equals(ctrlEdgeEntry.getKey())) {
+//            if (!("/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/reflect/EdgeConstructor.java").equals(ctrlEdgeEntry.getKey())) {
 //                // test specific file
 //                continue;
 //            }
 
+            // one target one node factory
+            String targetPath = ctrlEdgeEntry.getKey();
+            if (null == this.nodeFactoryMap.get(targetPath)) {
+                this.nodeFactoryMap.put(ctrlEdgeEntry.getKey(), new NodeFactory());
+            }
+
             for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
                 Vertex tailVtx = edges.getKey();
-//                if (tailVtx.getLineNum() != 200) {
-//                    // test specific edge tail node
-//                    continue;
-//                }
                 Base tailBase = getBaseElement(tailVtx);
 
                 Set<Vertex> headVtxSet = edges.getValue();
@@ -62,24 +67,22 @@ public class EdgeConstructor {
                     touchEdge(tailBase, headBase);
                 }
             }
-        }
 
-        testConstruct();
-    }
-
-    private void testConstruct() {
-        // construct
-        GraphEngine graphEngine = new GraphEngine();
-        Map<Base, BaseNode> nodeCache = nodeFactory.getNodeCache();
-        for (BaseNode baseNode : nodeCache.values()) {
-//            if (baseNode instanceof ClassNode) {
-            graphEngine.write(baseNode);
-//            }
+            // construct
+            GraphEngine graphEngine = new GraphEngine();
+            Map<Base, BaseNode> nodeCache = this.nodeFactoryMap.get(targetPath).getNodeCache();
+            for (BaseNode baseNode : nodeCache.values()) {
+//                if (baseNode instanceof ClassNode) {
+                    graphEngine.write(baseNode);
+//                }
+            }// construct end
         }
+        // end
+
     }
 
     private void touchEdge(Base tailBase, Base headBase) {
-
+        NodeFactory nodeFactory = this.nodeFactoryMap.get(tailBase.getTargetPath());
         BaseNode tailNode = nodeFactory.newNode(tailBase);
         BaseNode headNode = nodeFactory.newNode(headBase);
 
