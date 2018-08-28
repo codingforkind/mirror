@@ -72,24 +72,23 @@ public class EdgeConstructor {
 
     private void touchEdge(Base tailBase, Base headBase) {
 
-        // TODO xyz fix bug
-        BaseNode tailRoot = nodeFactory.newNode(tailBase);
+        BaseNode tailNode = nodeFactory.newNode(tailBase);
         BaseNode headNode = nodeFactory.newNode(headBase);
 
-        switch (tailRoot.getNodeType()) {
+        switch (tailNode.getNodeType()) {
             case ROOT: {
-                RootNode tmTail = (RootNode) tailRoot;
+                RootNode tmTail = (RootNode) tailNode;
                 tmTail.setTargetNode((ClassNode) headNode);
                 break;
             }
             case CLASS: {
-                ClassNode tmTail = (ClassNode) tailRoot;
+                ClassNode tmTail = (ClassNode) tailNode;
                 if (headNode instanceof ClassNode) {
                     // class to class
-                    tmTail.touchClassNode((ClassNode) headNode);
+                    tmTail.addClassNode((ClassNode) headNode);
                 } else if (headNode instanceof MethodNode) {
                     // method to class
-                    tmTail.touchMethodNode((MethodNode) headNode);
+                    tmTail.addMethodNode((MethodNode) headNode);
                 } else {
                     // field to class
                     tmTail.setCtrlDepNode(headNode);
@@ -97,12 +96,12 @@ public class EdgeConstructor {
                 break;
             }
             case METHOD: {
-                MethodNode tmTail = (MethodNode) tailRoot;
-                tmTail.touchStatementNode((StatementNode) headNode);
+                MethodNode tmTail = (MethodNode) tailNode;
+                tmTail.addStatementNode((StatementNode) headNode);
                 break;
             }
             case STATEMENT: {
-                tailRoot.setCtrlDepNode(headNode);
+                tailNode.setCtrlDepNode(headNode);
                 break;
             }
             default: {
@@ -110,7 +109,7 @@ public class EdgeConstructor {
             }
         }
 
-        nodeFactory.updateNode(tailBase, tailRoot);
+//        nodeFactory.updateNode(tailBase, tailRoot);
 //        nodeFactory.updateNode(headBase, headNode);
     }
 

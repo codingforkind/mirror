@@ -1,6 +1,7 @@
 package cn.com.mirror.pair;
 
 import cn.com.mirror.analyser.PairAnalyser;
+import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.Vertex;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,9 @@ public class PairAnalyserTests {
                         ver.getKey().getVertexType() + " - " +
                         "\t <- \t");
                 for (Vertex vHead : ver.getValue()) {
+                    if (!ver.getKey().getTargetPath().equals(vHead.getTargetPath())) {
+                        throw new UnitException("SHIT");
+                    }
                     System.out.println("HEAD: {" + vHead.getLineNum() + " - " + vHead.getVertexType() + "}");
                 }
             }

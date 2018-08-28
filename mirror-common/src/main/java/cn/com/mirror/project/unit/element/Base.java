@@ -42,7 +42,6 @@ public class Base implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Base base = (Base) o;
         return Objects.equals(targetPath, base.targetPath) &&
                 Objects.equals(startLineNum, base.startLineNum) &&

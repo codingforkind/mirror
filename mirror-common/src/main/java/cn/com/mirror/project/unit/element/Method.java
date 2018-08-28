@@ -56,16 +56,15 @@ public class Method extends Base {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         Method method = (Method) o;
-        return Objects.equals(name, method.name) &&
-                Objects.equals(this.getContent(), method.getContent()) &&
-                Objects.equals(this.getStartLineNum(), method.getStartLineNum()) &&
-                Objects.equals(this.getEndLineNum(), method.getEndLineNum());
+        return Objects.equals(methodDeclaration, method.methodDeclaration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, this.getContent(), this.getStartLineNum(), this.getEndLineNum());
+
+        return Objects.hash(super.hashCode(), methodDeclaration);
     }
 }

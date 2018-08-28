@@ -33,8 +33,14 @@ public class BaseNode implements Serializable {
     @Property(name = "target path")
     private String targetPath;
 
-    //    @Property(name = "details in this line")
+    @Property(name = "details")
     private String content;
+
+    @Property(name = "name")
+    private String name;
+
+    @Property(name = "qualified name")
+    private String qualifiedName;
 
     @Property(name = "package name")
     private String packageName;
@@ -44,12 +50,12 @@ public class BaseNode implements Serializable {
     @Relationship(type = EdgeType.TYPE.CTRL_EDGE, direction = Relationship.INCOMING)
     private BaseNode ctrlDepNode;
 
-    public BaseNode(Integer startLineNum,
-                    String targetPath,
-                    Integer endLineNum,
-                    String content,
-                    String packageName,
-                    ElementTypeEnum nodeType) {
+    BaseNode(Integer startLineNum,
+             String targetPath,
+             Integer endLineNum,
+             String content,
+             String packageName,
+             ElementTypeEnum nodeType) {
 
         this.startLineNum = startLineNum;
         this.targetPath = targetPath;
@@ -62,12 +68,53 @@ public class BaseNode implements Serializable {
 
     public static final BaseNode instance(Base base) {
 
-        return new BaseNode(base.getStartLineNum(),
-                base.getTargetPath(),
-                base.getEndLineNum(),
-                base.getContent(),
-                base.getPackageName(),
-                base.getElementTypeEnum());
+        switch (base.getElementTypeEnum()) {
+            case CLASS: {
+                return new ClassNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            case STATEMENT: {
+                return new StatementNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            case METHOD: {
+                return new MethodNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            case ROOT: {
+                return new RootNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+
+            default: {
+                return new BaseNode(base.getStartLineNum(),
+                        base.getTargetPath(),
+                        base.getEndLineNum(),
+                        base.getContent(),
+                        base.getPackageName(),
+                        base.getElementTypeEnum());
+            }
+        }
+
     }
 
 
@@ -75,20 +122,18 @@ public class BaseNode implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         BaseNode baseNode = (BaseNode) o;
         return Objects.equals(startLineNum, baseNode.startLineNum) &&
                 Objects.equals(endLineNum, baseNode.endLineNum) &&
                 Objects.equals(targetPath, baseNode.targetPath) &&
                 Objects.equals(content, baseNode.content) &&
                 Objects.equals(packageName, baseNode.packageName) &&
-                nodeType == baseNode.nodeType &&
-                Objects.equals(ctrlDepNode, baseNode.ctrlDepNode);
+                nodeType == baseNode.nodeType;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(startLineNum, endLineNum, targetPath, content, packageName, nodeType, ctrlDepNode);
+        return Objects.hash(startLineNum, endLineNum, targetPath, content, packageName, nodeType);
     }
 }
