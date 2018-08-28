@@ -718,7 +718,7 @@ public class MethodNode extends BaseNode {
     private static final long serialVersionUID = 1L;
 
     @Relationship(type = EdgeType.TYPE.STAT_TO_MTD, direction = Relationship.INCOMING)
-    private Set<StatementNode> statementNodes;
+    private Set<StatementNode> fieldNodes;
 
     MethodNode(Integer startLineNum,
                String targetPath,
@@ -729,11 +729,11 @@ public class MethodNode extends BaseNode {
 
         super(startLineNum, targetPath, endLineNum, content, packageName, elementTypeEnum);
 
-        this.statementNodes = new HashSet<>();
+        this.fieldNodes = new HashSet<>();
     }
 
     public void addStatementNode(StatementNode statementNode) {
-        this.statementNodes.add(statementNode);
+        this.fieldNodes.add(statementNode);
     }
 }
 package cn.com.mirror.repository.neo4j.node;

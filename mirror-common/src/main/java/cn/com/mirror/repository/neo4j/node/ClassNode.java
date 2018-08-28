@@ -30,6 +30,9 @@ public class ClassNode extends BaseNode {
     @Relationship(type = EdgeType.TYPE.MTD_TO_CLS, direction = Relationship.INCOMING)
     private Set<MethodNode> methodNodes;
 
+    @Relationship(type = EdgeType.TYPE.FID_TO_CLS, direction = Relationship.INCOMING)
+    private Set<StatementNode> fieldNodes;
+
     ClassNode(Integer startLineNum,
               String targetPath,
               Integer endLineNum,
@@ -41,6 +44,7 @@ public class ClassNode extends BaseNode {
 
         this.classNodes = new HashSet<>();
         this.methodNodes = new HashSet<>();
+        this.fieldNodes = new HashSet<>();
     }
 
     public void addClassNode(ClassNode classNode) {
@@ -49,6 +53,10 @@ public class ClassNode extends BaseNode {
 
     public void addMethodNode(MethodNode methodNode) {
         this.methodNodes.add(methodNode);
+    }
+
+    public void addFieldNode(StatementNode statementNode) {
+        this.fieldNodes.add(statementNode);
     }
 
 }

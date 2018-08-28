@@ -43,15 +43,17 @@ public class EdgeConstructor {
 
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
-//            if (!("/home/piggy/work/mirror/mirror-common/src/main/java/" +
-//                    "cn/com/mirror/" +
-//                    "analyser/visitor/ControlEdgeVisitor.java").equals(ctrlEdgeEntry.getKey())) {
+//            if (!("/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/analyser/visitor/VariableVisitor.java").equals(ctrlEdgeEntry.getKey())) {
 //                // test specific file
 //                continue;
 //            }
 
             for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
                 Vertex tailVtx = edges.getKey();
+//                if (tailVtx.getLineNum() != 200) {
+//                    // test specific edge tail node
+//                    continue;
+//                }
                 Base tailBase = getBaseElement(tailVtx);
 
                 Set<Vertex> headVtxSet = edges.getValue();
@@ -70,9 +72,9 @@ public class EdgeConstructor {
         GraphEngine graphEngine = new GraphEngine();
         Map<Base, BaseNode> nodeCache = nodeFactory.getNodeCache();
         for (BaseNode baseNode : nodeCache.values()) {
-            if (baseNode instanceof ClassNode) {
-                graphEngine.write(baseNode);
-            }
+//            if (baseNode instanceof ClassNode) {
+            graphEngine.write(baseNode);
+//            }
         }
     }
 
@@ -97,7 +99,7 @@ public class EdgeConstructor {
                     tmTail.addMethodNode((MethodNode) headNode);
                 } else {
                     // field to class
-                    tmTail.setCtrlDepNode(headNode);
+                    tmTail.addFieldNode((StatementNode) headNode);
                 }
                 break;
             }
@@ -107,7 +109,8 @@ public class EdgeConstructor {
                 break;
             }
             case STATEMENT: {
-                tailNode.setCtrlDepNode(headNode);
+                StatementNode tmTail = (StatementNode) tailNode;
+                tmTail.addStatementNode((StatementNode) headNode);
                 break;
             }
             default: {

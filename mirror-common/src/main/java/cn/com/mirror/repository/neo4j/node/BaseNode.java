@@ -47,9 +47,6 @@ public class BaseNode implements Serializable {
 
     private ElementTypeEnum elementTypeEnum;
 
-    @Relationship(type = EdgeType.TYPE.CTRL_EDGE, direction = Relationship.INCOMING)
-    private BaseNode ctrlDepNode;
-
     BaseNode(Integer startLineNum,
              String targetPath,
              Integer endLineNum,
