@@ -1,4 +1,4 @@
-package cn.com.mirror.web;
+package cn.com.mirror;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

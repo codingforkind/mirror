@@ -1,4 +1,4 @@
-package cn.com.mirror.web;
+package cn.com.mirror;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

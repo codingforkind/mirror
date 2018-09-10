@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: mirrorweb
+server:
+  address: localhost
+  port: 8080
