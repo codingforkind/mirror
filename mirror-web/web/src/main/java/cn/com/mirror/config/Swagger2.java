@@ -1,4 +1,4 @@
-package cn.com.mirror.swagger2;
+package cn.com.mirror.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
