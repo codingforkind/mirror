@@ -3,6 +3,7 @@ package cn.com.mirror.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,15 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @ApiOperation(value = "Test string")
-    @RequestMapping(value = "/string", method = RequestMethod.GET)
-    public String testString(@ApiParam(name = "name") String test) {
+    @RequestMapping(value = "/string/{test}", method = RequestMethod.GET)
+    public String testString(@PathVariable String test) {
         System.out.println("hello " + test);
         return "HELLO -> " + test;
     }
 
     @ApiOperation(value = "Test free")
-    @RequestMapping(value = "/free", method = RequestMethod.GET)
-    public String testFree(@ApiParam(name = "free") String free) {
+    @RequestMapping(value = "/free/{free}", method = RequestMethod.GET)
+    public String testFree(@PathVariable String free) {
         return "FREE -> " + free;
     }
 
