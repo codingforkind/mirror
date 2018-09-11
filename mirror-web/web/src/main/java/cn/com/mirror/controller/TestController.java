@@ -1,17 +1,28 @@
 package cn.com.mirror.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "/web/test")
+@Api("Rest APIs for test")
+@RestController
+@RequestMapping("/web/test")
 public class TestController {
 
+    @ApiOperation(value = "Test string")
+    @RequestMapping(value = "/string", method = RequestMethod.GET)
+    public String testString(@ApiParam(name = "name") String test) {
+        System.out.println("hello " + test);
+        return "HELLO -> " + test;
+    }
 
-    @GetMapping(name = "/string")
-//    @RequestMapping(name = "/string", method = RequestMethod.GET)
-    public String testString() {
-        System.out.println("TEST STRING");
-        return "TEST STRING";
+    @ApiOperation(value = "Test free")
+    @RequestMapping(value = "/free", method = RequestMethod.GET)
+    public String testFree(@ApiParam(name = "free") String free) {
+        return "FREE -> " + free;
     }
 
 }
