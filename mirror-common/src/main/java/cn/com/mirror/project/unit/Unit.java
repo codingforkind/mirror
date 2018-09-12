@@ -29,16 +29,16 @@ public class Unit implements Serializable {
      */
 
     private String path; // archive's location
-    private Set<String> targets; // target files in the archive, such as project file in a unit.
+    private Set<String> targets; // target files in the archive, such as project file in a project.
 
-    private Map<String, CompilationUnit> compilationUnits = new HashMap<>(); // all compilation units in the unit
+    private Map<String, CompilationUnit> compilationUnits = new HashMap<>(); // all compilation units in the project
 
     private Map<String, String> packages = new HashMap<>();
     private Set<Root> roots = new HashSet<>();
     private Map<String, Set<Class>> classes = new HashMap<>();
     private Map<String, Set<Method>> methods = new HashMap<>();
     private Map<String, Map<Integer, Statement>> statements = new HashMap<>(); // all variables in a single code line
-    private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in the unit
+    private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in the project
 
     public void addCompilationUnit(String targetPath, CompilationUnit compilationUnit) {
         checkTargetPath(targetPath);
@@ -87,6 +87,6 @@ public class Unit implements Serializable {
                 return root;
             }
         }
-        throw new UnitException("No root found in this unit.");
+        throw new UnitException("No root found in this project.");
     }
 }

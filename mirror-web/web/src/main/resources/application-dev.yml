@@ -19,3 +19,6 @@ logging:
 
 nas:
   location: d:/work/tmp
+
+mirror:
+  maxCliNum: 10
