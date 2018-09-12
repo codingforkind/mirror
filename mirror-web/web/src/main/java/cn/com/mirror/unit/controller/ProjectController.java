@@ -20,7 +20,9 @@ public class ProjectController {
 
     @PostMapping(value = "/upload")
     public String uploadZipFile(MultipartFile multipartFile) {
-        log.debug("File name: {}", multipartFile.getName());
+        log.debug("File name: {}, size: {}", multipartFile.getOriginalFilename(),
+                multipartFile.getContentType(), multipartFile.getSize());
+
 
         try {
             nasService.uploadArchive(multipartFile.getBytes());
