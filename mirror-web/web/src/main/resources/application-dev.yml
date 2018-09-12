@@ -21,4 +21,5 @@ nas:
   location: d:/work/tmp
 
 mirror:
-  maxCliNum: 10
+  maxCliNum: 2
+  maxEnable: true

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MirrorProperties {
 
-    private int maxCliNum;
+    private Boolean maxEnable;
+    private Integer maxCliNum;
 
 }

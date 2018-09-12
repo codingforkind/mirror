@@ -49,4 +49,13 @@ public class ProjectController {
         String userId = "TEST";
         return projectInitService.getAccessCode(userId);
     }
+
+
+    @ApiOperation("test get access code")
+    @GetMapping(value = "/testAccessCode")
+    public String getAccessCode(String userId) {
+        return projectInitService.getAccessCode(userId);
+    }
+
+
 }

@@ -34,6 +34,10 @@ public class RedisUtil {
         redisTemplate.opsForValue().set(key, val, days, TimeUnit.DAYS);
     }
 
+    public void opSetStrValForOneDay(String key, String val) {
+        opSetStrValWithDays(key, val, 1);
+    }
+
     public boolean isExists(String key) {
         Boolean reVal = redisTemplate.hasKey(key);
         return null == reVal ? false : reVal.booleanValue();
@@ -44,5 +48,9 @@ public class RedisUtil {
             return redisTemplate.opsForValue().get(key);
         }
         return null;
+    }
+
+    public Long increase(String key) {
+        return redisTemplate.boundValueOps(key).increment(1);
     }
 }
