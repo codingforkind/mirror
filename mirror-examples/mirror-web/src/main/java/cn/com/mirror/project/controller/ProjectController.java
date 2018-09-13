@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 
-@Api("Project interface")
+@Api("ProjectVO interface")
 @Slf4j
 @RestController
 @RequestMapping(value = "/unit/project")
@@ -36,9 +36,12 @@ public class ProjectController {
         log.debug("File name: {}, size: {}", multipartFile.getOriginalFilename(),
                 multipartFile.getContentType(), multipartFile.getSize());
 
-
+        String userId = "TEST_USER";
         String filePath = null;
         try {
+            projectInitService.genProject(userId,
+                    multipartFile.getOriginalFilename(),
+                    multipartFile.getBytes());
             filePath = nasService.uploadArchive(multipartFile.getBytes());
         } catch (IOException e) {
             e.printStackTrace();

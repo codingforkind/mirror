@@ -1,8 +1,12 @@
 package cn.com.mirror.project.service.impl;
 
+import cn.com.mirror.project.dao.entity.Project;
+import cn.com.mirror.project.dao.mapper.ProjectMapper;
+import cn.com.mirror.project.pojo.ProjectVO;
 import cn.com.mirror.project.service.MaxClientService;
 import cn.com.mirror.project.service.ProjectInitService;
 import cn.com.mirror.util.RedisUtil;
+import cn.com.mirror.utils.BeanUtils;
 import cn.com.mirror.utils.EncryptUtils;
 import cn.com.mirror.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +24,9 @@ public class ProjectInitServiceImpl implements ProjectInitService {
     @Autowired
     private MaxClientService maxClientService;
 
+    @Autowired
+    private ProjectMapper projectMapper;
+
     @Override
     public String getAccessCode(String userId) {
 
@@ -36,5 +43,32 @@ public class ProjectInitServiceImpl implements ProjectInitService {
             redisUtil.opSetStrValForOneDay(userId, accessCode);
         }
         return accessCode;
+    }
+
+
+    @Override
+    public ProjectVO genProject(String userId, String originalFileName, byte[] content) {
+        ProjectVO projectVO = new ProjectVO();
+
+        String prjName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
+        String prjRedisKey = userId + ":" + prjName;
+        if (redisUtil.isExists(prjRedisKey)) {
+            // project for userId is already exists
+            BeanUtils.copyProperties(projectVO, redisUtil.opGetObjVal(prjRedisKey));
+        } else {
+            // create a new project
+            String prjType = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+            String accessCode = getAccessCode(userId);
+
+            Project tmProject = new Project();
+            tmProject.setAccessCode(accessCode);
+            tmProject.setName(prjName);
+            tmProject.setUserId(userId);
+            projectMapper.insertSelective(tmProject);
+
+            // TODO xyz async service: store zip project file, unzip it and analyze it.
+        }
+
+        return projectVO;
     }
 }

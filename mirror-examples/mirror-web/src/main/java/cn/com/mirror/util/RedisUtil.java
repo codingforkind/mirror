@@ -1,5 +1,6 @@
 package cn.com.mirror.util;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -53,4 +54,18 @@ public class RedisUtil {
     public Long increase(String key) {
         return redisTemplate.boundValueOps(key).increment(1);
     }
+
+    public void opSetObjVal(String key, Object obj) {
+        String objStr = JSON.toJSONString(obj);
+        opSetStrVal(key, objStr);
+    }
+
+    public Object opGetObjVal(String key) {
+        String objStr = opGetStrVal(key);
+        if (null != objStr) {
+            return JSON.parse(objStr);
+        }
+        return null;
+    }
+
 }

@@ -13,3 +13,12 @@ logging:
   controller:
     enabled: true
 
+
+
+mapper:
+  mappers:
+    - cn.com.mirror.common.PgCommonMapper
+  before: true
+mybatis:
+  mapper-locations:
+    - classpath:mapper/**/*.xml
