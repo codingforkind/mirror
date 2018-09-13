@@ -23,17 +23,6 @@ public class NodeFactory {
     public final BaseNode newNode(Base base) {
         BaseNode baseNode = this.nodeCache.get(base);
         if (null != baseNode) {
-            if (!base.getTargetPath().equals(baseNode.getTargetPath())) {
-                // TODO xyz fix bug 更换key
-                log.debug("{}", base.getTargetPath());
-                log.debug("Ele type: {}, start: {}, end: {}", base.getElementTypeEnum(),
-                        base.getStartLineNum(), base.getEndLineNum());
-
-                log.debug("{}", baseNode.getTargetPath());
-                log.debug("Ele type: {}, start: {}, end: {}", base.getElementTypeEnum(),
-                        base.getStartLineNum(), base.getEndLineNum());
-                throw new UnitException("SHIT");
-            }
             return baseNode;
         }
 
