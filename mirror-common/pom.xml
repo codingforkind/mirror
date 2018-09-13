@@ -8,9 +8,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>mirror-common</name>
-    <description>mirror-common</description>
-
     <parent>
         <groupId>cn.com.cx</groupId>
         <artifactId>mirror</artifactId>
