@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mirrorweb-xyz
+
+server:
+  address: localhost
+  port: 8080
+
+logging:
+  config: classpath:logback-config.xml
+  controller:
+    enabled: true
+

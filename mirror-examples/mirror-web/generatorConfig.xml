@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator.properties"/>
+
+    <context id="PostgreSQL" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8" />
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="cn.com.mirror.common.PgCommonMapper"/>
+        </plugin>
+
+        <jdbcConnection driverClass="${mbg.driverClass}"
+                        connectionURL="${mbg.connectionURL}"
+                        userId="${mbg.username}"
+                        password="${mbg.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="${mbg.entitiesPackage}"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="${mbg.sqlsPackage}"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="${mbg.mappersPackage}"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <table tableName="project" />
+
+    </context>
+</generatorConfiguration>
