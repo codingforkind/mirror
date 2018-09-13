@@ -2,11 +2,13 @@ package cn.com.mirror.project.controller;
 
 import cn.com.mirror.nas.service.AsyncNasService;
 import cn.com.mirror.nas.service.NasService;
+import cn.com.mirror.project.pojo.ProjectVO;
 import cn.com.mirror.project.service.ProjectInitService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,41 +18,32 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 
-@Api("ProjectVO interface")
+@Api("Project interface")
 @Slf4j
 @RestController
 @RequestMapping(value = "/unit/project")
 public class ProjectController {
 
     @Autowired
-    private NasService nasService;
-    @Autowired
-    private AsyncNasService asyncNasService;
-
-    @Autowired
     private ProjectInitService projectInitService;
 
     @ApiOperation("Upload the project archive")
     @PostMapping(value = "/upload")
-    public String uploadZipFile(MultipartFile multipartFile) {
+    public ProjectVO uploadZipFile(MultipartFile multipartFile) {
         log.debug("File name: {}, size: {}", multipartFile.getOriginalFilename(),
                 multipartFile.getContentType(), multipartFile.getSize());
 
         String userId = "TEST_USER";
-        String filePath = null;
+        ProjectVO projectVO = null;
         try {
-            projectInitService.genProject(userId,
+            projectVO = projectInitService.genProject(userId,
                     multipartFile.getOriginalFilename(),
                     multipartFile.getBytes());
-            filePath = nasService.uploadArchive(multipartFile.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        asyncNasService.unzipArchive(filePath);
-
-
-        return null;
+        return projectVO;
     }
 
     @ApiOperation("Get access code")

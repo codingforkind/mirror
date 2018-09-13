@@ -1,5 +1,7 @@
 package cn.com.mirror.project.service.impl;
 
+import cn.com.mirror.nas.service.AsyncNasService;
+import cn.com.mirror.nas.service.NasService;
 import cn.com.mirror.project.dao.entity.Project;
 import cn.com.mirror.project.dao.mapper.ProjectMapper;
 import cn.com.mirror.project.pojo.ProjectVO;
@@ -12,6 +14,7 @@ import cn.com.mirror.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -23,6 +26,11 @@ public class ProjectInitServiceImpl implements ProjectInitService {
 
     @Autowired
     private MaxClientService maxClientService;
+    @Autowired
+    private NasService nasService;
+    @Lazy
+    @Autowired
+    private AsyncNasService asyncNasService;
 
     @Autowired
     private ProjectMapper projectMapper;
@@ -67,6 +75,8 @@ public class ProjectInitServiceImpl implements ProjectInitService {
             projectMapper.insertSelective(tmProject);
 
             // TODO xyz async service: store zip project file, unzip it and analyze it.
+//            String filePath = nasService.uploadArchive(content);
+//            asyncNasService.unzipArchive(filePath);
         }
 
         return projectVO;
