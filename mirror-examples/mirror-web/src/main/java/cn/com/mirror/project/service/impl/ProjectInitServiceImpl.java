@@ -63,7 +63,7 @@ public class ProjectInitServiceImpl implements ProjectInitService {
     @Override
     @Transactional
     public ProjectVO genProject(String userId, String originalFileName, byte[] content) {
-        ProjectVO projectVO = new ProjectVO();
+        ProjectVO projectVO = null;
 
         String prjName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
         String postfix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
@@ -71,37 +71,46 @@ public class ProjectInitServiceImpl implements ProjectInitService {
         String prjRedisKey = RedisKeyUtil.genPrjKey(userId, prjName);
         if (redisUtil.isExists(prjRedisKey)) {
             // project for userId is already exists
+            projectVO = new ProjectVO();
             BeanUtils.copyProperties(projectVO, redisUtil.opGetObjVal(prjRedisKey));
         } else {
-            // create a new project
-            String accessCode = getAccessCode(userId);
-
-            Project tmProject = genPrj(accessCode, prjName, userId);
-            projectMapper.insertSelective(tmProject);
-            BeanUtils.copyProperties(projectVO, tmProject);
-
-            ArchiveVO archiveVO = archiveService.nailArchive(prjName,
-                    ArchiveTypeEnum.checkAchvType(postfix), content);
-            projectVO.setAchvId(archiveVO.getAchvId());
-
-            redisUtil.opSetObjVal(prjRedisKey, projectVO);
-
-            // user uploaded a new project
-            UserPrjRel userPrjRel = new UserPrjRel();
-            userPrjRel.setPrjId(projectVO.getPrjId());
-            userPrjRel.setUserId(userId);
-            userPrjRelMapper.insertSelective(userPrjRel);
+            projectVO = newProject(userId, prjName, postfix, prjRedisKey, content);
         }
-
 
         return projectVO;
     }
 
-    private Project genPrj(String accessCode, String prjName, String userId) {
+    private ProjectVO newProject(String userId,
+                                 String prjName,
+                                 String postfix,
+                                 String prjRedisKey,
+                                 byte[] content) {
+
+        String accessCode = getAccessCode(userId);
+        // create an archive
+        ArchiveVO archiveVO = archiveService.nailArchive(prjName,
+                ArchiveTypeEnum.checkAchvType(postfix), content);
+
+        // create a new project
         Project tmProject = new Project();
         tmProject.setAccessCode(accessCode);
         tmProject.setName(prjName);
         tmProject.setUserId(userId);
-        return tmProject;
+        tmProject.setAchvId(archiveVO.getAchvId());
+        projectMapper.insertSelective(tmProject);
+
+        // cache this new project into redis
+        ProjectVO projectVO = new ProjectVO();
+        BeanUtils.copyProperties(projectVO, tmProject);
+        redisUtil.opSetObjVal(prjRedisKey, projectVO);
+
+        // build a relationship between user and project
+        UserPrjRel userPrjRel = new UserPrjRel();
+        userPrjRel.setPrjId(projectVO.getPrjId());
+        userPrjRel.setUserId(userId);
+        userPrjRelMapper.insertSelective(userPrjRel);
+
+        return projectVO;
     }
+
 }
