@@ -1,14 +1,11 @@
 package cn.com.mirror.project.controller;
 
-import cn.com.mirror.nas.service.AsyncNasService;
-import cn.com.mirror.nas.service.NasService;
 import cn.com.mirror.project.pojo.ProjectVO;
 import cn.com.mirror.project.service.ProjectInitService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
