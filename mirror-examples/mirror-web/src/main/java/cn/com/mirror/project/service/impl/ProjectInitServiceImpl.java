@@ -1,12 +1,13 @@
 package cn.com.mirror.project.service.impl;
 
 import cn.com.mirror.constant.ArchiveTypeEnum;
-import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.nas.service.AsyncNasService;
 import cn.com.mirror.nas.service.NasService;
+import cn.com.mirror.project.dao.entity.Archive;
 import cn.com.mirror.project.dao.entity.Project;
 import cn.com.mirror.project.dao.mapper.ProjectMapper;
 import cn.com.mirror.project.pojo.ProjectVO;
+import cn.com.mirror.project.service.ArchiveService;
 import cn.com.mirror.project.service.MaxClientService;
 import cn.com.mirror.project.service.ProjectInitService;
 import cn.com.mirror.util.RedisKeyUtil;
@@ -15,15 +16,10 @@ import cn.com.mirror.utils.BeanUtils;
 import cn.com.mirror.utils.EncryptUtils;
 import cn.com.mirror.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
-import java.io.IOException;
 
 @Slf4j
 @Service
@@ -33,15 +29,13 @@ public class ProjectInitServiceImpl implements ProjectInitService {
     private RedisUtil redisUtil;
 
     @Autowired
-    private MaxClientService maxClientService;
-    @Autowired
-    private NasService nasService;
-    @Lazy
-    @Autowired
-    private AsyncNasService asyncNasService;
+    private ProjectMapper projectMapper;
 
     @Autowired
-    private ProjectMapper projectMapper;
+    private MaxClientService maxClientService;
+    @Autowired
+    private ArchiveService archiveService;
+
 
     @Override
     public String getAccessCode(String userId) {
@@ -81,42 +75,11 @@ public class ProjectInitServiceImpl implements ProjectInitService {
             projectMapper.insertSelective(tmProject);
             BeanUtils.copyProperties(projectVO, tmProject);
 
-            nailArchive(tmProject, postfix, content);
+            Archive archive = archiveService.nailArchive(prjName,
+                    ArchiveTypeEnum.checkAchvType(postfix), content);
         }
 
         return projectVO;
-    }
-
-    private void nailArchive(Project tmPrj, String postfix, byte[] content) {
-
-        // TODO xyz async service: store zip project file, unzip it and analyze it.
-        String filePath = nasService.uploadArchive(content);
-
-//            asyncNasService.unzipArchive(filePath);
-        ArchiveTypeEnum archiveType = ArchiveTypeEnum.checkAchvType(postfix);
-        switch (archiveType) {
-            case _ZIP: {
-                try {
-                    ZipFile zipFile = new ZipFile(filePath);
-                    if (zipFile.isEncrypted()) {
-                        throw new UnitException("File is encrypted.");
-                    }
-                    String dest = filePath.substring(0, filePath.lastIndexOf("."))
-                            + File.separator + "tmpDir";
-                    zipFile.extractAll(dest);
-                    // done unzip operation
-
-                    // analyze it [next move]
-
-
-                } catch (ZipException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
-            default:
-                break;
-        }
     }
 
     private Project genPrj(String accessCode, String prjName, String userId) {

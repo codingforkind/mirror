@@ -1,11 +1,11 @@
 package cn.com.mirror.nas.service;
 
-import java.io.InputStream;
-
 public interface NasService {
     /**
      * Upload files to nas
+     * @param prjName
+     * @param postfix
      * @param content
      */
-    String uploadArchive(byte[] content);
+    String uploadArchive(String prjName, String postfix, byte[] content);
 }
