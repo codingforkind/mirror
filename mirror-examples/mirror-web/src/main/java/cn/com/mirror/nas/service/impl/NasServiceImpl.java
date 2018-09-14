@@ -28,7 +28,6 @@ public class NasServiceImpl implements NasService {
         try (OutputStream outputStream = new FileOutputStream(new File(filePath))) {
             outputStream.write(content);
         } catch (IOException e) {
-            // TODO xyz check it before the application started.
             throw new UnitException("The dir for uploaded file is not configured", e);
         }
 

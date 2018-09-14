@@ -26,7 +26,6 @@ public class ArchiveServiceImpl implements ArchiveService {
     @Override
     @Transactional
     public ArchiveVO nailArchive(String prjName, ArchiveTypeEnum archiveType, byte[] content) {
-        // TODO xyz async service: store zip project file, unzip it and analyze it.
         String filePath = nasService.uploadArchive(prjName, archiveType.getPostfix(), content);
 
         Archive archive = new Archive();
