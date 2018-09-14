@@ -31,7 +31,7 @@ public class ArchiveServiceImpl implements ArchiveService {
 
         Archive archive = new Archive();
 
-        String dir = unzipService.extractZippedSrcFile(filePath, archiveType);
+        String dir = unzipService.extractZippedSrcFile(prjName, filePath, archiveType);
         // analyze it [next move]
 
         archive.setType(archiveType.getPostfix());

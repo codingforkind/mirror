@@ -9,6 +9,8 @@ import net.lingala.zip4j.exception.ZipException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
 @Service
 public class UnzipServiceImpl implements UnzipService {
 
@@ -17,8 +19,8 @@ public class UnzipServiceImpl implements UnzipService {
 
 
     @Override
-    public String extractZippedSrcFile(String filePath, ArchiveTypeEnum archiveType) {
-        String dest = nasProperties.getLocation() + "tmpDir";
+    public String extractZippedSrcFile(String prjName, String filePath, ArchiveTypeEnum archiveType) {
+        String dest = nasProperties.getLocation() + "tmpDir" + File.separator + prjName;
 
         switch (archiveType) {
             case _ZIP: {
