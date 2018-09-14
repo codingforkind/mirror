@@ -13,8 +13,6 @@ logging:
   controller:
     enabled: true
 
-
-
 mapper:
   mappers:
     - cn.com.mirror.common.PgCommonMapper
