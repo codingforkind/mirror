@@ -77,7 +77,9 @@ public class ProjectInitServiceImpl implements ProjectInitService {
             projectVO = newProject(userId, prjName, postfix, prjRedisKey, content);
         }
 
-        return projectVO;
+//        TODO xyz start async analysis
+
+      return projectVO;
     }
 
     private ProjectVO newProject(String userId,
