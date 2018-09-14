@@ -9,7 +9,8 @@ import tk.mybatis.mapper.provider.base.BaseInsertProvider;
 
 public interface ProjectMapper extends PgCommonMapper<Project> {
 
+    @Override
     @Options(keyProperty = "prjId", useGeneratedKeys = true)
     @InsertProvider(type = BaseInsertProvider.class,method = "dynamicSQL")
-    int insertSelective(Project var1);
+    int insertSelective(Project project);
 }
