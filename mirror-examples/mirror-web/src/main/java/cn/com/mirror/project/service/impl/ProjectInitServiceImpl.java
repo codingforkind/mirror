@@ -1,11 +1,11 @@
 package cn.com.mirror.project.service.impl;
 
 import cn.com.mirror.constant.ArchiveTypeEnum;
-import cn.com.mirror.nas.service.AsyncNasService;
-import cn.com.mirror.nas.service.NasService;
-import cn.com.mirror.project.dao.entity.Archive;
 import cn.com.mirror.project.dao.entity.Project;
+import cn.com.mirror.project.dao.entity.UserPrjRel;
 import cn.com.mirror.project.dao.mapper.ProjectMapper;
+import cn.com.mirror.project.dao.mapper.UserPrjRelMapper;
+import cn.com.mirror.project.pojo.ArchiveVO;
 import cn.com.mirror.project.pojo.ProjectVO;
 import cn.com.mirror.project.service.ArchiveService;
 import cn.com.mirror.project.service.MaxClientService;
@@ -18,8 +18,8 @@ import cn.com.mirror.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -30,6 +30,8 @@ public class ProjectInitServiceImpl implements ProjectInitService {
 
     @Autowired
     private ProjectMapper projectMapper;
+    @Autowired
+    private UserPrjRelMapper userPrjRelMapper;
 
     @Autowired
     private MaxClientService maxClientService;
@@ -44,19 +46,22 @@ public class ProjectInitServiceImpl implements ProjectInitService {
             throw new RuntimeException("User id can not be null or empty");
         }
 
-        String accessCode = redisUtil.opGetStrVal(userId);
+        String acsCodeRedisKey = RedisKeyUtil.genPrjAccessCodeKey(userId);
+        String accessCode = redisUtil.opGetStrVal(acsCodeRedisKey);
         if (null == accessCode) {
             maxClientService.increaseClientCount();
 
             String salt = UUIDUtils.randomUUID();
             accessCode = EncryptUtils.sha256Encrypt(userId + salt);
-            redisUtil.opSetStrValForOneDay(userId, accessCode);
+
+            redisUtil.opSetStrValForOneDay(acsCodeRedisKey, accessCode);
         }
         return accessCode;
     }
 
 
     @Override
+    @Transactional
     public ProjectVO genProject(String userId, String originalFileName, byte[] content) {
         ProjectVO projectVO = new ProjectVO();
 
@@ -75,9 +80,19 @@ public class ProjectInitServiceImpl implements ProjectInitService {
             projectMapper.insertSelective(tmProject);
             BeanUtils.copyProperties(projectVO, tmProject);
 
-            Archive archive = archiveService.nailArchive(prjName,
+            ArchiveVO archiveVO = archiveService.nailArchive(prjName,
                     ArchiveTypeEnum.checkAchvType(postfix), content);
+            projectVO.setAchvId(archiveVO.getAchvId());
+
+            redisUtil.opSetObjVal(prjRedisKey, projectVO);
+
+            // user uploaded a new project
+            UserPrjRel userPrjRel = new UserPrjRel();
+            userPrjRel.setPrjId(projectVO.getPrjId());
+            userPrjRel.setUserId(userId);
+            userPrjRelMapper.insertSelective(userPrjRel);
         }
+
 
         return projectVO;
     }
