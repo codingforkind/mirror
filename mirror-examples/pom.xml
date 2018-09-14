@@ -35,6 +35,8 @@
         <fastjson.version>1.2.34</fastjson.version>
         <postgresql.version>42.1.1</postgresql.version>
 
+        <zip4j.version>1.3.2</zip4j.version>
+
         <swagger2>2.7.0</swagger2>
         <junit>4.12</junit>
     </properties>
@@ -46,6 +48,13 @@
             <groupId>cn.com.cx</groupId>
             <artifactId>mirror-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- zip4j -->
+        <dependency>
+            <groupId>net.lingala.zip4j</groupId>
+            <artifactId>zip4j</artifactId>
+            <version>${zip4j.version}</version>
         </dependency>
 
         <!-- springfox -->
@@ -73,24 +82,26 @@
             <version>${mapper.starter.version}</version>
         </dependency>
 
+        <!-- druid & fastJson -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
 
+        <!-- postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
 
+        <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
