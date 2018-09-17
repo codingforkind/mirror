@@ -60,10 +60,10 @@ public class RedisUtil {
         opSetStrVal(key, objStr);
     }
 
-    public Object opGetObjVal(String key) {
+    public <T> T opGetObjVal(String key, Class<T> cls) {
         String objStr = opGetStrVal(key);
         if (null != objStr) {
-            return JSON.parse(objStr);
+            return JSON.parseObject(objStr, cls);
         }
         return null;
     }

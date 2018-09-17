@@ -33,7 +33,7 @@ public class ProjectController {
         String userId = "TEST_USER";
         ProjectVO projectVO = null;
         try {
-            projectVO = projectInitService.genProject(userId,
+            projectVO = projectInitService.genProject(null, userId,
                     multipartFile.getOriginalFilename(),
                     multipartFile.getBytes());
         } catch (IOException e) {
@@ -42,6 +42,26 @@ public class ProjectController {
 
         return projectVO;
     }
+
+
+    @ApiOperation("Upload the project archive")
+    @PostMapping(value = "/uploadWithAccessCode")
+    public ProjectVO uploadArchiveWithAccessCode(MultipartFile multipartFile,
+                                                 String accessCode) {
+        String userId = "TEST_USER";
+        ProjectVO projectVO = null;
+        try {
+            projectVO = projectInitService.genProject(accessCode,
+                    userId,
+                    multipartFile.getOriginalFilename(),
+                    multipartFile.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return projectVO;
+    }
+
 
     @ApiOperation("Get access code")
     @GetMapping(value = "/accessCode")

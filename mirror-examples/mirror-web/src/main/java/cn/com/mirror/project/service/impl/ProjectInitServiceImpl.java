@@ -1,6 +1,7 @@
 package cn.com.mirror.project.service.impl;
 
 import cn.com.mirror.constant.ArchiveTypeEnum;
+import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.dao.entity.Project;
 import cn.com.mirror.project.dao.entity.UserPrjRel;
 import cn.com.mirror.project.dao.mapper.ProjectMapper;
@@ -62,24 +63,31 @@ public class ProjectInitServiceImpl implements ProjectInitService {
 
     @Override
     @Transactional
-    public ProjectVO genProject(String userId, String originalFileName, byte[] content) {
-        ProjectVO projectVO = null;
+    public ProjectVO genProject(String accessCode,
+                                String userId,
+                                String originalFileName,
+                                byte[] content) {
 
         String prjName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
         String postfix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
 
-        String prjRedisKey = RedisKeyUtil.genPrjKey(userId, prjName);
-        if (redisUtil.isExists(prjRedisKey)) {
-            // project for userId is already exists
-            projectVO = new ProjectVO();
-            BeanUtils.copyProperties(projectVO, redisUtil.opGetObjVal(prjRedisKey));
-        } else {
+        String prjRedisKey = RedisKeyUtil.genPrjKey(userId, prjName, accessCode);
+        ProjectVO redisPrjVO = redisUtil.opGetObjVal(prjRedisKey, ProjectVO.class);
+
+        ProjectVO projectVO = null;
+        if (null == redisPrjVO ||
+                (null != redisPrjVO && prjName.equals(redisPrjVO.getName()))) {
+
             projectVO = newProject(userId, prjName, postfix, prjRedisKey, content);
+        } else {
+            throw new UnitException("One access code can only upload one project");
         }
 
 //        TODO xyz start async analysis
 
-      return projectVO;
+
+        return redisPrjVO;
+
     }
 
     private ProjectVO newProject(String userId,
