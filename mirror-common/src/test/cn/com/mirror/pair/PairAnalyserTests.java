@@ -24,7 +24,7 @@ public class PairAnalyserTests {
     @Test
     public void testDirectCtrlEdge() {
         PairAnalyser pairAnalyser = new PairAnalyser();
-        Pair pair = pairAnalyser.analyze();
+        Pair pair = pairAnalyser.analyze(null);
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> entry : pair.getCtrlEdges().entrySet()) {
             if (!TEST_FILE.equals(entry.getKey())) {
                 // testing specific target

@@ -4,6 +4,7 @@ import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
 import cn.com.mirror.exceptions.ReflectException;
 import cn.com.mirror.exceptions.UnitException;
+import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.Vertex;
 import cn.com.mirror.project.unit.Unit;
@@ -34,16 +35,22 @@ public class EdgeConstructor {
     private Pair pair;
     private Map<String, NodeFactory> nodeFactoryMap;
 
-    public void construct() {
-        // analyze the project
+    public EdgeConstructor() {
+        this(null);
+    }
+
+    public EdgeConstructor(ProjectProperty projectProperty) {
+        this.nodeFactoryMap = new HashMap<>();
+
         PairAnalyser pairAnalyser = new PairAnalyser();
         UnitAnalyser unitAnalyser = new UnitAnalyser();
 
-        unit = unitAnalyser.analyze();
-        pair = pairAnalyser.analyze();
+        unit = unitAnalyser.analyze(projectProperty);
+        pair = pairAnalyser.analyze(projectProperty);
+    }
 
-        this.nodeFactoryMap = new HashMap<>();
-
+    public void construct() {
+        // analyze the project
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
 //            if (!("/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/reflect/EdgeConstructor.java").equals(ctrlEdgeEntry.getKey())) {
@@ -73,7 +80,7 @@ public class EdgeConstructor {
             Map<Base, BaseNode> nodeCache = this.nodeFactoryMap.get(targetPath).getNodeCache();
             for (BaseNode baseNode : nodeCache.values()) {
 //                if (baseNode instanceof ClassNode) {
-                    graphEngine.write(baseNode);
+                graphEngine.write(baseNode);
 //                }
             }// construct end
         }

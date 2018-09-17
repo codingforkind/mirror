@@ -22,7 +22,7 @@ public class UnitAnalyserTests {
 
     public void init() {
         this.unitAnalyser = new UnitAnalyser();
-        this.unit = unitAnalyser.analyze();
+        this.unit = unitAnalyser.analyze(null);
     }
 
     @Test

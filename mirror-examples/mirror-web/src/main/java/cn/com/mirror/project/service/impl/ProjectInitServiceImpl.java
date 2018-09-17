@@ -1,5 +1,6 @@
 package cn.com.mirror.project.service.impl;
 
+import cn.com.mirror.analysis.service.AsyncAnalysisService;
 import cn.com.mirror.constant.ArchiveTypeEnum;
 import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.dao.entity.Project;
@@ -19,6 +20,8 @@ import cn.com.mirror.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +41,10 @@ public class ProjectInitServiceImpl implements ProjectInitService {
     private MaxClientService maxClientService;
     @Autowired
     private ArchiveService archiveService;
+
+    @Autowired
+    @Lazy
+    private AsyncAnalysisService asyncAnalysisService;
 
 
     @Override
@@ -83,10 +90,7 @@ public class ProjectInitServiceImpl implements ProjectInitService {
             throw new UnitException("One access code can only upload one project");
         }
 
-//        TODO xyz start async analysis
-
-
-        return redisPrjVO;
+        return projectVO;
 
     }
 
@@ -100,6 +104,9 @@ public class ProjectInitServiceImpl implements ProjectInitService {
         // create an archive
         ArchiveVO archiveVO = archiveService.nailArchive(prjName,
                 ArchiveTypeEnum.checkAchvType(postfix), content);
+
+        // async analysis
+        asyncAnalysisService.asyncAnalyze(archiveVO.getDir());
 
         // create a new project
         Project tmProject = new Project();

@@ -1,6 +1,7 @@
 package cn.com.mirror.project.config;
 
 import cn.com.mirror.annotation.Bind;
+import lombok.Data;
 import lombok.Getter;
 
 /**
@@ -8,7 +9,7 @@ import lombok.Getter;
  * @description
  * @date 18-8-10
  */
-@Getter
+@Data
 public class ProjectProperty {
 
     @Bind(value = "project.url")
