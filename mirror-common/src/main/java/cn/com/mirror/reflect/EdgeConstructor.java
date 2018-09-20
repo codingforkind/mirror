@@ -75,17 +75,21 @@ public class EdgeConstructor {
                 }
             }
 
-            // construct
-            GraphEngine graphEngine = new GraphEngine();
-            Map<Base, BaseNode> nodeCache = this.nodeFactoryMap.get(targetPath).getNodeCache();
-            for (BaseNode baseNode : nodeCache.values()) {
-//                if (baseNode instanceof ClassNode) {
-                graphEngine.write(baseNode);
-//                }
-            }// construct end
+            // write2GraphDB();
         }
         // end
 
+    }
+
+    private void write2GraphDB(String targetPath) {
+        // construct
+        GraphEngine graphEngine = new GraphEngine();
+        Map<Base, BaseNode> nodeCache = this.nodeFactoryMap.get(targetPath).getNodeCache();
+        for (BaseNode baseNode : nodeCache.values()) {
+//                if (baseNode instanceof ClassNode) {
+            graphEngine.write(baseNode);
+//                }
+        }// construct end
     }
 
     private void touchEdge(Base tailBase, Base headBase) {
