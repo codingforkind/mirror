@@ -14,4 +14,7 @@ public class ProjectProperty {
 
     @Bind(value = "project.url")
     private String url;
+
+    @Bind(value = "project.graph.db.write")
+    private Boolean enableWriteGraphDB;
 }

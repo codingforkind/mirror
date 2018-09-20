@@ -30,8 +30,18 @@ public class PropertyUtils {
                 Bind bind = field.getAnnotation(Bind.class);
                 String value = bind.value();
                 String propValue = props.getProperty(value);
+
+                Object propVal = null;
+                if ("true".equals(propValue)) {
+                    propVal = Boolean.TRUE;
+                } else if ("false".equals(propValue)) {
+                    propVal = Boolean.FALSE;
+                } else {
+                    propVal = propValue;
+                }
+
                 field.setAccessible(true);
-                field.set(object, propValue);
+                field.set(object, propVal);
             }
         }
     }
