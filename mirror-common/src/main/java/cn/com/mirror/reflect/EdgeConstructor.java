@@ -78,6 +78,7 @@ public class EdgeConstructor {
                     touchEdge(tailBase, headBase);
                 }
             }
+
             if (this.projectProperty.getEnableWriteGraphDB()) {
                 write2GraphDB(targetPath);
             }
