@@ -16,27 +16,30 @@ import cn.com.mirror.repository.code.LocalLoader;
 import cn.com.mirror.repository.neo4j.node.*;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
 import cn.com.mirror.utils.FileUtils;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author piggy
  * @description
  * @date 18-8-10
  */
-@Data
 @Slf4j
 public class EdgeConstructor {
+    private ProjectProperty projectProperty;
 
     private Unit unit;
     private Pair pair;
     private Map<String, NodeFactory> nodeFactoryMap;
 
-    private ProjectProperty projectProperty;
+    private final Integer poolSize = 2;
+    private ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
 
     public EdgeConstructor() {
         this(LocalLoader.getPrjProperty());
@@ -49,8 +52,23 @@ public class EdgeConstructor {
         PairAnalyser pairAnalyser = new PairAnalyser();
         UnitAnalyser unitAnalyser = new UnitAnalyser();
 
-        unit = unitAnalyser.analyze(projectProperty);
-        pair = pairAnalyser.analyze(projectProperty);
+        CountDownLatch countDownLatch = new CountDownLatch(poolSize);
+        executorService.execute(() -> {
+            unit = unitAnalyser.analyze(projectProperty);
+            countDownLatch.countDown();
+        });
+        executorService.execute(() -> {
+            pair = pairAnalyser.analyze(projectProperty);
+            countDownLatch.countDown();
+        });
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService.shutdown();
     }
 
     public void construct() {
