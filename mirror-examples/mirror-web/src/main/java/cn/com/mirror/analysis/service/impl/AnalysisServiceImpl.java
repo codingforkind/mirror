@@ -12,6 +12,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     public void analysis(String prjDir) {
         ProjectProperty projectProperty = new ProjectProperty();
         projectProperty.setUrl(prjDir);
+        projectProperty.setEnableWriteGraphDB(Boolean.TRUE);
 
         EdgeConstructor edgeConstructor = new EdgeConstructor(projectProperty);
         edgeConstructor.construct();
