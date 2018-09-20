@@ -17,7 +17,7 @@ public class PairAnalyser {
         PairFactory pairFactory = new PairFactory();
 
         Pair pair = null;
-        if (null == pairFactory) {
+        if (null == projectProperty) {
             CodeLoader codeRepository = new LocalLoader();
             pair = pairFactory.newPair(codeRepository.getRepositoryUrl());
         } else {
