@@ -15,7 +15,7 @@ public interface ProjectInitService {
     ProjectVO genProject(String accessCode, String userId, String originalFileName, byte[] content);
 
     /**
-     * Retrieve or generate the access src for one project.
+     * Retrieve or generate the access code for one project.
      */
     String getAccessCode(String userId);
 }

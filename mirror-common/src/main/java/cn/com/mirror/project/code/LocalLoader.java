@@ -1,4 +1,4 @@
-package cn.com.mirror.project.src;
+package cn.com.mirror.project.code;
 
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.utils.PropertyUtils;

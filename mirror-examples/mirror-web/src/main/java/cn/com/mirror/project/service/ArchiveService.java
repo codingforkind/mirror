@@ -6,11 +6,11 @@ import cn.com.mirror.project.pojo.ArchiveVO;
 
 public interface ArchiveService {
     /**
-     * Create an archive and store the zipped src src.
+     * Create an archive and store the zipped code code.
      *
      * @param prjName     project name
-     * @param archiveType zipped src file's type
-     * @param content     zipped src file's content
+     * @param archiveType zipped code file's type
+     * @param content     zipped code file's content
      */
     ArchiveVO nailArchive(String prjName, ArchiveTypeEnum archiveType, byte[] content);
 }

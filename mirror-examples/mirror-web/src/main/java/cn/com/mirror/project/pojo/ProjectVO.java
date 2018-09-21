@@ -16,7 +16,7 @@ public class ProjectVO {
     private String name;
 
     /**
-     * access src for this project
+     * access code for this project
      */
     private String accessCode;
 
@@ -26,7 +26,7 @@ public class ProjectVO {
     private String userId;
 
     /**
-     * project's source src
+     * project's source code
      */
     private String achvId;
 

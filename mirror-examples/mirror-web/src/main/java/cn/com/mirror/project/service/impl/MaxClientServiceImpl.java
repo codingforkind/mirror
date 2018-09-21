@@ -40,7 +40,7 @@ public class MaxClientServiceImpl implements MaxClientService {
         } else {
             Long count = Long.valueOf(countStr);
             if (count >= mirrorProperties.getMaxCliNum()) {
-                throw new RuntimeException("Access src is already run out for today");
+                throw new RuntimeException("Access code is already run out for today");
             } else {
                 count++; // TODO xyz this is not thread safe
                 redisUtil.opSetStrValForOneDay(CLIENT_COUNT, Long.toString(count));

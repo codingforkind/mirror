@@ -37,7 +37,7 @@ public class Unit implements Serializable {
     private Set<Root> roots = new HashSet<>();
     private Map<String, Set<Class>> classes = new HashMap<>();
     private Map<String, Set<Method>> methods = new HashMap<>();
-    private Map<String, Map<Integer, Statement>> statements = new HashMap<>(); // all variables in a single src line
+    private Map<String, Map<Integer, Statement>> statements = new HashMap<>(); // all variables in a single code line
     private Map<String, Set<Variable>> variables = new HashMap<>(); // all variables in the project
 
     public void addCompilationUnit(String targetPath, CompilationUnit compilationUnit) {

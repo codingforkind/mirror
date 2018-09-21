@@ -86,7 +86,7 @@ public class ProjectInitServiceImpl implements ProjectInitService {
 
             projectVO = newProject(userId, prjName, postfix, prjRedisKey, content);
         } else {
-            throw new UnitException("One access src can only upload one project");
+            throw new UnitException("One access code can only upload one project");
         }
 
         return projectVO;

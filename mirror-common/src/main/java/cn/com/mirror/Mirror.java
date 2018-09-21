@@ -12,7 +12,7 @@ import cn.com.mirror.project.unit.element.Base;
 import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
-import cn.com.mirror.project.src.LocalLoader;
+import cn.com.mirror.project.code.LocalLoader;
 import cn.com.mirror.project.graph.node.factory.NodeFactory;
 import cn.com.mirror.project.graph.node.*;
 import cn.com.mirror.project.graph.storage.GraphEngine;

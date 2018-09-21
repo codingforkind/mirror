@@ -63,7 +63,7 @@ public class ProjectController {
     }
 
 
-    @ApiOperation("Get access src")
+    @ApiOperation("Get access code")
     @GetMapping(value = "/accessCode")
     public String getAccessCode() {
         String userId = "TEST";
@@ -71,7 +71,7 @@ public class ProjectController {
     }
 
 
-    @ApiOperation("test get access src")
+    @ApiOperation("test get access code")
     @GetMapping(value = "/testAccessCode")
     public String getAccessCode(String userId) {
         return projectInitService.getAccessCode(userId);

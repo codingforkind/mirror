@@ -16,7 +16,7 @@ public class Project {
     private String name;
 
     /**
-     * access src for this project
+     * access code for this project
      */
     @Column(name = "access_code")
     private String accessCode;
@@ -28,7 +28,7 @@ public class Project {
     private String userId;
 
     /**
-     * project's source src
+     * project's source code
      */
     @Column(name = "achv_id")
     private String achvId;
@@ -76,18 +76,18 @@ public class Project {
     }
 
     /**
-     * 获取access src for this project
+     * 获取access code for this project
      *
-     * @return access_code - access src for this project
+     * @return access_code - access code for this project
      */
     public String getAccessCode() {
         return accessCode;
     }
 
     /**
-     * 设置access src for this project
+     * 设置access code for this project
      *
-     * @param accessCode access src for this project
+     * @param accessCode access code for this project
      */
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
@@ -112,18 +112,18 @@ public class Project {
     }
 
     /**
-     * 获取project's source src
+     * 获取project's source code
      *
-     * @return achv_id - project's source src
+     * @return achv_id - project's source code
      */
     public String getAchvId() {
         return achvId;
     }
 
     /**
-     * 设置project's source src
+     * 设置project's source code
      *
-     * @param achvId project's source src
+     * @param achvId project's source code
      */
     public void setAchvId(String achvId) {
         this.achvId = achvId;
