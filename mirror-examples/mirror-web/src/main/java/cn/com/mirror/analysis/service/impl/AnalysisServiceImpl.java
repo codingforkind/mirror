@@ -15,6 +15,6 @@ public class AnalysisServiceImpl implements AnalysisService {
         projectProperty.setEnableWriteGraphDB(Boolean.TRUE);
 
         EdgeConstructor edgeConstructor = new EdgeConstructor(projectProperty);
-        edgeConstructor.construct();
+        edgeConstructor.mappingVertex2GraphNode();
     }
 }

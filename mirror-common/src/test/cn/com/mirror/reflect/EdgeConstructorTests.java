@@ -11,6 +11,6 @@ public class EdgeConstructorTests {
     @Test
     public void testConstructSimple() {
         EdgeConstructor edgeConstructor = new EdgeConstructor();
-        edgeConstructor.construct();
+        edgeConstructor.mappingVertex2GraphNode();
     }
 }

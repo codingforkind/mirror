@@ -71,7 +71,7 @@ public class EdgeConstructor {
     }
 
     // mapping vertex to graph node
-    public void construct() {
+    public void mappingVertex2GraphNode() {
         // analyze the project
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
@@ -103,14 +103,14 @@ public class EdgeConstructor {
     }
 
     private void write2GraphDB(String targetPath) {
-        // construct
+        // mappingVertex2GraphNode
         GraphEngine graphEngine = new GraphEngine();
         Map<Base, BaseNode> nodeCache = this.nodeFactoryMap.get(targetPath).getNodeCache();
         for (BaseNode baseNode : nodeCache.values()) {
 //                if (baseNode instanceof ClassNode) {
             graphEngine.write(baseNode);
 //                }
-        }// construct end
+        }// mappingVertex2GraphNode end
     }
 
     private void touchEdge(Base tailBase, Base headBase) {
