@@ -78,9 +78,10 @@ public class EdgeConstructor {
             // one target one node factory
             String targetPath = ctrlEdgeEntry.getKey();
             if (null == this.nodeFactoryMap.get(targetPath)) {
-                this.nodeFactoryMap.put(ctrlEdgeEntry.getKey(), new NodeFactory());
+                this.nodeFactoryMap.put(targetPath, new NodeFactory());
             }
 
+            // mapping vertex to graph node
             for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
                 Vertex tailVtx = edges.getKey();
                 Base tailBase = getBaseElement(tailVtx);
