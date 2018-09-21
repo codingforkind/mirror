@@ -1,5 +1,6 @@
 package cn.com.mirror.reflect;
 
+import cn.com.mirror.Mirror;
 import org.junit.Test;
 
 /**
@@ -7,10 +8,10 @@ import org.junit.Test;
  * @description
  * @date 18-8-16
  */
-public class EdgeConstructorTests {
+public class MirrorTests {
     @Test
     public void testConstructSimple() {
-        EdgeConstructor edgeConstructor = new EdgeConstructor();
-        edgeConstructor.mappingVertex2GraphNode();
+        Mirror mirror = new Mirror();
+        mirror.mappingVertex2GraphNode();
     }
 }

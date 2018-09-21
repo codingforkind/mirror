@@ -1,4 +1,4 @@
-package cn.com.mirror.reflect;
+package cn.com.mirror;
 
 import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.analyser.UnitAnalyser;
@@ -13,6 +13,7 @@ import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.repository.code.LocalLoader;
+import cn.com.mirror.repository.neo4j.NodeFactory;
 import cn.com.mirror.repository.neo4j.node.*;
 import cn.com.mirror.repository.neo4j.storage.GraphEngine;
 import cn.com.mirror.utils.FileUtils;
@@ -31,7 +32,7 @@ import java.util.concurrent.Executors;
  * @date 18-8-10
  */
 @Slf4j
-public class EdgeConstructor {
+public class Mirror {
     private ProjectProperty projectProperty;
 
     private Unit unit;
@@ -41,11 +42,11 @@ public class EdgeConstructor {
     private final Integer poolSize = 2;
     private ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
 
-    public EdgeConstructor() {
+    public Mirror() {
         this(LocalLoader.getPrjProperty());
     }
 
-    public EdgeConstructor(ProjectProperty projectProperty) {
+    public Mirror(ProjectProperty projectProperty) {
         this.nodeFactoryMap = new HashMap<>();
         this.projectProperty = projectProperty;
 
