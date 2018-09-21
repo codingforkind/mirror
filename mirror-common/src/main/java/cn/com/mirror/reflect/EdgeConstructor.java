@@ -70,6 +70,7 @@ public class EdgeConstructor {
         executorService.shutdown();
     }
 
+    // mapping vertex to graph node
     public void construct() {
         // analyze the project
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
@@ -81,7 +82,6 @@ public class EdgeConstructor {
                 this.nodeFactoryMap.put(targetPath, new NodeFactory());
             }
 
-            // mapping vertex to graph node
             for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
                 Vertex tailVtx = edges.getKey();
                 Base tailBase = getBaseElement(tailVtx);
