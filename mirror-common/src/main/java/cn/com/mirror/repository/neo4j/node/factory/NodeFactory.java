@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.neo4j;
+package cn.com.mirror.repository.neo4j.node.factory;
 
 import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.unit.element.Base;
