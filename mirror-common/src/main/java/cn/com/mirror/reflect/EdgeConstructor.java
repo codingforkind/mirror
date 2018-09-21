@@ -49,15 +49,14 @@ public class EdgeConstructor {
         this.nodeFactoryMap = new HashMap<>();
         this.projectProperty = LocalLoader.getPrjProperty();
 
-        PairAnalyser pairAnalyser = new PairAnalyser();
-        UnitAnalyser unitAnalyser = new UnitAnalyser();
-
         CountDownLatch countDownLatch = new CountDownLatch(poolSize);
         executorService.execute(() -> {
+            UnitAnalyser unitAnalyser = new UnitAnalyser();
             unit = unitAnalyser.analyze(projectProperty);
             countDownLatch.countDown();
         });
         executorService.execute(() -> {
+            PairAnalyser pairAnalyser = new PairAnalyser();
             pair = pairAnalyser.analyze(projectProperty);
             countDownLatch.countDown();
         });
@@ -75,10 +74,6 @@ public class EdgeConstructor {
         // analyze the project
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
-//            if (!("/home/piggy/work/mirror/mirror-common/src/main/java/cn/com/mirror/reflect/EdgeConstructor.java").equals(ctrlEdgeEntry.getKey())) {
-//                // test specific file
-//                continue;
-//            }
 
             // one target one node factory
             String targetPath = ctrlEdgeEntry.getKey();
