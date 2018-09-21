@@ -47,7 +47,7 @@ public class EdgeConstructor {
 
     public EdgeConstructor(ProjectProperty projectProperty) {
         this.nodeFactoryMap = new HashMap<>();
-        this.projectProperty = LocalLoader.getPrjProperty();
+        this.projectProperty = projectProperty;
 
         CountDownLatch countDownLatch = new CountDownLatch(poolSize);
         executorService.execute(() -> {
