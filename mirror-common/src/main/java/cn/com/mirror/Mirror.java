@@ -37,7 +37,6 @@ public class Mirror {
 
     private Unit unit;
     private Pair pair;
-    private Map<String, NodeFactory> nodeFactoryMap;
 
     private final Integer poolSize = 2;
     private ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
@@ -47,7 +46,6 @@ public class Mirror {
     }
 
     public Mirror(ProjectProperty projectProperty) {
-        this.nodeFactoryMap = new HashMap<>();
         this.projectProperty = projectProperty;
 
         CountDownLatch countDownLatch = new CountDownLatch(poolSize);
@@ -72,15 +70,16 @@ public class Mirror {
     }
 
     // mapping vertex to graph node
-    public void mappingVertex2GraphNode() {
+    public Map<String, NodeFactory> mappingVertex2GraphNode() {
+        Map<String, NodeFactory> nodeFactoryMap = new HashMap<>();
         // analyze the project
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> ctrlEdgeEntry : pair.getCtrlEdges().entrySet()) {
             Map<Vertex, Set<Vertex>> edgeMap = ctrlEdgeEntry.getValue();
 
             // one target one node factory
             String targetPath = ctrlEdgeEntry.getKey();
-            if (null == this.nodeFactoryMap.get(targetPath)) {
-                this.nodeFactoryMap.put(targetPath, new NodeFactory());
+            if (null == nodeFactoryMap.get(targetPath)) {
+                nodeFactoryMap.put(targetPath, new NodeFactory());
             }
 
             for (Map.Entry<Vertex, Set<Vertex>> edges : edgeMap.entrySet()) {
@@ -90,32 +89,32 @@ public class Mirror {
                 Set<Vertex> headVtxSet = edges.getValue();
                 for (Vertex headVtx : headVtxSet) {
                     Base headBase = getBaseElement(headVtx);
-                    touchEdge(tailBase, headBase);
+                    touchEdge(tailBase, headBase, nodeFactoryMap.get(targetPath));
                 }
             }
-
-            if (this.projectProperty.getEnableWriteGraphDB()) {
-                write2GraphDB(targetPath);
-            }
-
         }
         // end
+        if (this.projectProperty.getEnableWriteGraphDB()) {
+            write2GraphDB(nodeFactoryMap);
+        }
 
+        return nodeFactoryMap;
     }
 
-    private void write2GraphDB(String targetPath) {
+    private void write2GraphDB(Map<String, NodeFactory> nodeFactoryMap) {
         // mappingVertex2GraphNode
         GraphEngine graphEngine = new GraphEngine();
-        Map<Base, BaseNode> nodeCache = this.nodeFactoryMap.get(targetPath).getNodeCache();
-        for (BaseNode baseNode : nodeCache.values()) {
-//                if (baseNode instanceof ClassNode) {
-            graphEngine.write(baseNode);
-//                }
-        }// mappingVertex2GraphNode end
+        for (String targetPath : nodeFactoryMap.keySet()) {
+            Map<Base, BaseNode> nodeCache = nodeFactoryMap.get(targetPath).getNodeCache();
+            for (BaseNode baseNode : nodeCache.values()) {
+                if (baseNode instanceof ClassNode) {
+                    graphEngine.write(baseNode);
+                }
+            }// mappingVertex2GraphNode end
+        }
     }
 
-    private void touchEdge(Base tailBase, Base headBase) {
-        NodeFactory nodeFactory = this.nodeFactoryMap.get(tailBase.getTargetPath());
+    private void touchEdge(Base tailBase, Base headBase, NodeFactory nodeFactory) {
         BaseNode tailNode = nodeFactory.newNode(tailBase);
         BaseNode headNode = nodeFactory.newNode(headBase);
 
