@@ -6,7 +6,7 @@ import cn.com.mirror.project.pojo.ArchiveVO;
 
 public interface ArchiveService {
     /**
-     * Create an archive and store the zipped src code.
+     * Create an archive and store the zipped src src.
      *
      * @param prjName     project name
      * @param archiveType zipped src file's type

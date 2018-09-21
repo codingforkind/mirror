@@ -1,10 +1,8 @@
-package cn.com.mirror.repository.code;
+package cn.com.mirror.project.src;
 
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.utils.PropertyUtils;
-import lombok.Data;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

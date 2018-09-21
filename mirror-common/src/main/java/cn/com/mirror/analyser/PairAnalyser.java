@@ -3,8 +3,8 @@ package cn.com.mirror.analyser;
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.factory.PairFactory;
-import cn.com.mirror.repository.code.CodeLoader;
-import cn.com.mirror.repository.code.LocalLoader;
+import cn.com.mirror.project.src.CodeLoader;
+import cn.com.mirror.project.src.LocalLoader;
 
 /**
  * @author piggy

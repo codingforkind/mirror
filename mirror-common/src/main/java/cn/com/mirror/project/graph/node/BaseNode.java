@@ -1,13 +1,11 @@
-package cn.com.mirror.repository.neo4j.node;
+package cn.com.mirror.project.graph.node;
 
-import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.Base;
 import lombok.Data;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
 
 import java.io.Serializable;
 import java.util.Objects;

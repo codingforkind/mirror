@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.com.mirror.repository.neo4j.node;
+package cn.com.mirror.project.graph.node;
 
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.constant.ElementTypeEnum;

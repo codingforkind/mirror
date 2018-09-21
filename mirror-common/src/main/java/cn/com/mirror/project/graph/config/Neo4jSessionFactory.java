@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.neo4j.config;
+package cn.com.mirror.project.graph.config;
 
 import org.neo4j.ogm.config.ClasspathConfigurationSource;
 import org.neo4j.ogm.config.Configuration;
@@ -20,7 +20,7 @@ public class Neo4jSessionFactory {
         ConfigurationSource props = new ClasspathConfigurationSource("neo4j.properties");
         Configuration configuration = new Configuration.Builder(props).build();
 
-        sessionFactory = new SessionFactory(configuration, "cn.com.mirror.repository.neo4j.node");
+        sessionFactory = new SessionFactory(configuration, "cn.com.mirror.project.graph.node");
     }
 
     public Session newSession() {

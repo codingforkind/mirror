@@ -35,7 +35,7 @@
             <version>${neo4j.version}</version>
         </dependency>
 
-        <!--neo4j ogm-->
+        <!--graph ogm-->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-api</artifactId>
@@ -49,16 +49,16 @@
         </dependency>
 
         <!--<dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-ogm-bolt-driver</artifactId>
-            <version>${neo4j.ogm.core.version}</version>
+            <groupId>org.graph</groupId>
+            <artifactId>graph-ogm-bolt-driver</artifactId>
+            <version>${graph.ogm.core.version}</version>
         </dependency>-->
 
         <!-- Only add if you're using the Embedded driver -->
         <!--<dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-ogm-embedded-driver</artifactId>
-            <version>${neo4j.ogm.core.version}</version>
+            <groupId>org.graph</groupId>
+            <artifactId>graph-ogm-embedded-driver</artifactId>
+            <version>${graph.ogm.core.version}</version>
         </dependency>-->
 
         <!-- Only add if you're using the HTTP driver -->
@@ -68,7 +68,7 @@
             <version>${neo4j.ogm.version}</version>
         </dependency>
 
-        <!--neo4j project driver-->
+        <!--graph project driver-->
         <dependency>
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>

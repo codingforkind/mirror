@@ -1,8 +1,8 @@
-package cn.com.mirror.repository.neo4j.node.factory;
+package cn.com.mirror.project.graph.node.factory;
 
 import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.unit.element.Base;
-import cn.com.mirror.repository.neo4j.node.BaseNode;
+import cn.com.mirror.project.graph.node.BaseNode;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 

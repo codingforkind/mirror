@@ -1,4 +1,4 @@
-package cn.com.mirror.repository.neo4j.config;
+package cn.com.mirror.project.graph.config;
 
 import cn.com.mirror.annotation.Bind;
 import cn.com.mirror.utils.PropertyUtils;
@@ -18,13 +18,13 @@ public class Neo4jProperty {
 
     private static Neo4jProperty instance = null;
 
-    @Bind("neo4j.server")
+    @Bind("graph.server")
     private String servAddr;
 
-    @Bind("neo4j.username")
+    @Bind("graph.username")
     private String username;
 
-    @Bind("neo4j.password")
+    @Bind("graph.password")
     private String password;
 
     /**

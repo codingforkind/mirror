@@ -17,9 +17,9 @@ CREATE TABLE "project" (
 
 COMMENT ON COLUMN "project"."prj_id" IS 'project id';
 COMMENT ON COLUMN "project"."name" IS 'project name';
-COMMENT ON COLUMN "project"."access_code" IS 'access code for this project';
+COMMENT ON COLUMN "project"."access_code" IS 'access src for this project';
 COMMENT ON COLUMN "project"."user_id" IS 'user info related';
-COMMENT ON COLUMN "project"."achv_id" IS 'project''s source code';
+COMMENT ON COLUMN "project"."achv_id" IS 'project''s source src';
 COMMENT ON COLUMN "project"."graph_id" IS 'graph info related';
 
 

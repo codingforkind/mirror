@@ -1,7 +1,7 @@
-package cn.com.mirror.repository.neo4j.storage;
+package cn.com.mirror.project.graph.storage;
 
-import cn.com.mirror.repository.neo4j.config.Neo4jSessionFactory;
-import cn.com.mirror.repository.neo4j.node.BaseNode;
+import cn.com.mirror.project.graph.config.Neo4jSessionFactory;
+import cn.com.mirror.project.graph.node.BaseNode;
 import org.neo4j.ogm.session.Session;
 
 /**
