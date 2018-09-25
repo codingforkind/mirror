@@ -13,7 +13,7 @@ import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.utils.FileUtils;
-import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
  * @date 18-8-10
  */
 @Slf4j
-@Data
+@Getter
 public class Mirror {
     private ProjectProperty projectProperty;
 
