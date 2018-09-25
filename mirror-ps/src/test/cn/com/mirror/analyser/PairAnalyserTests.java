@@ -1,6 +1,5 @@
-package cn.com.mirror.pair;
+package cn.com.mirror.analyser;
 
-import cn.com.mirror.analyser.PairAnalyser;
 import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.Vertex;
@@ -26,10 +25,10 @@ public class PairAnalyserTests {
         PairAnalyser pairAnalyser = new PairAnalyser();
         Pair pair = pairAnalyser.analyze(null);
         for (Map.Entry<String, Map<Vertex, Set<Vertex>>> entry : pair.getCtrlEdges().entrySet()) {
-            if (!TEST_FILE.equals(entry.getKey())) {
-                // testing specific target
-                continue;
-            }
+//            if (!TEST_FILE.equals(entry.getKey())) {
+//                // testing specific target
+//                continue;
+//            }
 
             log.debug("Target: {}", entry.getKey());
             for (Map.Entry<Vertex, Set<Vertex>> ver : entry.getValue().entrySet()) {
