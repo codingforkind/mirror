@@ -5,7 +5,6 @@ import cn.com.mirror.exceptions.UnitException;
 import cn.com.mirror.graph.node.*;
 import cn.com.mirror.graph.node.factory.NodeFactory;
 import cn.com.mirror.graph.service.GraphService;
-import cn.com.mirror.graph.storage.GraphEngine;
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.pair.Vertex;
 import cn.com.mirror.project.unit.element.Base;
@@ -58,18 +57,17 @@ public class GraphServiceImpl implements GraphService {
         return nodeFactoryMap;
     }
 
-
     private void write2GraphDB(Map<String, NodeFactory> nodeFactoryMap) {
-        // mapVertex2GraphNode
-        GraphEngine graphEngine = new GraphEngine();
-        for (String targetPath : nodeFactoryMap.keySet()) {
-            Map<Base, BaseNode> nodeCache = nodeFactoryMap.get(targetPath).getNodeCache();
-            for (BaseNode baseNode : nodeCache.values()) {
-                if (baseNode instanceof ClassNode) {
-                    graphEngine.write(baseNode);
-                }
-            }// mapVertex2GraphNode end
-        }
+//        TODO xyz write it into graph db using springboot-neo4j
+//        GraphEngine graphEngine = new GraphEngine();
+//        for (String targetPath : nodeFactoryMap.keySet()) {
+//            Map<Base, BaseNode> nodeCache = nodeFactoryMap.get(targetPath).getNodeCache();
+//            for (BaseNode baseNode : nodeCache.values()) {
+//                if (baseNode instanceof ClassNode) {
+//                    graphEngine.write(baseNode);
+//                }
+//            }// mapVertex2GraphNode end
+//        }
     }
 
     private void touchEdge(Base tailBase, Base headBase, NodeFactory nodeFactory) {
