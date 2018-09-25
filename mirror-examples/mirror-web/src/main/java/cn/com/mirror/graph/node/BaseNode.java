@@ -1,4 +1,4 @@
-package cn.com.mirror.project.graph.node;
+package cn.com.mirror.graph.node;
 
 import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.Base;
@@ -55,7 +55,7 @@ public class BaseNode implements Serializable {
         this.startLineNum = startLineNum;
         this.targetPath = targetPath;
         this.endLineNum = endLineNum;
-//        this.content = content; // TODO xyz for test
+        this.content = content;
         this.content = null;
         this.packageName = packageName;
         this.elementTypeEnum = elementTypeEnum;

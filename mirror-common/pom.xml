@@ -29,52 +29,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j</artifactId>
-            <version>${neo4j.version}</version>
-        </dependency>
-
-        <!--graph ogm-->
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-ogm-api</artifactId>
-            <version>${neo4j.ogm.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-ogm-core</artifactId>
-            <version>${neo4j.ogm.version}</version>
-        </dependency>
-
-        <!--<dependency>
-            <groupId>org.graph</groupId>
-            <artifactId>graph-ogm-bolt-driver</artifactId>
-            <version>${graph.ogm.core.version}</version>
-        </dependency>-->
-
-        <!-- Only add if you're using the Embedded driver -->
-        <!--<dependency>
-            <groupId>org.graph</groupId>
-            <artifactId>graph-ogm-embedded-driver</artifactId>
-            <version>${graph.ogm.core.version}</version>
-        </dependency>-->
-
-        <!-- Only add if you're using the HTTP driver -->
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-ogm-http-driver</artifactId>
-            <version>${neo4j.ogm.version}</version>
-        </dependency>
-
-        <!--graph project driver-->
-        <dependency>
-            <groupId>org.neo4j.driver</groupId>
-            <artifactId>neo4j-java-driver</artifactId>
-            <version>${neo4j.java.driver.version}</version>
-        </dependency>
-
         <!--log-->
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -8,7 +8,6 @@ import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
 import org.apache.commons.lang3.Validate;
-import org.apache.http.util.Asserts;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import java.io.Serializable;
@@ -81,7 +80,9 @@ public class Unit implements Serializable {
     }
 
     public Root getRoot(String pkgName) {
-        Asserts.notEmpty(pkgName, "Package name can not be null.");
+        assert null == pkgName : "Package name can not be null.";
+        assert pkgName.isEmpty() : "Package name can not be empty";
+
         for (Root root : this.roots) {
             if (pkgName.equals(root.getPackageName())) {
                 return root;

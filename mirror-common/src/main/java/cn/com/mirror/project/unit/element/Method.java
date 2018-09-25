@@ -3,7 +3,6 @@ package cn.com.mirror.project.unit.element;
 import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
-import org.apache.http.util.Asserts;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import java.util.HashSet;
@@ -41,7 +40,7 @@ public class Method extends Base {
     }
 
     public void addParam(Variable param) {
-        Asserts.notNull(param, "Parameter variable can not be null.");
+        assert null == param : "Parameter variable can not be null.";
         this.params.add(param);
     }
 

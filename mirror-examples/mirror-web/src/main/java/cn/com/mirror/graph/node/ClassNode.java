@@ -1,7 +1,7 @@
 /**
  *
  */
-package cn.com.mirror.project.graph.node;
+package cn.com.mirror.graph.node;
 
 import cn.com.mirror.constant.EdgeType;
 import cn.com.mirror.constant.ElementTypeEnum;
