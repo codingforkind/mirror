@@ -12,7 +12,7 @@
 	<description>a code mirror</description>
 
 	<modules>
-		<module>mirror-common</module>
+		<module>mirror-ps</module>
 		<module>mirror-examples</module>
 	</modules>
 
