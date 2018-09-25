@@ -23,7 +23,6 @@ public class GraphServiceImpl implements GraphService {
     public Map<String, NodeFactory> mapVertex2GraphNode(String prjDir, boolean writeDB) {
         ProjectProperty projectProperty = new ProjectProperty();
         projectProperty.setUrl(prjDir);
-        projectProperty.setEnableWriteGraphDB(Boolean.TRUE);
 
         Mirror mirror = new Mirror(projectProperty);
 
