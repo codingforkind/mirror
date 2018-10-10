@@ -3,6 +3,7 @@ package cn.com.mirror.analyser;
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.factory.PairFactory;
+import org.apache.commons.lang3.Validate;
 
 /**
  * @author piggy
@@ -12,8 +13,7 @@ import cn.com.mirror.project.pair.factory.PairFactory;
 public class PairAnalyser {
 
     public Pair analyze(ProjectProperty projectProperty) {
-        assert null == projectProperty : "Project property can not be null.";
-
+        Validate.notNull(projectProperty, "Project property can not be null.");
         PairFactory pairFactory = new PairFactory();
         return pairFactory.newPair(projectProperty);
     }

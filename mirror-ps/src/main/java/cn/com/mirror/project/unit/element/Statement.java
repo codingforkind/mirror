@@ -3,6 +3,7 @@ package cn.com.mirror.project.unit.element;
 import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
+import org.apache.commons.lang3.Validate;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -28,7 +29,7 @@ public class Statement extends Base {
     }
 
     public void addVariable(Variable variable) {
-        assert null == variable : "Variable can not be null.";
+        Validate.notNull(variable, "Variable can not be null.");
         this.variables.add(variable);
     }
 

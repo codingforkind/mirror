@@ -80,8 +80,7 @@ public class Unit implements Serializable {
     }
 
     public Root getRoot(String pkgName) {
-        assert null == pkgName : "Package name can not be null.";
-        assert pkgName.isEmpty() : "Package name can not be empty";
+        Validate.notEmpty(pkgName, "Package name can not be null or empty");
 
         for (Root root : this.roots) {
             if (pkgName.equals(root.getPackageName())) {

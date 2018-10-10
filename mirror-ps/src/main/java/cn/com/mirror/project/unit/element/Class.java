@@ -3,6 +3,7 @@ package cn.com.mirror.project.unit.element;
 import cn.com.mirror.constant.ElementTypeEnum;
 import cn.com.mirror.project.unit.element.variable.Variable;
 import lombok.Data;
+import org.apache.commons.lang3.Validate;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import java.util.HashSet;
@@ -43,8 +44,7 @@ public class Class extends Base {
     }
 
     public void addField(Variable field) {
-        assert null == field : "Field variable can not be null.";
-
+        Validate.notNull(field, "Field variable can not be null.");
         this.fields.add(field);
     }
 

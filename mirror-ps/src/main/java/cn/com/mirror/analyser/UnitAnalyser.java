@@ -4,6 +4,7 @@ import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.UnitFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 
 /**
  * @author piggy
@@ -14,8 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UnitAnalyser {
 
     public Unit analyze(ProjectProperty projectProperty) {
-        assert null == projectProperty : "Project property can not be null.";
-
+        Validate.notNull(projectProperty, "Project property can not be null.");
         UnitFactory unitFactory = new UnitFactory();
         return unitFactory.newUnit(projectProperty);
     }
