@@ -3,8 +3,6 @@ package cn.com.mirror.analyser;
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.UnitFactory;
-import cn.com.mirror.project.code.CodeLoader;
-import cn.com.mirror.project.code.LocalLoader;
 import lombok.extern.slf4j.Slf4j;
 
 /**
