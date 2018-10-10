@@ -16,17 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 public class UnitAnalyser {
 
     public Unit analyze(ProjectProperty projectProperty) {
+        assert null == projectProperty : "Project property can not be null.";
+
         UnitFactory unitFactory = new UnitFactory();
-
-        Unit unit = null;
-        if (null == projectProperty) {
-            CodeLoader codeRepository = new LocalLoader();
-            unit = unitFactory.newUnit(codeRepository.getRepositoryUrl());
-        } else {
-            unit = unitFactory.newUnit(projectProperty.getUrl());
-        }
-
-        return unit;
+        return unitFactory.newUnit(projectProperty);
     }
 
 }

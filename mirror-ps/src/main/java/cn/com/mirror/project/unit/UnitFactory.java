@@ -3,6 +3,7 @@ package cn.com.mirror.project.unit;
 import cn.com.mirror.analyser.visitor.ClassVisitor;
 import cn.com.mirror.analyser.visitor.PackageVisitor;
 import cn.com.mirror.analyser.visitor.VariableVisitor;
+import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.utils.AstUtils;
 import cn.com.mirror.utils.FileUtils;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -13,6 +14,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  * @date 18-8-10
  */
 public class UnitFactory {
+
+    public Unit newUnit(ProjectProperty projectProperty){
+        return newUnit(projectProperty.getUrl());
+    }
 
     public Unit newUnit(String url) {
         // nas -> archive -> unzip -> tmppath -> analyze

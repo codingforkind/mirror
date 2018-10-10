@@ -14,16 +14,10 @@ import cn.com.mirror.project.code.LocalLoader;
 public class PairAnalyser {
 
     public Pair analyze(ProjectProperty projectProperty) {
-        PairFactory pairFactory = new PairFactory();
+        assert null == projectProperty : "Project property can not be null.";
 
-        Pair pair = null;
-        if (null == projectProperty) {
-            CodeLoader codeRepository = new LocalLoader();
-            pair = pairFactory.newPair(codeRepository.getRepositoryUrl());
-        } else {
-            pair = pairFactory.newPair(projectProperty.getUrl());
-        }
-        return pair;
+        PairFactory pairFactory = new PairFactory();
+        return pairFactory.newPair(projectProperty);
     }
 
 }
