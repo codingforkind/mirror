@@ -18,9 +18,9 @@ public class PairAnalyser {
 
         Pair pair = null;
         if (null == projectProperty) {
-            pair = pairFactory.newPair(LocalLoader.getPrjProperty().getUrl());
+            pair = pairFactory.newPair(LocalLoader.getPrjProperty());
         } else {
-            pair = pairFactory.newPair(projectProperty.getUrl());
+            pair = pairFactory.newPair(projectProperty);
         }
         return pair;
     }

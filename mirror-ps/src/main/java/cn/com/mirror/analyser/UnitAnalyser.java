@@ -20,9 +20,9 @@ public class UnitAnalyser {
 
         Unit unit = null;
         if (null == projectProperty) {
-            unit = unitFactory.newUnit(LocalLoader.getPrjProperty().getUrl());
+            unit = unitFactory.newUnit(LocalLoader.getPrjProperty());
         } else {
-            unit = unitFactory.newUnit(projectProperty.getUrl());
+            unit = unitFactory.newUnit(projectProperty);
         }
 
         return unit;
