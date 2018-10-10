@@ -13,7 +13,6 @@ import cn.com.mirror.project.unit.element.Class;
 import cn.com.mirror.project.unit.element.Method;
 import cn.com.mirror.project.unit.element.Statement;
 import cn.com.mirror.utils.FileUtils;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
@@ -27,7 +26,6 @@ import java.util.concurrent.Executors;
  * @date 18-8-10
  */
 @Slf4j
-@Getter
 public class Mirror {
     private ProjectProperty projectProperty;
 
@@ -115,5 +113,18 @@ public class Mirror {
         }
 
         throw new ReflectException("Can not generate base element.");
+    }
+
+
+    public ProjectProperty getProjectProperty() {
+        return projectProperty;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public Pair getPair() {
+        return pair;
     }
 }
