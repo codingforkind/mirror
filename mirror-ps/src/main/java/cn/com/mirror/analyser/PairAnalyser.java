@@ -3,7 +3,8 @@ package cn.com.mirror.analyser;
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.pair.Pair;
 import cn.com.mirror.project.pair.factory.PairFactory;
-import org.apache.commons.lang3.Validate;
+import cn.com.mirror.project.code.CodeLoader;
+import cn.com.mirror.project.code.LocalLoader;
 
 /**
  * @author piggy
@@ -13,9 +14,15 @@ import org.apache.commons.lang3.Validate;
 public class PairAnalyser {
 
     public Pair analyze(ProjectProperty projectProperty) {
-        Validate.notNull(projectProperty, "Project property can not be null.");
         PairFactory pairFactory = new PairFactory();
-        return pairFactory.newPair(projectProperty);
+
+        Pair pair = null;
+        if (null == projectProperty) {
+            pair = pairFactory.newPair(LocalLoader.getPrjProperty().getUrl());
+        } else {
+            pair = pairFactory.newPair(projectProperty.getUrl());
+        }
+        return pair;
     }
 
 }

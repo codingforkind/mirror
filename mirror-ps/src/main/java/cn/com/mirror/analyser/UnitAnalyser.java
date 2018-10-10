@@ -3,8 +3,9 @@ package cn.com.mirror.analyser;
 import cn.com.mirror.project.config.ProjectProperty;
 import cn.com.mirror.project.unit.Unit;
 import cn.com.mirror.project.unit.UnitFactory;
+import cn.com.mirror.project.code.CodeLoader;
+import cn.com.mirror.project.code.LocalLoader;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.Validate;
 
 /**
  * @author piggy
@@ -15,9 +16,16 @@ import org.apache.commons.lang3.Validate;
 public class UnitAnalyser {
 
     public Unit analyze(ProjectProperty projectProperty) {
-        Validate.notNull(projectProperty, "Project property can not be null.");
         UnitFactory unitFactory = new UnitFactory();
-        return unitFactory.newUnit(projectProperty);
+
+        Unit unit = null;
+        if (null == projectProperty) {
+            unit = unitFactory.newUnit(LocalLoader.getPrjProperty().getUrl());
+        } else {
+            unit = unitFactory.newUnit(projectProperty.getUrl());
+        }
+
+        return unit;
     }
 
 }
